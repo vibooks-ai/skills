@@ -190,6 +190,21 @@ Always start with:
 $VCLI doctor --json
 ```
 
+Agent-execution rule:
+
+- some agent sandboxes or restricted command runners deny or distort loopback
+  access to `127.0.0.1`, especially for `vibooks-cli doctor`, `curl`, and
+  other HTTP probes
+- if localhost checks fail only inside that restricted environment, do not
+  conclude Vibooks is broken yet
+- rerun the installed `vibooks-cli` from the user's normal shell or through an
+  approved unsandboxed command before treating `api_reachable = false`,
+  `error sending request for url (...)`, or a fallback from
+  `cli_agent_credentials` to `desktop_local` as product evidence
+- when the user says `vibooks-cli` was installed with Homebrew, prefer the
+  installed Homebrew binary for verification instead of only using a repo-built
+  `cargo run` binary
+
 `vibooks-cli` should auto-discover the local API address and token from official
 local Vibooks installs. Prefer that default behavior. If it cannot discover a
 usable token, stop and follow the first-token rules below. Do not invent a
@@ -204,6 +219,8 @@ token and do not fall back to any default token.
    - wait for `LOCAL_API_BASE/api/health`
    - rerun `vibooks-cli doctor --json` for a short retry window; the desktop
      should provision and save a local API token for the current machine user
+   - if those localhost checks are being run from a restricted agent sandbox,
+     rerun them outside the sandbox before calling it a Vibooks regression
    - if `doctor` reports `token_source = cli_agent_credentials` with
      `invalid API token`, treat that saved token as stale local state; give the
      desktop a short retry window to reprovision it automatically, and remove

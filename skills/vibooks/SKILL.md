@@ -67,6 +67,10 @@ direct mutation of Vibooks storage.
 - use installation state files only for connection bootstrap or token lookup;
   they are not a substitute for business data access
 - start with `vibooks-cli doctor --json`
+- if local loopback reachability is being checked from an agent sandbox or
+  restricted execution environment, treat in-sandbox localhost failures as
+  untrusted until the same check is rerun with the installed `vibooks-cli` in
+  the user's normal shell or an approved unsandboxed command
 - inspect discovery before mutating unfamiliar resources
 - prefer first-class workflows over manual journals whenever Vibooks has a
   native workflow for the task
@@ -92,7 +96,9 @@ direct mutation of Vibooks storage.
 3. Start or reuse the installed Vibooks app or headless service.
 4. If this is a first-run local desktop install, explicitly confirm local
    desktop startup before waiting for the API.
-5. Run `vibooks-cli doctor --json`.
+5. Run `vibooks-cli doctor --json`. If the agent is in a restricted sandbox and
+   localhost probes fail, rerun the installed CLI outside the sandbox before
+   treating the result as a Vibooks bug.
 6. If authenticated readiness, entitlement, or trial state is missing, follow
    the install/access reference before doing bookkeeping work.
 7. Discover the API or bootstrap the book as needed, then use first-class
