@@ -1,8 +1,39 @@
-# Public Repository Rules
+# Vibooks Skills Public Rules
+
+## Public-Only Repository
 
 - This repository may contain only content that is safe for public access.
-- Do not commit secrets, tokens, private keys, customer data, internal URLs, private release evidence, or local developer-machine state.
+- Do not commit secrets, tokens, private keys, customer data, internal URLs, private release evidence, screenshots from private environments, or local developer-machine state.
 - Do not commit internal-only files or process notes unless they are intentionally written for public readers of this repository.
-- Keep the skill docs generic to supported public Vibooks behavior; do not document workspace-only commands, private environments, or unsupported local shortcuts as normal user flows.
-- `skills/vibooks/` is the canonical public skill source. When public copies exist elsewhere, update them from this source instead of hand-maintaining divergent instructions.
 - Public release evidence belongs in a private release tracker, not in this repository.
+
+## Canonical Source
+
+- `skills/vibooks/` is the canonical public skill source.
+- When public copies exist elsewhere, update them from this source instead of hand-maintaining divergent instructions.
+- Keep every shipped copy of the Vibooks skill docs in sync with the canonical source, including installation, first-use, repeat-use, and escalation guidance.
+
+## Authoring Rules
+
+- Keep the skill docs generic to supported public Vibooks behavior; do not document workspace-only commands, private environments, unsupported local shortcuts, or developer assumptions as normal user flows.
+- Keep the documented logic internally consistent and use official Vibooks workflows rather than unsupported shortcuts.
+- Write the skill so it matches the latest shipped product behavior across install, authentication, bookkeeping, reconciliation, verification, and maintenance flows.
+- Cover both first-time use and later repeat-use or reuse paths so a user can start cleanly and return safely without guessing.
+- Keep the documented bookkeeping treatments professionally correct, including source evidence, subledger usage, tax treatment, reconciliation, and correction flows.
+- Follow current Claude Agent Skills best practices for frontmatter, structure, progressive disclosure, evaluation evidence, path style, and model coverage.
+
+## Release Review Rules
+
+- Review changes in this order: professional bookkeeping correctness, parity with mainstream professional bookkeeping UX for small-business workflows, then fit with Vibooks' small-business and AI-agent-first scope.
+- Treat trigger evals as necessary but not sufficient. They validate discovery quality for the skill description, not full workflow correctness.
+- Before release, review behavior checks that cover:
+  - first-time install to first authenticated bookkeeping use
+  - repeat use on an existing trusted local install and existing book
+  - at least one current correction, reconciliation, or verification workflow using the official product surface
+- When model-dependent behavior matters, record which target models were exercised, such as Haiku, Sonnet, and Opus, in the private release record.
+- If a release-critical skill check is not yet automated, keep it documented in this repository and treat it as a mandatory manual pre-release check until it is scripted.
+
+## Versioning
+
+- The `skills` release train uses the repo `VERSION` file as its managed version marker.
+- Canonical public release tags use `vX.Y.Z` or `vX.Y.Z-rc.N`.
