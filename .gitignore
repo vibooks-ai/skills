@@ -1,0 +1,9 @@
+.DS_Store
+
+# Internal maintainer-only files
+/RELEASE-EVIDENCE-*.md
+
+# Local evaluation artifacts
+skills/*/evals/output/
+skills/*/evals/tmp/
+skills/*/evals/*.log

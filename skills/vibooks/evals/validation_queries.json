@@ -1,0 +1,34 @@
+[
+  {
+    "should_trigger": true,
+    "query": "The desktop app opens, but I am not sure the local Vibooks API is actually listening yet. Walk me through the safe startup and first-token path."
+  },
+  {
+    "should_trigger": true,
+    "query": "Given these receipts and a credit-card statement, record them in Vibooks, keep the card as a liability, and reconcile to the statement."
+  },
+  {
+    "should_trigger": true,
+    "query": "I want to replace an old messy Vibooks book with a clean rebuild under the same company without hard-deleting posted history."
+  },
+  {
+    "should_trigger": true,
+    "query": "Before month-end close in Vibooks, tell me the exact verification and report checks I should run so bank and card balances tie."
+  },
+  {
+    "should_trigger": false,
+    "query": "Make this landing page look more premium and improve the CTA."
+  },
+  {
+    "should_trigger": false,
+    "query": "Write a shell script that backs up a SQLite database every hour."
+  },
+  {
+    "should_trigger": false,
+    "query": "Help me reconcile this spreadsheet manually; I am not using Vibooks."
+  },
+  {
+    "should_trigger": false,
+    "query": "Parse these PDF invoices and export the line items into Excel."
+  }
+]

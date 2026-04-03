@@ -1,0 +1,50 @@
+[
+  {
+    "should_trigger": true,
+    "query": "Install Vibooks on this Mac, connect to the local book safely, and tell me how to verify the API is ready before posting anything."
+  },
+  {
+    "should_trigger": true,
+    "query": "I already have Vibooks running somewhere on this machine. Figure out whether I can reuse it, then use the official CLI and API only."
+  },
+  {
+    "should_trigger": true,
+    "query": "Book this supplier PDF into Vibooks, attach the evidence, and avoid any direct database edits."
+  },
+  {
+    "should_trigger": true,
+    "query": "Help me bootstrap a new Vibooks book for a small business, then verify the chart of accounts and opening balances are sane."
+  },
+  {
+    "should_trigger": true,
+    "query": "My bank statement is imported but the account does not tie. Use the proper Vibooks reconciliation workflow instead of inventing a balancing journal."
+  },
+  {
+    "should_trigger": true,
+    "query": "Need to correct the tax code on a posted bill in Vibooks without changing the historical amount. What's the right workflow?"
+  },
+  {
+    "should_trigger": false,
+    "query": "Write a JavaScript fibonacci function."
+  },
+  {
+    "should_trigger": false,
+    "query": "Summarize this generic bookkeeping article for me."
+  },
+  {
+    "should_trigger": false,
+    "query": "Convert this CSV to JSON and add a derived column."
+  },
+  {
+    "should_trigger": false,
+    "query": "I need advice on whether to form an LLC or a corporation."
+  },
+  {
+    "should_trigger": false,
+    "query": "Open QuickBooks and explain their pricing tiers."
+  },
+  {
+    "should_trigger": false,
+    "query": "Draft a blog post about local-first accounting software."
+  }
+]
