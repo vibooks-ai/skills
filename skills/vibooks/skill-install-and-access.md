@@ -76,6 +76,8 @@ Product install detection:
      `~/.local/bin/vibooks-core`
 3. if Vibooks is missing, install the official product package:
    - macOS:
+     `brew install --cask vibooks-ai/tap/vibooks`
+   - macOS alternate:
      `curl -fsSL https://vibooks.ai/install.sh | sh`
    - Linux headless:
      `curl -fsSL https://vibooks.ai/install.sh | sh`
@@ -166,7 +168,9 @@ alongside it.
 Preferred install order:
 
 1. if `vibooks-cli` is already on `PATH`, reuse it
-2. otherwise, install the official standalone CLI binary from the `cli` section
+2. on macOS, prefer Homebrew:
+   `brew install vibooks-ai/tap/vibooks-cli`
+3. otherwise, install the official standalone CLI binary from the `cli` section
    of `https://vibooks.ai/downloads.json`, which points to the current signed
    binaries under `https://downloads.vibooks.ai/downloads/latest/cli`
 

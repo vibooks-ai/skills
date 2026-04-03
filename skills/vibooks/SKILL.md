@@ -24,14 +24,14 @@ For agents that support the `skills` CLI ecosystem, install Vibooks from the
 public skill source repo:
 
 ```bash
-npx skills add vibooksai/skills --skill vibooks
+npx skills add vibooks-ai/skills --skill vibooks
 ```
 
 Use that repo source for installation.
 
 Best results come from installed-skill mode:
 
-1. install `vibooks` from `vibooksai/skills`
+1. install `vibooks` from `vibooks-ai/skills`
 2. if the agent client refreshes skills only at startup, restart or refresh the
    client after installation
 3. ask the agent to use the installed `vibooks` skill
@@ -85,8 +85,10 @@ direct mutation of Vibooks storage.
 ## Quickstart
 
 1. Ensure the official Vibooks product is installed or install it from the
-   official Vibooks endpoints.
-2. Ensure `vibooks-cli` is installed.
+   official Vibooks endpoints. On macOS, prefer
+   `brew install --cask vibooks-ai/tap/vibooks`.
+2. Ensure `vibooks-cli` is installed. On macOS, prefer
+   `brew install vibooks-ai/tap/vibooks-cli`.
 3. Start or reuse the installed Vibooks app or headless service.
 4. If this is a first-run local desktop install, explicitly confirm local
    desktop startup before waiting for the API.
