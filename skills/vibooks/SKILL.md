@@ -4,8 +4,8 @@ description: >
   Installs or reuses Vibooks locally, connects an agent to a trusted Vibooks
   company or book, records or corrects small-business bookkeeping
   transactions, reconciles bank or card statements, and runs close and
-  verification checks. Use when the user wants official Vibooks workflows
-  rather than direct database or runtime file edits.
+  verification checks through official Vibooks workflows rather than direct
+  database or runtime file edits.
 metadata:
   install_sh: https://vibooks.ai/install.sh
   install_ps1: https://vibooks.ai/install.ps1
