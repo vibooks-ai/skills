@@ -1,5 +1,12 @@
 # Vibooks Skills Public Rules
 
+## Public References
+
+- Claude Agent Skills best practices:
+  `https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices`
+- Vibooks public trigger-eval guidance: `skills/vibooks/evals/README.md`
+- Vibooks public behavior review guidance: `skills/vibooks/evals/behavior-checks.md`
+
 ## Public-Only Repository
 
 - This repository may contain only content that is safe for public access.
