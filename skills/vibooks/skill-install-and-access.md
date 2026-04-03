@@ -166,12 +166,7 @@ alongside it.
 Preferred install order:
 
 1. if `vibooks-cli` is already on `PATH`, reuse it
-2. on macOS or Linux, if `brew` is available, run
-   `brew install vibooksai/tap/vibooks-cli`
-3. on Windows, if `winget` is available, run
-   `winget install Vibooks.VibooksCLI`
-4. if Rust and Cargo are already installed, run `cargo install vibooks-cli`
-5. otherwise, install the official standalone CLI binary from the `cli` section
+2. otherwise, install the official standalone CLI binary from the `cli` section
    of `https://vibooks.ai/downloads.json`, which points to the current signed
    binaries under `https://downloads.vibooks.ai/downloads/latest/cli`
 
