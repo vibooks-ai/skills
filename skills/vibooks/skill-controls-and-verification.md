@@ -127,7 +127,12 @@ Attachment import rules:
 
 - use `post-v1-books-book-id-attachments` to import the file into managed
   evidence storage
-- provide a local filesystem path or `file://` URI, not a remote HTTP URL
+- for agents, CLI automation, and remote HTTP callers, prefer `name` +
+  `content_base64` + `sha256` so the request does not depend on the server
+  being able to read the caller's local filesystem
+- local desktop or same-host callers may alternatively provide a local
+  filesystem path or `file://` URI
+- do not provide a remote HTTP URL
 - provide the true SHA-256 of the file contents
 - keep the original file content unchanged
 - when the same source document already exists in Vibooks, reuse the existing
@@ -136,9 +141,11 @@ Attachment import rules:
 Typical import flow:
 
 1. compute the file's SHA-256 locally
-2. import the file as an attachment
-3. capture the returned attachment id
-4. pass that id in `attachment_ids` when creating the related invoice, sales
+2. if the caller is not on the same machine as Vibooks, base64-encode the file
+   and include `name`
+3. import the file as an attachment
+4. capture the returned attachment id
+5. pass that id in `attachment_ids` when creating the related invoice, sales
    receipt, customer refund, bill, expense, vendor refund, receipt, payment,
    or manual journal entry
 
@@ -169,7 +176,18 @@ When a wrong or duplicate file was linked to a posted document:
 - if the removed file was the last remaining document link, Vibooks may delete
   the managed attachment record and file as part of the same evidence cleanup
 
-Example attachment payload:
+Example remote-safe attachment payload:
+
+```json
+{
+  "name": "source-document.pdf",
+  "content_base64": "<base64-encoded-file-bytes>",
+  "sha256": "64-char-lowercase-hex",
+  "mime": "application/pdf"
+}
+```
+
+Local same-host callers may alternatively send:
 
 ```json
 {
