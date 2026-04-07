@@ -82,6 +82,13 @@ Useful operations include:
 - `post-v1-books-book-id-recognition-schedules-schedule-id-reverse-latest`
 - `post-v1-books-book-id-recurring-templates`
 - `post-v1-books-book-id-recurring-templates-run-due`
+- `get-v1-books-book-id-document-templates`
+- `post-v1-books-book-id-document-templates`
+- `patch-v1-books-book-id-document-templates-template-id`
+- `delete-v1-books-book-id-document-templates-template-id`
+- `post-v1-books-book-id-document-templates-template-id-set-default`
+- `post-v1-books-book-id-document-templates-template-id-reset`
+- `post-v1-books-book-id-documents-document-type-document-id-render`
 - `post-v1-books-book-id-bank-lines`
 - `post-v1-books-book-id-bank-lines-line-id-create-processor-settlement`
 - `post-v1-books-book-id-settlements`
@@ -295,6 +302,33 @@ Default priority:
   remaining occurrence is correct
 - for recurring journal templates, keep `source_type` business-meaningful and
   prefer a stable `source_ref_prefix` so generated entries remain auditable
+
+## Customer-Facing Document Templates
+
+- use `document-templates` for customer- or vendor-facing HTML/PDF presentation
+  of invoices, bills, sales receipts, purchase receipts, customer refunds,
+  expenses, vendor refunds, receipts, and payments
+- do not use `recurring-templates` for presentation/layout; recurring templates
+  create scheduled bookkeeping documents or journals
+- list `get-v1-books-book-id-document-templates` before editing so you can see
+  built-in ids, current global defaults, current-book overrides, and supported
+  `document_type` values
+- create a custom template with `post-v1-books-book-id-document-templates`
+  using `name`, `document_type`, `scope` (`global` or `book`), `book_id` for
+  book scope, and `html`
+- patch an existing custom template, or patch a built-in template id to store a
+  built-in override; use `:reset` to clear a built-in override rather than
+  deleting built-ins
+- use `:setDefault` on a global template for the global default, or on a
+  book-scoped template for that book's default
+- render a real source document with
+  `post-v1-books-book-id-documents-document-type-document-id-render`; omit
+  `template_id` to use the effective default or pass a template id explicitly
+- template HTML supports escaped `{{variable_name}}` tokens such as
+  `company_name`, `company_address`, `book_code`, `doc_title`, `doc_number`,
+  `doc_date`, `doc_due_date`, `doc_party`, `doc_currency`, `doc_subtotal`,
+  `doc_tax`, `doc_total`, `doc_amount_due`, `doc_description`, `generated_at`,
+  `theme_color`, and `font_family`
 
 ## Chart Of Accounts Rules
 
