@@ -176,6 +176,50 @@ Preferred install order:
 
 Do not use `npx` as the primary install path for `vibooks-cli`.
 
+## Check Whether A Newer Official Build Exists
+
+Treat `https://vibooks.ai/downloads.json` as the source of truth for the latest
+official direct-download versions:
+
+- compare `vibooks-cli --version` with `downloads.json` `version.cli`
+- compare an installed desktop build with `downloads.json` `version.desktop`
+- compare an installed headless bundle with `downloads.json`
+  `version.headless`
+
+If the local version is lower than the corresponding `downloads.json` version,
+the installed build is old and should be updated before continuing
+troubleshooting or new setup work.
+
+If the desktop app still opens, prefer checking its current installed version
+from the product's normal update surface. If the desktop app is broken and will
+not launch, inspect the installed app or package version from the local bundle
+or installer metadata instead of guessing.
+
+Package-manager catalogs can lag the direct-download catalog. Treat
+`downloads.json` as the authoritative latest official direct-download version,
+not Homebrew, winget, cargo, or third-party mirrors.
+
+## Update To The Current Official Build
+
+When the local install is older than `downloads.json`, update through the same
+official channel family:
+
+1. desktop:
+   - use only the official Vibooks install entrypoints at
+     `https://vibooks.ai/` or the desktop asset URLs published in
+     `https://vibooks.ai/downloads.json`
+   - do not install copied `.app`, `.dmg`, `.exe`, old local installers,
+     third-party mirrors, or unofficial direct URLs
+2. CLI:
+   - if the user already manages `vibooks-cli` with Homebrew, prefer the
+     official `brew` upgrade path
+   - otherwise reinstall from the `cli` targets in `downloads.json`
+3. headless:
+   - reinstall from the official headless target in `downloads.json`
+
+After updating, rerun `vibooks-cli doctor --json` before resuming bookkeeping
+work.
+
 ## Connection And Secret Handling
 
 Use:
