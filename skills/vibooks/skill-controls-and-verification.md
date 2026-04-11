@@ -43,6 +43,9 @@ operator workarounds.
 
 Rules:
 
+- when a documented jurisdiction profile defines the expected statutory tax
+  code names, rates, or control-account roles, follow that profile instead of
+  inventing local aliases
 - use `sales_rule` and `purchase_rule` when the tax treatment is compound,
   reverse-charge, withholding, or otherwise asymmetric between sales and
   purchases

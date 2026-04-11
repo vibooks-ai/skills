@@ -74,6 +74,8 @@ direct mutation of Vibooks storage.
 - inspect discovery before mutating unfamiliar resources
 - prefer first-class workflows over manual journals whenever Vibooks has a
   native workflow for the task
+- treat country or region defaults as a jurisdiction profile that is separate
+  from any industry preset
 - use official book presets and saved master-data defaults instead of
   inventing one-off chart, dimension, or posting structures when Vibooks
   already exposes a reusable setup
@@ -123,6 +125,9 @@ Open only the references needed for the current task:
 
 - install, startup, authentication, licensing, and secret handling:
   [skill-install-and-access.md](skill-install-and-access.md)
+- jurisdiction routing, country or region defaults, and profile support
+  status:
+  [skill-jurisdiction-profiles.md](skill-jurisdiction-profiles.md)
 - discovery, bootstrap, book rebuilds, posting rules, chart-of-accounts
   choices, dates, and first-class workflows:
   [skill-bookkeeping-workflows.md](skill-bookkeeping-workflows.md)

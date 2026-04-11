@@ -26,6 +26,14 @@ For release review, also run behavior checks that cover:
 2. repeat use against an existing trusted local install and existing book
 3. a correction, reconciliation, or verification workflow that exercises the
    current official product behavior
+4. jurisdiction-profile routing for at least one covered country, one covered
+   country with strong subnational tax variation, and one uncovered country
+
+For manual jurisdiction walkthroughs, use:
+
+- `behavior-checks.md` for the required coverage and pass criteria
+- `jurisdiction-walkthrough-prompts.md` for copy-paste prompts and expected
+  routing behavior
 
 Record which target models were exercised and keep release evidence in a
 private release record or tracker, not in this public repo. At minimum, review

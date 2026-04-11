@@ -3,6 +3,7 @@
 ## Contents
 
 - Discover the API first
+- Jurisdiction profiles
 - Bootstrap a new book
 - Cleanly rebuild a book
 - Hard accounting rules
@@ -102,6 +103,40 @@ When you already know a Vibooks resource id, fetch it with the matching detail
 Use collection `GET` for search, browse, and pagination; use detail `GET` as
 the authoritative read path for one known resource.
 
+## Jurisdiction Profiles
+
+Before choosing country-specific defaults, route the book through a
+jurisdiction profile.
+
+Rules:
+
+- use the book or company country, tax registration, and other explicit setup
+  as the authority when they already exist
+- use source documents or the business profile next when they clearly establish
+  the jurisdiction
+- use the current device country only as a last-resort bootstrap suggestion
+- treat the operator's nationality or UI language as non-authoritative
+- choose the jurisdiction profile before choosing the industry preset
+- keep jurisdiction and industry as separate layers
+- if the shipped product later exposes first-class jurisdiction setup, prefer
+  that official product path over skill-only manual setup
+
+Current public profiles:
+
+- `generic_global`: conservative fallback when no stronger jurisdiction profile
+  is documented
+  [skill-jurisdiction-generic-global.md](skill-jurisdiction-generic-global.md)
+- `ca_smb`: ordinary Canadian small-business and private-enterprise books
+  [skill-jurisdiction-ca-smb.md](skill-jurisdiction-ca-smb.md)
+- `us_smb`: routing skeleton for ordinary United States small-business books
+  with explicit state and local tax stop conditions
+  [skill-jurisdiction-us-smb.md](skill-jurisdiction-us-smb.md)
+
+Reference:
+
+- jurisdiction routing and support states:
+  [skill-jurisdiction-profiles.md](skill-jurisdiction-profiles.md)
+
 ## Bootstrap A New Book
 
 Run setup in this order:
@@ -122,18 +157,25 @@ Bootstrap defaults:
 - infer the first book name from the owner or business profile when it is clear
 - if no user-profile detail helps name the book, use `Primary Book`
 - infer company `country` and base currency from the owner or business profile
-  when the profile is clear
+  when the profile is clear, but treat the saved book or company setup as the
+  authority when it already exists
 - if the user profile does not make `country` or base currency clear, use the
-  current device country and its normal operating currency
+  current device country and its normal operating currency only as a bootstrap
+  suggestion
 - treat that base currency as Vibooks `functional_currency`, and keep
   `presentation_currency` the same unless the user explicitly wants something
   different
+- choose the jurisdiction profile before choosing the industry preset
+- when a documented jurisdiction profile applies, follow its chart, tax,
+  numbering, and measurement guidance instead of inventing local defaults
 - when the business shape is clear, inspect `get-v1-book-presets` and use the
   nearest official preset:
   `generic_smb` for most service businesses, `ecommerce_platform` for
   marketplace or channel-heavy sellers, `restaurant_summary` for summary-based
   restaurant books, and `lodging_summary` for Airbnb, short-term rental, or
   small lodging books
+- keep jurisdiction setup separate from industry preset selection; do not
+  invent combined pseudo-presets
 - treat `get-v1-book-presets` as the authority for preset availability; if the
   catalog marks a preset unavailable, do not try to force it through another
   surface

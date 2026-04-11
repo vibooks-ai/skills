@@ -16,6 +16,18 @@
     "query": "Before month-end close in Vibooks, tell me the exact verification and report checks I should run so bank and card balances tie."
   },
   {
+    "should_trigger": true,
+    "query": "Create a Vibooks onboarding plan for a Canadian small business and use ASPE-style defaults unless I clearly need IFRS."
+  },
+  {
+    "should_trigger": true,
+    "query": "I am opening a Vibooks book for a U.S. retailer. Keep jurisdiction and industry separate, and stop before configuring sales tax if the state is unknown."
+  },
+  {
+    "should_trigger": true,
+    "query": "Use Vibooks for a business in an uncovered country. If the local tax rules are not in the skill yet, look up official sources before you create tax codes."
+  },
+  {
     "should_trigger": false,
     "query": "Make this landing page look more premium and improve the CTA."
   },
@@ -30,5 +42,9 @@
   {
     "should_trigger": false,
     "query": "Parse these PDF invoices and export the line items into Excel."
+  },
+  {
+    "should_trigger": false,
+    "query": "Explain how U.S. sales tax works in general. I am not using Vibooks."
   }
 ]

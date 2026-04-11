@@ -8,6 +8,8 @@ current product behavior and remains safe for real bookkeeping work.
 - latest shipped install, startup, token, entitlement, and discovery behavior
 - latest shipped first-class bookkeeping and correction workflows
 - explicit first-time use and later repeat-use coverage
+- jurisdiction-profile routing and any changed documented country or region
+  profile behavior
 - professional-bookkeeping correctness, not only API reachability
 - evidence that the website public copies still match the canonical skill
 
@@ -82,6 +84,50 @@ Release evidence:
 - expected accounting outcome
 - actual accounting outcome
 - whether any doc, product, or website copy needed correction
+
+## Scenario 4: Jurisdiction Profile Discipline
+
+Goal: prove the skill chooses the right jurisdiction profile, applies the
+documented defaults conservatively, and stops to ask when local rules are still
+unclear.
+
+Use the copy-paste prompts in:
+
+- `jurisdiction-walkthrough-prompts.md`
+
+Exercise at least these three patterns:
+
+- Canada SMB:
+  a new Canadian private-enterprise book where the walkthrough should route to
+  `ca_smb`, keep Canada-specific tax and chart guidance separate from industry
+  presets, and avoid using CRA GIFI as the live operating chart
+- United States SMB:
+  a new US small-business book where the walkthrough should route to `us_smb`,
+  avoid inventing one national US sales-tax code, and stop if the relevant
+  state or local tax context is unclear
+- uncovered jurisdiction:
+  a book in a country without a documented dedicated profile where the
+  walkthrough should route to `generic_global`, research official country rules
+  before creating tax master data, and stop if the result is still unclear
+
+Check:
+
+1. follow the skill docs only
+2. confirm the chosen profile matches the saved setup, source documents, or
+   explicit user instruction rather than operator nationality or UI language
+3. confirm the walkthrough keeps jurisdiction and industry as separate layers
+4. confirm the walkthrough uses official country or region research when the
+   profile is missing or incomplete
+5. confirm the walkthrough stops to ask before configuring tax master data when
+   subnational rules materially affect the result
+
+Release evidence:
+
+- scenario exercised
+- chosen jurisdiction profile
+- whether the walkthrough used or avoided official research correctly
+- whether the walkthrough stopped at the correct decision boundary
+- any profile drift or missing stop condition that should be fixed
 
 ## Sync Check
 

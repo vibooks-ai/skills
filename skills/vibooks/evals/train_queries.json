@@ -24,6 +24,18 @@
     "query": "Need to correct the tax code on a posted bill in Vibooks without changing the historical amount. What's the right workflow?"
   },
   {
+    "should_trigger": true,
+    "query": "Bootstrap a Canadian private-company book in Vibooks, default it conservatively, and do not treat CRA GIFI as the live chart of accounts."
+  },
+  {
+    "should_trigger": true,
+    "query": "Set up a U.S. small-business book in Vibooks, but do not invent state sales-tax setup until the actual state is clear."
+  },
+  {
+    "should_trigger": true,
+    "query": "I need a new Vibooks book for a country you do not already have a profile for. Research the official local rules first and stop if the tax setup is still unclear."
+  },
+  {
     "should_trigger": false,
     "query": "Write a JavaScript fibonacci function."
   },
@@ -46,5 +58,9 @@
   {
     "should_trigger": false,
     "query": "Draft a blog post about local-first accounting software."
+  },
+  {
+    "should_trigger": false,
+    "query": "Research Germany VAT rules for my ecommerce business, but I am not using Vibooks."
   }
 ]
