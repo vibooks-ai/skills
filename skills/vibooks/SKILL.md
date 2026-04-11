@@ -7,6 +7,10 @@ description: >
   verification checks through official Vibooks workflows rather than direct
   database or runtime file edits.
 metadata:
+  skill_version: 1.0.2
+  source_repo: vibooks-ai/skills
+  update_check: https://vibooks.ai/skills/manifest.json
+  update_command: npx skills add vibooks-ai/skills --skill vibooks
   install_sh: https://vibooks.ai/install.sh
   install_ps1: https://vibooks.ai/install.ps1
   downloads: https://vibooks.ai/downloads.json
@@ -42,7 +46,8 @@ Treat the direct-read web copy at `https://vibooks.ai/skill.md` as a first-use
 bootstrap, not as the preferred steady-state mode.
 
 If the agent is reading `https://vibooks.ai/skill.md` and the local `vibooks`
-skill is not installed yet:
+skill is not installed yet, is missing `metadata.skill_version`, or is older
+than the public manifest:
 
 1. run `npx skills add vibooks-ai/skills --skill vibooks`
 2. if the client picks up new skills live, switch into installed-skill mode for
@@ -53,6 +58,28 @@ skill is not installed yet:
 
 Use the direct-read web copy only when local skill installation is truly
 blocked or unavailable in the current client.
+
+## Update This Skill
+
+Treat `metadata.skill_version` as the installed skill version. The latest public
+version is published at `metadata.update_check`.
+
+Check for skill updates at these times:
+
+- first entry through the web copy
+- before installing Vibooks or `vibooks-cli`
+- before configuring a company, book, accounting policy, tax setup, or
+  jurisdiction profile
+- before creating, correcting, rebuilding, migrating, reconciling, or closing
+  real bookkeeping data
+
+If the local skill version is missing or older than the public manifest, tell
+the user what changed and offer `metadata.update_command`. Do not silently
+self-update. If the manifest marks the update as critical and the next action
+would mutate bookkeeping, tax, jurisdiction, migration, or close state, stop and
+ask before continuing. If the manifest cannot be reached, do not block ordinary
+questions; before high-risk writes, disclose that the latest skill version could
+not be confirmed.
 
 ## When To Use
 
@@ -76,6 +103,10 @@ direct mutation of Vibooks storage.
 - when first entering through the web copy, install the local `vibooks` skill
   so later sessions can reuse it whenever the client supports local skill
   installation; do not block the current session on a restart requirement
+- check the public skill manifest before high-risk install, setup, bookkeeping,
+  tax, jurisdiction, migration, reconciliation, or close work, and prompt for a
+  skill update when the installed skill is missing a version, outdated, or
+  below a critical minimum
 - use `vibooks-cli` and official Vibooks HTTP API endpoints for bookkeeping,
   verification, token enrollment, and self-description
 - do not open, query, or mutate the Vibooks database directly

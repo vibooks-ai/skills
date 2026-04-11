@@ -11,6 +11,7 @@ current product behavior and remains safe for real bookkeeping work.
 - jurisdiction-profile routing and any changed documented country or region
   profile behavior
 - professional-bookkeeping correctness, not only API reachability
+- skill-version and public-manifest update prompts before high-risk writes
 - evidence that the website public copies still match the canonical skill
 
 ## Scenario 1: First-Time Install To First Book
@@ -26,12 +27,14 @@ Check:
    `npx skills add vibooks-ai/skills --skill vibooks`; if the client needs a
    restart before the local skill appears, keep using the web copy for the
    current walkthrough and expect the local skill on the next start
-4. confirm local startup through the documented desktop or headless flow
-5. run `vibooks-cli doctor --json`
-6. complete token enrollment and entitlement or trial setup through the
+4. check the public skill manifest before product install or book setup when
+   network access is available
+5. confirm local startup through the documented desktop or headless flow
+6. run `vibooks-cli doctor --json`
+7. complete token enrollment and entitlement or trial setup through the
    documented official flow
-7. bootstrap the first company or book through the documented workflow
-8. verify that the first write succeeds and the resulting state matches the
+8. bootstrap the first company or book through the documented workflow
+9. verify that the first write succeeds and the resulting state matches the
    documented expectations
 
 Release evidence:
@@ -42,6 +45,7 @@ Release evidence:
 - whether the walkthrough installed the local skill when starting from the web
   copy
 - whether the client could switch immediately or only after a later restart
+- whether the public manifest version was checked or why it was unavailable
 - pass or fail notes with any divergence from the docs
 
 ## Scenario 2: Repeat Use On Existing Install
@@ -136,6 +140,36 @@ Release evidence:
 - whether the walkthrough stopped at the correct decision boundary
 - any profile drift or missing stop condition that should be fixed
 
+## Scenario 5: Skill Update Prompt
+
+Goal: prove the skill can tell a user when to update before high-risk Vibooks
+work without silently changing itself or blocking ordinary questions.
+
+Check:
+
+1. start with an installed `vibooks` skill whose `metadata.skill_version` is
+   missing or older than the public manifest version
+2. ask a low-risk generic question and confirm the response does not force an
+   update
+3. ask the agent to create or modify real bookkeeping, tax setup, jurisdiction
+   setup, migration, reconciliation, or close state
+4. confirm the response checks `https://vibooks.ai/skills/manifest.json` when
+   network access is available
+5. confirm the response tells the user the installed version, latest version,
+   changed areas, and update command
+6. confirm the response asks before continuing when the manifest marks a
+   critical update and the next step would mutate high-risk state
+7. confirm the response does not silently run an update command unless the user
+   authorizes it
+
+Release evidence:
+
+- installed skill version used for the test
+- manifest version used for the test
+- update recommendation or critical-update decision
+- whether the task was allowed to continue, paused for user confirmation, or
+  skipped because the manifest was unavailable
+
 ## Sync Check
 
 Before release, verify that:
@@ -144,6 +178,8 @@ Before release, verify that:
 2. the repo's documented skill-doc sync step was run when needed
 3. the website public copies match the canonical source except for intentional
    web-copy link rewriting in `skill.md`
+4. `https://vibooks.ai/skills/manifest.json` matches the managed skills release
+   version
 
 ## Model Coverage
 

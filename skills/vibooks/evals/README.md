@@ -28,8 +28,9 @@ For release review, also run behavior checks that cover:
    current official product behavior
 4. jurisdiction-profile routing for at least one covered country, one covered
    country with strong subnational tax variation, and one uncovered country
+5. skill-version and public-manifest update prompting before high-risk writes
 
-For manual jurisdiction walkthroughs, use:
+For manual walkthroughs, use:
 
 - `behavior-checks.md` for the required coverage and pass criteria
 - `jurisdiction-walkthrough-prompts.md` for copy-paste prompts and expected

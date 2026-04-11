@@ -36,6 +36,10 @@
     "query": "I need a new Vibooks book for a country you do not already have a profile for. Research the official local rules first and stop if the tax setup is still unclear."
   },
   {
+    "should_trigger": true,
+    "query": "Before you post transactions in Vibooks, check whether my local vibooks skill is older than the public manifest and tell me whether I should update it."
+  },
+  {
     "should_trigger": false,
     "query": "Write a JavaScript fibonacci function."
   },

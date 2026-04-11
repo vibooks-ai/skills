@@ -28,6 +28,10 @@
     "query": "Use Vibooks for a business in an uncovered country. If the local tax rules are not in the skill yet, look up official sources before you create tax codes."
   },
   {
+    "should_trigger": true,
+    "query": "My installed Vibooks skill might be stale. Before you change tax setup or create real entries, compare it to the public skill manifest and recommend the update path."
+  },
+  {
     "should_trigger": false,
     "query": "Make this landing page look more premium and improve the CTA."
   },
