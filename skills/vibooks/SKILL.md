@@ -31,14 +31,28 @@ Use that repo source for installation.
 
 Best results come from installed-skill mode:
 
-1. install `vibooks` from `vibooks-ai/skills`
-2. if the agent client refreshes skills only at startup, restart or refresh the
-   client after installation
-3. ask the agent to use the installed `vibooks` skill
+1. run `npx skills add vibooks-ai/skills --skill vibooks`
+2. if the agent client picks up new skills live, switch to the installed
+   `vibooks` skill for the current session
+3. if the agent client only picks up new skills at startup, let the next
+   restart pick up the installed `vibooks` skill and keep using the documented
+   web copy for the current session
 
-If installing is inconvenient or a restart is not possible right now, use the
-direct-read web copy at `https://vibooks.ai/skill.md` and follow the companion
-docs linked below.
+Treat the direct-read web copy at `https://vibooks.ai/skill.md` as a first-use
+bootstrap, not as the preferred steady-state mode.
+
+If the agent is reading `https://vibooks.ai/skill.md` and the local `vibooks`
+skill is not installed yet:
+
+1. run `npx skills add vibooks-ai/skills --skill vibooks`
+2. if the client picks up new skills live, switch into installed-skill mode for
+   the current session
+3. if the client needs a restart before new skills appear, keep using the web
+   copy for the current session and use the installed `vibooks` skill after the
+   next restart
+
+Use the direct-read web copy only when local skill installation is truly
+blocked or unavailable in the current client.
 
 ## When To Use
 
@@ -59,6 +73,9 @@ direct mutation of Vibooks storage.
 
 - use the official Vibooks app package for install, launch, restart, update,
   and uninstall
+- when first entering through the web copy, install the local `vibooks` skill
+  so later sessions can reuse it whenever the client supports local skill
+  installation; do not block the current session on a restart requirement
 - use `vibooks-cli` and official Vibooks HTTP API endpoints for bookkeeping,
   verification, token enrollment, and self-description
 - do not open, query, or mutate the Vibooks database directly
@@ -110,8 +127,9 @@ direct mutation of Vibooks storage.
 ## First Use And Reuse
 
 - first-time use: install Vibooks and `vibooks-cli`, confirm local desktop or
-  headless startup, run `vibooks-cli doctor --json`, complete token and
-  entitlement setup, then bootstrap the company or book before routine posting
+  headless startup, install the local `vibooks` skill when entering from the
+  web copy, run `vibooks-cli doctor --json`, complete token and entitlement
+  setup, then bootstrap the company or book before routine posting
 - later reuse: start by rerunning `vibooks-cli doctor --json`, confirm the
   discovered local install still belongs to the current Vibooks bundle, review
   entitlement state only when it matters, then continue with the existing book
@@ -124,18 +142,19 @@ direct mutation of Vibooks storage.
 Open only the references needed for the current task:
 
 - install, startup, authentication, licensing, and secret handling:
-  [skill-install-and-access.md](skill-install-and-access.md)
+  [references/install-access.md](references/install-access.md)
 - jurisdiction routing, country or region defaults, and profile support
   status:
-  [skill-jurisdiction-profiles.md](skill-jurisdiction-profiles.md)
-- discovery, bootstrap, book rebuilds, posting rules, chart-of-accounts
-  choices, dates, and first-class workflows:
-  [skill-bookkeeping-workflows.md](skill-bookkeeping-workflows.md)
+  [jurisdictions/index.md](jurisdictions/index.md)
+- API discovery, jurisdiction selection, bootstrap, and book rebuilds:
+  [references/workflows/bootstrap.md](references/workflows/bootstrap.md)
+- posting rules, chart-of-accounts choices, dates, and first-class workflows:
+  [references/workflows/posting.md](references/workflows/posting.md)
 - tax corrections, evidence attachments, reconciliation, month-end validation,
   and completion checks:
-  [skill-controls-and-verification.md](skill-controls-and-verification.md)
+  [references/workflows/verification.md](references/workflows/verification.md)
 - uninstall paths and escalation checkpoints:
-  [skill-maintenance-and-escalation.md](skill-maintenance-and-escalation.md)
+  [references/escalation.md](references/escalation.md)
 
 In installed-skill mode, these are local companion files from the same skill
 package. In direct-read web mode, use the matching public `https://vibooks.ai/`
@@ -145,6 +164,8 @@ copies.
 
 - do not invent tokens, bootstrap secrets, counterparties, dates, tax
   treatment, statement details, or opening balances
+- do not keep using the direct-read web copy as the normal long-term mode when
+  the client can install and reuse the local `vibooks` skill
 - do not treat a healthy localhost process as reusable until it is confirmed to
   belong to the current installed Vibooks bundle
 - do not create AR or AP activity with generic journals when invoice, bill,

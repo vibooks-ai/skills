@@ -8,6 +8,12 @@ Evaluate the response against the expected behavior checklist below the prompt.
 
 These prompts are for behavior review, not trigger-only review.
 
+When the walkthrough starts from `https://vibooks.ai/skill.md`, the expected
+first step is to run `npx skills add vibooks-ai/skills --skill vibooks` and
+switch into installed-skill mode only if the client picks up new skills live;
+otherwise keep using the web copy for the current walkthrough and expect the
+installed local skill on the next start.
+
 ## Canada SMB
 
 Prompt:

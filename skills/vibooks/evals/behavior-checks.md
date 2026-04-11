@@ -22,12 +22,16 @@ Check:
 
 1. install or reuse the official Vibooks package exactly as documented
 2. install or reuse `vibooks-cli`
-3. confirm local startup through the documented desktop or headless flow
-4. run `vibooks-cli doctor --json`
-5. complete token enrollment and entitlement or trial setup through the
+3. if the walkthrough starts from `https://vibooks.ai/skill.md`, run
+   `npx skills add vibooks-ai/skills --skill vibooks`; if the client needs a
+   restart before the local skill appears, keep using the web copy for the
+   current walkthrough and expect the local skill on the next start
+4. confirm local startup through the documented desktop or headless flow
+5. run `vibooks-cli doctor --json`
+6. complete token enrollment and entitlement or trial setup through the
    documented official flow
-6. bootstrap the first company or book through the documented workflow
-7. verify that the first write succeeds and the resulting state matches the
+7. bootstrap the first company or book through the documented workflow
+8. verify that the first write succeeds and the resulting state matches the
    documented expectations
 
 Release evidence:
@@ -35,6 +39,9 @@ Release evidence:
 - exact product build or release used
 - exact skill revision reviewed
 - model or client used for the walkthrough
+- whether the walkthrough installed the local skill when starting from the web
+  copy
+- whether the client could switch immediately or only after a later restart
 - pass or fail notes with any divergence from the docs
 
 ## Scenario 2: Repeat Use On Existing Install

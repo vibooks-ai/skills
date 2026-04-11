@@ -104,18 +104,18 @@ as `ca_restaurant_summary`. Keep them as separate layers.
   - keep setup conservative, avoid unsupported local filing claims, and use the
     core workflow docs as the main authority
   - reference:
-    [skill-jurisdiction-generic-global.md](skill-jurisdiction-generic-global.md)
+    [generic-global.md](generic-global.md)
 - `ca_smb`
   - status: `skill_guided`
   - use for ordinary Canadian small-business and private-enterprise books
   - reference:
-    [skill-jurisdiction-ca-smb.md](skill-jurisdiction-ca-smb.md)
+    [ca/smb.md](ca/smb.md)
 - `us_smb`
   - status: `skill_guided`
   - use for ordinary United States small-business books, with explicit state
     and local tax stop conditions
   - reference:
-    [skill-jurisdiction-us-smb.md](skill-jurisdiction-us-smb.md)
+    [us/smb.md](us/smb.md)
 
 When a future shipped product release adds first-class jurisdiction support,
 keep the same profile id and switch the status to `official` instead of
@@ -123,4 +123,4 @@ inventing a second naming scheme.
 
 When adding a new profile, follow the standard authoring shape in:
 
-- [skill-jurisdiction-profile-template.md](skill-jurisdiction-profile-template.md)
+- [_template.md](_template.md)
