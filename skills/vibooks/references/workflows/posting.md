@@ -22,6 +22,9 @@
   or expense
 - do not overwrite posted history; use reversal, cancellation, credit-note,
   reopen, or the dedicated posted tax-code correction workflow
+- keep statutory tax separate from non-tax levies, remittances, tips, rebates,
+  and similar document components; do not force those into tax codes or tax
+  summaries
 - create one ledger account per real bank account, debit card, credit card, and
   loan
 - reconcile every bank and debit account to statements
@@ -134,8 +137,12 @@ Default priority:
 - template HTML supports escaped `{{variable_name}}` tokens such as
   `company_name`, `company_address`, `book_code`, `doc_title`, `doc_number`,
   `doc_date`, `doc_due_date`, `doc_party`, `doc_currency`, `doc_subtotal`,
-  `doc_tax`, `doc_total`, `doc_amount_due`, `doc_description`, `generated_at`,
-  `theme_color`, and `font_family`
+  `doc_adjustment_total`, `doc_tax`, `doc_total`, `doc_amount_due`,
+  `doc_description`, `generated_at`, `theme_color`, and `font_family`
+- use `{{doc_adjustment_rows_html}}` inside line tables and
+  `{{doc_adjustment_summary_html}}` inside totals blocks when the rendered
+  document should show separate non-tax adjustments distinctly from subtotal
+  and statutory tax
 
 ## Chart Of Accounts Rules
 
@@ -224,6 +231,23 @@ Use:
 - `settlements` for platform, payment-processor, POS-summary, OTA, and other
   external payout events where gross activity, fees, refunds, taxes, reserves,
   and net cash settle together
+- on invoices, bills, sales receipts, and expenses, use document
+  `adjustments[]` for separate non-tax fee, levy, tip, rebate, or similar
+  components instead of hiding them inside subtotal lines or tax setup
+- on document-mode customer refunds and vendor refunds, use `adjustments[]`
+  only for separate non-tax components that belong on the same refund document;
+  balance-mode refunds stay on `refund_amount` plus `refund_account_id`
+- choose the adjustment account explicitly: sales-side adjustments may post to
+  revenue or liability accounts such as levy/remittance liabilities; purchase-
+  side adjustments may post to the same business-account families allowed by
+  the document workflow
+- use `mode: percent` only when the source component is a real percentage of
+  the tax-exclusive subtotal; otherwise use `mode: fixed`
+- use `operator: subtract` for rebates, credits, and other non-tax reductions
+  that belong on the same source document
+- if a charge, rebate, or deposit has its own tax treatment, quantity, item,
+  or partial-credit semantics, keep it as a normal document line instead of an
+  adjustment
 - `bank-deposits` when cash, undeposited funds, owner contributions, loan
   proceeds, direct income, customer-deposit holding balances, or similar
   non-statement source accounts are deposited into a bank statement account
