@@ -68,3 +68,31 @@ node evals/run-trigger-eval.mjs \
 The runner injects each prompt into the command through the
 `TRIGGER_EVAL_QUERY` environment variable and marks the run as triggered when
 the combined stdout/stderr matches the supplied regex.
+
+For release review, you can also use the local wrapper script to write a
+combined result file plus the raw train and validation output files into
+ignored local artifacts under `evals/output/`:
+
+```bash
+cd skills/vibooks
+./evals/run-release-trigger-evals.sh
+```
+
+By default that wrapper uses:
+
+```bash
+claude -p "$TRIGGER_EVAL_QUERY" --output-format json
+```
+
+Override the client command when needed:
+
+```bash
+TRIGGER_EVAL_COMMAND='your-client -p "$TRIGGER_EVAL_QUERY" --output-format json' \
+  ./evals/run-release-trigger-evals.sh
+```
+
+The main file to review after the run is:
+
+```text
+evals/output/trigger-eval-results.json
+```

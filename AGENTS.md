@@ -10,9 +10,11 @@
 ## Public-Only Repository
 
 - This repository may contain only content that is safe for public access.
+- All externally published information from this repo must stay free of local machine paths, local machine state, secrets, tokens, private keys, customer data, internal URLs, and private release evidence.
 - Do not commit secrets, tokens, private keys, customer data, internal URLs, private release evidence, screenshots from private environments, or local developer-machine state.
 - Do not commit internal-only files or process notes unless they are intentionally written for public readers of this repository.
 - Public release evidence belongs in a private release tracker, not in this repository.
+- Run `./scripts/check-public-repo-content.sh` before release review and after doc updates that touch public instructions; keep it clean.
 
 ## Canonical Source
 
@@ -40,6 +42,7 @@
 - For every `skills` train release candidate that changes the canonical skill docs, jurisdiction profiles, workflow references, or skill-update prompting, copy `skills/vibooks/evals/release-evidence-template.md` into a private release record and fill it for the current candidate commit before calling the release ready.
 - When model-dependent behavior matters, record which target models were exercised, such as Haiku, Sonnet, and Opus, in the private release record.
 - If a release-critical skill check is not yet automated, keep it documented in this repository and treat it as a mandatory manual pre-release check until it is scripted.
+- Public-path and public-secrets hygiene is release-critical for every externally published skill surface from this repo. Record the result of `./scripts/check-public-repo-content.sh` in the private release record.
 
 ## Versioning
 

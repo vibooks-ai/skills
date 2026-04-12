@@ -75,6 +75,8 @@ repository.
 ## Sync And Packaging Checks
 
 - `make check-skill-docs-sync` result:
+- `./scripts/check-public-repo-content.sh` result:
+- confirmed all externally published skill surfaces are free of local paths, private keys, tokens, and other sensitive machine-specific data:
 - website public copies resynced when needed:
 - website `public/skills/manifest.json` matches the managed skills version:
 - legacy public skill copies absent:
