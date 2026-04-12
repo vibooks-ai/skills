@@ -34,8 +34,12 @@ data.
 
 ## Reporting-Basis Default
 
-For normal management books, default to `accrual` unless the user clearly wants
+For ordinary small-business management books on the current shipped product,
+Vibooks normally starts from `accrual` unless the user clearly wants
 cash-basis bookkeeping.
+
+Treat that as a Vibooks operating default for management books, not as a claim
+that every US authoritative reporting or tax basis requires accrual.
 
 Use `cash` only when one of these is clearly true:
 
@@ -50,6 +54,9 @@ Rules:
   but private companies are not automatically required to use GAAP
 - for federal tax, the IRS allows cash, accrual, or hybrid methods as long as
   the method clearly reflects income and is used consistently
+- when a lender, investor, owner, contract, tax preparer, regulator, or chosen
+  reporting framework clearly requires a specific basis, follow that explicit
+  requirement instead of treating the Vibooks default as authoritative
 - when inventory or merchandise is an income-producing factor, treat inventory
   accounting as a higher-risk area and stop to confirm the intended method if
   the workflow is not obvious

@@ -37,6 +37,7 @@
   - first-time install to first authenticated bookkeeping use
   - repeat use on an existing trusted local install and existing book
   - at least one current correction, reconciliation, or verification workflow using the official product surface
+- For every `skills` train release candidate that changes the canonical skill docs, jurisdiction profiles, workflow references, or skill-update prompting, copy `skills/vibooks/evals/release-evidence-template.md` into a private release record and fill it for the current candidate commit before calling the release ready.
 - When model-dependent behavior matters, record which target models were exercised, such as Haiku, Sonnet, and Opus, in the private release record.
 - If a release-critical skill check is not yet automated, keep it documented in this repository and treat it as a mandatory manual pre-release check until it is scripted.
 

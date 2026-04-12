@@ -35,6 +35,13 @@ For manual walkthroughs, use:
 - `behavior-checks.md` for the required coverage and pass criteria
 - `jurisdiction-walkthrough-prompts.md` for copy-paste prompts and expected
   routing behavior
+- `release-evidence-template.md` as the public template to copy into a private
+  release record before approving a candidate release
+
+For any release candidate that changes `SKILL.md`, jurisdiction profiles,
+workflow references, or skill-update prompting, copy
+`release-evidence-template.md` into a private tracker and fill it for the
+candidate commit or planned tag before calling the `skills` train release-ready.
 
 Record which target models were exercised and keep release evidence in a
 private release record or tracker, not in this public repo. At minimum, review

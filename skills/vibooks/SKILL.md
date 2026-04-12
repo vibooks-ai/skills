@@ -10,7 +10,11 @@ metadata:
   skill_version: 1.0.2
   source_repo: vibooks-ai/skills
   update_check: https://vibooks.ai/skills/manifest.json
-  update_command: npx skills add vibooks-ai/skills --skill vibooks
+  install_command: npx skills add vibooks-ai/skills --skill vibooks -g
+  update_check_command: npx skills check
+  update_all_command: npx skills update
+  update_scope: all_installed_skills
+  web_fallback: https://vibooks.ai/skill.md
   install_sh: https://vibooks.ai/install.sh
   install_ps1: https://vibooks.ai/install.ps1
   downloads: https://vibooks.ai/downloads.json
@@ -28,14 +32,16 @@ For agents that support the `skills` CLI ecosystem, install Vibooks from the
 public skill source repo:
 
 ```bash
-npx skills add vibooks-ai/skills --skill vibooks
+npx skills add vibooks-ai/skills --skill vibooks -g
 ```
 
-Use that repo source for installation.
+Use that repo source for installation. `-g` is the recommended default so the
+installed skill stays available across projects; omit it only when the user
+explicitly wants a project-local install.
 
 Best results come from installed-skill mode:
 
-1. run `npx skills add vibooks-ai/skills --skill vibooks`
+1. run `npx skills add vibooks-ai/skills --skill vibooks -g`
 2. if the agent client picks up new skills live, switch to the installed
    `vibooks` skill for the current session
 3. if the agent client only picks up new skills at startup, let the next
@@ -49,7 +55,7 @@ If the agent is reading `https://vibooks.ai/skill.md` and the local `vibooks`
 skill is not installed yet, is missing `metadata.skill_version`, or is older
 than the public manifest:
 
-1. run `npx skills add vibooks-ai/skills --skill vibooks`
+1. run `npx skills add vibooks-ai/skills --skill vibooks -g`
 2. if the client picks up new skills live, switch into installed-skill mode for
    the current session
 3. if the client needs a restart before new skills appear, keep using the web
@@ -73,13 +79,24 @@ Check for skill updates at these times:
 - before creating, correcting, rebuilding, migrating, reconciling, or closing
   real bookkeeping data
 
-If the local skill version is missing or older than the public manifest, tell
-the user what changed and offer `metadata.update_command`. Do not silently
-self-update. If the manifest marks the update as critical and the next action
-would mutate bookkeeping, tax, jurisdiction, migration, or close state, stop and
-ask before continuing. If the manifest cannot be reached, do not block ordinary
-questions; before high-risk writes, disclose that the latest skill version could
-not be confirmed.
+Recommended refresh flow:
+
+1. run `npx skills check`
+2. if the installed `vibooks` skill is missing, install it with
+   `metadata.install_command`
+3. if updates are available, tell the user that `metadata.update_all_command`
+   refreshes all installed skills, not only `vibooks`
+4. if the user agrees to that all-skills refresh, run
+   `metadata.update_all_command`
+5. if an all-skills refresh is not appropriate, or if install or update fails,
+   continue the current session with `metadata.web_fallback`
+
+Do not silently self-update. If the manifest marks the update as critical and
+the next action would mutate bookkeeping, tax, jurisdiction, migration, or
+close state, stop and ask before continuing. If the manifest, install, or
+refresh path cannot be completed, do not block ordinary questions; before
+high-risk writes, disclose that the session is using the official web fallback
+and that the latest local skill refresh could not be confirmed.
 
 ## When To Use
 
@@ -102,11 +119,17 @@ direct mutation of Vibooks storage.
   and uninstall
 - when first entering through the web copy, install the local `vibooks` skill
   so later sessions can reuse it whenever the client supports local skill
-  installation; do not block the current session on a restart requirement
+  installation; prefer `metadata.install_command` as the default install path,
+  but do not block the current session on a restart requirement
 - check the public skill manifest before high-risk install, setup, bookkeeping,
-  tax, jurisdiction, migration, reconciliation, or close work, and prompt for a
-  skill update when the installed skill is missing a version, outdated, or
-  below a critical minimum
+  tax, jurisdiction, migration, reconciliation, or close work, run
+  `metadata.update_check_command` when local refresh is practical, and prompt
+  for an all-skills update when the installed skill is missing a version,
+  outdated, or below a critical minimum
+- tell the user explicitly that `metadata.update_all_command` updates all
+  installed skills, not only `vibooks`
+- if install, check, or update fails, use `metadata.web_fallback` and the
+  matching public companion docs for the rest of the current session
 - use `vibooks-cli` and official Vibooks HTTP API endpoints for bookkeeping,
   verification, token enrollment, and self-description
 - do not open, query, or mutate the Vibooks database directly
@@ -174,9 +197,16 @@ Open only the references needed for the current task:
 
 - install, startup, authentication, licensing, and secret handling:
   [references/install-access.md](references/install-access.md)
-- jurisdiction routing, country or region defaults, and profile support
-  status:
+- jurisdiction routing, support status, selection order, and research boundary:
   [jurisdictions/index.md](jurisdictions/index.md)
+- when country or region defaults matter, open the matching jurisdiction profile
+  directly before bootstrapping or changing tax setup:
+  - `generic_global`:
+    [jurisdictions/generic-global.md](jurisdictions/generic-global.md)
+  - `ca_smb`:
+    [jurisdictions/ca/smb.md](jurisdictions/ca/smb.md)
+  - `us_smb`:
+    [jurisdictions/us/smb.md](jurisdictions/us/smb.md)
 - API discovery, jurisdiction selection, bootstrap, and book rebuilds:
   [references/workflows/bootstrap.md](references/workflows/bootstrap.md)
 - posting rules, chart-of-accounts choices, dates, and first-class workflows:
@@ -197,6 +227,8 @@ copies.
   treatment, statement details, or opening balances
 - do not keep using the direct-read web copy as the normal long-term mode when
   the client can install and reuse the local `vibooks` skill
+- do not imply that `npx skills update` refreshes only `vibooks`; it updates
+  all installed skills
 - do not treat a healthy localhost process as reusable until it is confirmed to
   belong to the current installed Vibooks bundle
 - do not create AR or AP activity with generic journals when invoice, bill,

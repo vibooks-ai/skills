@@ -14,6 +14,21 @@ current product behavior and remains safe for real bookkeeping work.
 - skill-version and public-manifest update prompts before high-risk writes
 - evidence that the website public copies still match the canonical skill
 
+## Release Record Discipline
+
+Before approving a `skills` train release candidate:
+
+1. copy `release-evidence-template.md` into a private release record or tracker
+2. record the candidate commit SHA, planned tag or version, model or client,
+   and reviewer
+3. record pass, fail, or blocked status plus notes for every required scenario
+4. record whether the walkthrough started from the web copy or installed-skill
+   mode when that changes the expected path
+5. record whether the website public copies were resynced and rechecked
+
+Do not call the `skills` train release-ready until that private record exists
+for the current candidate commit and the required scenarios below are covered.
+
 ## Scenario 1: First-Time Install To First Book
 
 Goal: prove a new user can go from no trusted local setup to the first valid
@@ -24,8 +39,8 @@ Check:
 1. install or reuse the official Vibooks package exactly as documented
 2. install or reuse `vibooks-cli`
 3. if the walkthrough starts from `https://vibooks.ai/skill.md`, run
-   `npx skills add vibooks-ai/skills --skill vibooks`; if the client needs a
-   restart before the local skill appears, keep using the web copy for the
+   `npx skills add vibooks-ai/skills --skill vibooks -g`; if the client needs
+   a restart before the local skill appears, keep using the web copy for the
    current walkthrough and expect the local skill on the next start
 4. check the public skill manifest before product install or book setup when
    network access is available
@@ -40,6 +55,7 @@ Check:
 Release evidence:
 
 - exact product build or release used
+- candidate commit SHA or pending release tag reviewed
 - exact skill revision reviewed
 - model or client used for the walkthrough
 - whether the walkthrough installed the local skill when starting from the web
@@ -65,6 +81,7 @@ Check:
 
 Release evidence:
 
+- candidate commit SHA or pending release tag reviewed
 - exact local state used for the walkthrough
 - whether token reuse, entitlement reuse, and existing-book reuse behaved as
   documented
@@ -91,6 +108,7 @@ Check:
 
 Release evidence:
 
+- candidate commit SHA or pending release tag reviewed
 - workflow exercised
 - expected accounting outcome
 - actual accounting outcome
@@ -134,6 +152,7 @@ Check:
 
 Release evidence:
 
+- candidate commit SHA or pending release tag reviewed
 - scenario exercised
 - chosen jurisdiction profile
 - whether the walkthrough used or avoided official research correctly
@@ -156,17 +175,27 @@ Check:
 4. confirm the response checks `https://vibooks.ai/skills/manifest.json` when
    network access is available
 5. confirm the response tells the user the installed version, latest version,
-   changed areas, and update command
-6. confirm the response asks before continuing when the manifest marks a
+   changed areas, and that `npx skills update` refreshes all installed skills,
+   not only `vibooks`
+6. confirm the response uses `npx skills check` as the refresh-check step and,
+   if the installed skill is missing, recommends the documented install command
+   `npx skills add vibooks-ai/skills --skill vibooks -g`
+7. confirm the response asks before continuing when the manifest marks a
    critical update and the next step would mutate high-risk state
-7. confirm the response does not silently run an update command unless the user
-   authorizes it
+8. confirm the response does not silently run `npx skills update` unless the
+   user authorizes that all-skills refresh
+9. confirm the response falls back to `https://vibooks.ai/skill.md` for the
+   current session when an all-skills refresh is not appropriate or when local
+   install or update fails
 
 Release evidence:
 
+- candidate commit SHA or pending release tag reviewed
 - installed skill version used for the test
 - manifest version used for the test
 - update recommendation or critical-update decision
+- whether the response disclosed all-skills update scope and used web fallback
+  when refresh was skipped or failed
 - whether the task was allowed to continue, paused for user confirmation, or
   skipped because the manifest was unavailable
 
@@ -188,4 +217,5 @@ target models were exercised, such as Haiku, Sonnet, and Opus. Trigger quality
 and workflow-following quality can differ by model.
 
 Keep release evidence in a private release record or tracker, not in this
-public repo.
+public repo. Use `release-evidence-template.md` as the public checklist source,
+then copy it into the private record for the current candidate.

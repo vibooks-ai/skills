@@ -114,7 +114,10 @@ Tax-code rules:
 - keep ordinary Canadian federal GST as `GST5` with the standard statutory
   name and rate when that is the real regime
 - use the real participating-province HST code only when the business truly
-  operates or files under that HST regime, for example `HST13` or `HST15`
+  operates or files under that HST regime, for example `HST13`, `HST14`, or
+  `HST15` depending on the province and the current CRA rate schedule
+- before creating or revising HST codes, confirm the current CRA rate for the
+  province instead of assuming an older rate schedule
 - do not create synthetic near-duplicate codes such as `HST1501` merely to
   absorb rounding or partial recoverability
 - for partial input-tax claimability, keep the statutory tax code and use the
@@ -188,6 +191,8 @@ guidance to:
   [CRA taxable income](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/international-financial-reporting-standards-ifrs/impact-ifrs-on-taxable-income.html)
 - CRA GIFI reporting guidance:
   [CRA GIFI](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations/corporation-income-tax-return/completing-your-corporation-income-tax-t2-return/general-index-financial-information-gifi/preparing-your-financial-statements-using-gifi.html)
+- CRA GST/HST rates and place-of-supply rules:
+  [CRA GST/HST rates](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/charge-collect-place-supply.html)
 - Canadian reporting-framework overview:
   [BDC IFRS and Canadian GAAP overview](https://www.bdc.ca/en/articles-tools/entrepreneur-toolkit/templates-business-guides/glossary/international-financial-reporting-standards)
   and
