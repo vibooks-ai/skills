@@ -7,7 +7,7 @@ description: >
   verification checks through official Vibooks workflows rather than direct
   database or runtime file edits.
 metadata:
-  skill_version: 1.0.3
+  skill_version: 1.0.4
   source_repo: vibooks-ai/skills
   update_check: https://vibooks.ai/skills/manifest.json
   install_command: npx skills add vibooks-ai/skills --skill vibooks -g
