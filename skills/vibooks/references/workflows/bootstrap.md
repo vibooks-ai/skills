@@ -219,6 +219,13 @@ vibooks-cli invoke post-v1-books-book-id-replace \
   --body '{"code":"PRIMARY-REBUILD","name":"PRIMARY BOOK"}'
 ```
 
+If the source book was created in error and should not remain as read-only
+history, permanently delete it only after it has been archived. Use
+`post-v1-books-batchdelete` with exactly one archived book id,
+`confirm_delete: true`, and a `confirmation_code` matching the book code.
+Never attempt to hard-delete book-scoped records one resource at a time to
+rebuild a book.
+
 Recommended defaults for a normal small business:
 
 - `accounting_basis`: `accrual`
