@@ -51,19 +51,29 @@ Stop and ask before proceeding if the book appears to be for:
 
 ## Current-Product Routing
 
-On the current shipped product, Canada is not yet a first-class official
-jurisdiction preset. Use this routing:
+On the current shipped product, use the official jurisdiction-profile path for
+Canada first, then keep the remaining chart and workflow choices conservative.
+Use this routing:
 
 1. create the company and book with `country = CA`
-2. set the true operating currency, usually `CAD`
-3. apply the nearest official Vibooks industry preset when one matches the
+2. set or confirm `jurisdiction_profile_id = ca_smb`, the true province or
+   territory, and `commodity_tax_registration_status` through the product
+   create/apply flow when those facts are known and the operator explicitly
+   wants the Canada profile applied
+3. set the true operating currency, usually `CAD`
+4. apply the nearest official Vibooks industry preset when one matches the
    business
-4. review the chart of accounts and add only the Canadian statutory or common
+5. review the chart of accounts and add only the Canadian statutory or common
    balances the book truly needs
-5. configure tax codes only when the business is actually registered or the
+6. configure tax codes only when the business is actually registered or the
    user explicitly wants tax-coded bookkeeping
 
-Do not claim that Vibooks has a built-in CRA filing integration or a built-in
+Current official product path:
+
+- set the fields at book creation when they are already known
+- otherwise call `post-v1-books-book-id-jurisdiction-profile-apply`
+
+Do not claim that Vibooks has a built-in CRA filing integration or a complete
 Canadian chart package unless the shipped product actually exposes one.
 
 ## Chart-Of-Accounts Rules
@@ -98,15 +108,28 @@ future localized UI later changes the display labels.
 Current shipped-product-compatible default roles:
 
 - payable control account:
-  - name: `Sales Tax Payable`
+  - new-profile default name: `GST/HST Payable`
+  - legacy-compatible reused name: `Sales Tax Payable`
   - `report_category`: `tax_payable`
 - recoverable control account:
-  - name: `Sales Tax Receivable`
+  - new-profile default name: `GST/HST Recoverable`
+  - legacy-compatible reused name: `Sales Tax Receivable`
   - `report_category`: `tax_receivable`
 
-Future official localized product support may render these as labels such as
-`GST/HST Payable` or `GST/HST Recoverable`. Preserve the account role first and
-do not force a cosmetic rename over a correct existing control account.
+Current product behavior for explicit `ca_smb` opt-in:
+
+- `post-v1-books` can save `country`, `region`, `jurisdiction_profile_id`,
+  and `commodity_tax_registration_status`, but it does not itself create the
+  Canadian tax defaults
+- actual tax-control-account and tax-code creation happens only when the
+  operator explicitly runs `post-v1-books-book-id-jurisdiction-profile-apply`
+- if Vibooks creates the tax control accounts for a new or empty book, it uses
+  the localized Canadian names above
+- if the book already has compatible generic `Sales Tax Payable` /
+  `Sales Tax Receivable` accounts, Vibooks reuses them without forcing a rename
+
+Preserve the account role first and do not force a cosmetic rename over a
+correct existing control account.
 
 Tax-code rules:
 
@@ -129,6 +152,19 @@ Tax-code rules:
 Quebec, PST, and other province-specific commodity-tax setups can require extra
 jurisdiction detail. Stop and ask before creating them when the obligation is
 not explicit.
+
+## Suggested Optional Accounts
+
+When the product applies `ca_smb`, it may also surface optional chart
+recommendations instead of auto-creating them.
+
+Common high-signal suggestions include:
+
+- `2210 Payroll Deductions Payable`
+- `2400 Shareholder Loan`
+
+Treat these as operator-reviewed suggestions, not mandatory defaults. Create
+them only when the real business facts require them.
 
 ## Account Numbering Guidance
 
@@ -174,9 +210,9 @@ book uses item quantities or inventory-style units:
 
 ## Future Product Mapping
 
-When Vibooks later ships first-class Canada localization, keep this profile id
-and prefer the official product setup. The skill should then switch from manual
-guidance to:
+When Vibooks later ships deeper first-class Canada localization beyond the
+current jurisdiction-profile routing, keep this profile id and prefer the
+official product setup. The skill should then switch from manual guidance to:
 
 1. choosing the official `ca_smb` or equivalent product-native setup
 2. reusing the product's official Canadian chart and tax defaults

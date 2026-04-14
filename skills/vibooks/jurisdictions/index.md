@@ -81,15 +81,19 @@ Rules:
 
 ## Interaction With Industry Presets
 
-Use this order when the current shipped product does not yet have first-class
-jurisdiction setup for the target country or region:
+Use this order when the current shipped product has a jurisdiction layer but
+does not yet ship a full country-specific localization package for the target
+country or region:
 
 1. create the company and book with the true country and functional currency
 2. inspect discovery and official product resources first
-3. choose the nearest official Vibooks industry preset when one clearly fits
-4. apply the jurisdiction profile's chart, tax, naming, numbering, and
+3. set or confirm the jurisdiction profile through the official product path
+   only when the operator explicitly wants to opt in to those defaults, such
+   as `post-v1-books-book-id-jurisdiction-profile-apply`
+4. choose the nearest official Vibooks industry preset when one clearly fits
+5. apply the jurisdiction profile's chart, tax, naming, numbering, and
    measurement guidance
-5. reuse existing accounts and tax codes when they already match the profile;
+6. reuse existing accounts and tax codes when they already match the profile;
    do not create near-duplicate objects
 
 Do not collapse jurisdiction and industry into one combined pseudo-preset such

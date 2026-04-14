@@ -22,6 +22,7 @@ Useful operations include:
 
 - `post-v1-companies`
 - `post-v1-books`
+- `post-v1-books-book-id-jurisdiction-profile-apply`
 - `post-v1-books-book-id-replace`
 - `post-v1-books-book-id-policies`
 - `post-v1-books-book-id-fiscal-years`
@@ -135,14 +136,15 @@ Run setup in this order:
 
 1. create the company
 2. create the book
-3. create the accounting policy
-4. create the fiscal year
-5. confirm the active period is open
-6. choose and apply an official Vibooks preset when it matches the business
-7. create or review the chart of accounts
-8. create customers and vendors when needed
-9. load opening balances if migrating from prior books
-10. start routine posting only after the opening balances tie out
+3. apply or confirm the jurisdiction profile
+4. create the accounting policy
+5. create the fiscal year
+6. confirm the active period is open
+7. choose and apply an official Vibooks preset when it matches the business
+8. create or review the chart of accounts
+9. create customers and vendors when needed
+10. load opening balances if migrating from prior books
+11. start routine posting only after the opening balances tie out
 
 Bootstrap defaults:
 
@@ -158,8 +160,25 @@ Bootstrap defaults:
   `presentation_currency` the same unless the user explicitly wants something
   different
 - choose the jurisdiction profile before choosing the industry preset
+- when the product exposes jurisdiction fields on `post-v1-books`, send
+  `country` and `region` there when they are already known
+- treat `jurisdiction_profile_id` as an explicit opt-in to country-specific
+  defaults rather than something Vibooks should silently infer onto existing
+  books
+- when collecting jurisdiction metadata at creation time, also send
+  `commodity_tax_registration_status` when it is already known
+- `post-v1-books` stores jurisdiction metadata but does not itself apply the
+  country profile; use `post-v1-books-book-id-jurisdiction-profile-apply`
+  when the user explicitly wants the defaults created or refreshed
+- when the country, province or state, or registration posture must be
+  confirmed or changed after book creation, use
+  `post-v1-books-book-id-jurisdiction-profile-apply` before applying an
+  industry preset
 - when a documented jurisdiction profile applies, follow its chart, tax,
   numbering, and measurement guidance instead of inventing local defaults
+- when a jurisdiction profile returns optional chart recommendations, review
+  them before creating extra liability or equity accounts; do not auto-create
+  optional accounts just because they are common in that country
 - when the business shape is clear, inspect `get-v1-book-presets` and use the
   nearest official preset:
   `generic_smb` for most service businesses, `ecommerce_platform` for
@@ -188,6 +207,22 @@ vibooks-cli books bootstrap \
   --fiscal-year-end 2026-12-31 \
   --currency USD \
   --tax-mode none
+```
+
+Canada example:
+
+```bash
+vibooks-cli books bootstrap \
+  --company-name "COMPANY NAME" \
+  --book-name "Primary Book" \
+  --country CA \
+  --region NS \
+  --jurisdiction-profile ca_smb \
+  --commodity-tax-registration-status registered \
+  --fiscal-year-start 2026-01-01 \
+  --fiscal-year-end 2026-12-31 \
+  --currency CAD \
+  --tax-mode exclusive
 ```
 
 After bootstrap:
