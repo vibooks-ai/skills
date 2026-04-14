@@ -139,10 +139,17 @@ Default priority:
   `doc_date`, `doc_due_date`, `doc_party`, `doc_currency`, `doc_subtotal`,
   `doc_adjustment_total`, `doc_tax`, `doc_total`, `doc_amount_due`,
   `doc_description`, `generated_at`, `theme_color`, and `font_family`
+- helper HTML tokens are also available for conditional issuer/totals sections:
+  `company_tax_id_html`, `company_address_html`, `company_contact_html`,
+  `doc_subtotal_row_html`, `doc_tax_row_html`, `doc_adjustment_rows_html`,
+  `doc_adjustment_summary_html`, and `doc_amount_due_row_html`
 - use `{{doc_adjustment_rows_html}}` inside line tables and
   `{{doc_adjustment_summary_html}}` inside totals blocks when the rendered
   document should show separate non-tax adjustments distinctly from subtotal
   and statutory tax
+- do not show `book_name` or `book_code` in customer-facing output unless a
+  legacy customer template explicitly requires it; starter templates treat book
+  identity as internal operator metadata
 
 ## Chart Of Accounts Rules
 
