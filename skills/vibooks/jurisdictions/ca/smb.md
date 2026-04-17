@@ -55,7 +55,9 @@ On the current shipped product, use the official jurisdiction-profile path for
 Canada first, then keep the remaining chart and workflow choices conservative.
 Use this routing:
 
-1. create the company and book with `country = CA`
+1. create the company with `country = CA`; when known, also save the true
+   province or territory and `commodity_tax_registration_status` there so new
+   books inherit the same defaults
 2. set or confirm `jurisdiction_profile_id = ca_smb`, the true province or
    territory, and `commodity_tax_registration_status` through the product
    create/apply flow when those facts are known and the operator explicitly

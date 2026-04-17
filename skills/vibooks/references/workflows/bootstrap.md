@@ -105,6 +105,8 @@ Rules:
 
 - use the book or company country, tax registration, and other explicit setup
   as the authority when they already exist
+- treat company-level country, region, and commodity-tax registration as the
+  default source for new books unless the book explicitly overrides them
 - use source documents or the business profile next when they clearly establish
   the jurisdiction
 - use the current device country only as a last-resort bootstrap suggestion
@@ -135,15 +137,17 @@ Reference:
 Run setup in this order:
 
 1. create the company
-2. create the book
-3. apply or confirm the jurisdiction profile
-4. create the accounting policy
-5. create the fiscal year
-6. confirm the active period is open
-7. choose and apply an official Vibooks preset when it matches the business
-8. create or review the chart of accounts
-9. create customers and vendors when needed
-10. load opening balances if migrating from prior books
+2. set the company country, region, and commodity-tax registration status when
+   known so new books inherit them by default
+3. create the book
+4. apply or confirm the jurisdiction profile
+5. create the accounting policy
+6. create the fiscal year
+7. confirm the active period is open
+8. choose and apply an official Vibooks preset when it matches the business
+9. create or review the chart of accounts
+10. create customers and vendors when needed
+11. load opening balances if migrating from prior books
 11. start routine posting only after the opening balances tie out
 
 Bootstrap defaults:

@@ -202,6 +202,8 @@ Posting rules:
 - invoice: use the invoice issue date
 - sales receipt: use the sale date
 - customer refund: use the refund date
+- invoice credit note or vendor credit: use the credit document's own date,
+  not the parent invoice or bill date
 - bill: use the supplier bill date
 - expense: use the purchase date
 - vendor refund: use the refund date
@@ -229,9 +231,14 @@ Use:
   refunds
 - `receipt` then `receipt:apply` for customer cash collection
 - `bill` for vendor purchases on credit
+- `vendor-credit` for supplier credits, rebates kept on account, overbilled
+  purchase corrections, and mixed bill-plus-over-credit situations that should
+  stay on the vendor subledger until allocated to current or future bills
 - `expense` for immediate payee outflows that should not leave AP open, such as
   vendor purchases, loan repayments, owner draws, and tax remittances
-- `vendor-refund` for supplier refunds, rebates, and vendor-balance refunds
+- `vendor-refund` for supplier cash refunds, card credits, and returned vendor
+  advance balances that actually leave the supplier account and hit a funding
+  account
 - `payment` then `payment:apply` for vendor settlement
 - `transfers` for bank, debit, cash, and credit-card statement-account
   movements between the business's own accounts
@@ -291,8 +298,11 @@ Subledger integrity rules:
   inventory instead of requiring a separate inventory receipt or adjustment
 - do not use purchase receipts for same-day billed purchases; use bills or
   expenses directly when the supplier tax document is already available
+- vendor credits create payable-side supplier credit that stays available for
+  current or future bill allocation until `vendor-credit:apply` uses it up
 - vendor refunds either reverse purchase-side expense/asset and tax lines or
-  return vendor advances without creating new AP
+  return vendor advances or supplier cash back to the chosen funding account
+  without creating new AP
 - inventory item lines on vendor refunds issue stock automatically using the
   refund line value instead of requiring a separate inventory issue
 - bank deposits debit the destination bank statement account and credit one or
@@ -303,6 +313,15 @@ Subledger integrity rules:
 - if a document or settlement uses a non-default control account, pass the
   explicit `ar_account_id` or `ap_account_id` at creation time and keep later
   apply, credit-note, and correction workflows on that same control account
+- if a posted supplier credit needs structural or tax correction, use the
+  first-class `vendor-credit` workflow: `:unapply` it first when any bill
+  allocations exist, then `:replace` the vendor credit itself; do not reverse
+  the parent bill entry, and do not rely on a generic journal reverse as the
+  primary correction path
+- if an upgraded book contains historical legacy bill credit-note entries,
+  Vibooks migrates them into first-class `vendor-credit` records while keeping
+  the original immutable journal rows for audit; all new supplier credits
+  should use `vendor-credit` directly
 - use `unapplied_account_id` for real customer deposits or vendor advances that
   should remain open outside the main receivable or payable balance
 - do not record payroll through generic journal entries when the payroll
@@ -369,8 +388,9 @@ Reimbursement and vendor-advance rule:
   prepaid, inventory, fixed asset, liability settlement, or equity draw lines
   and credits the specific card liability
 - vendor refund or rebate: prefer `vendor-refund`; economically it debits the
-  receiving bank/card account and credits expense, inventory/asset, tax, or a
-  vendor-advance asset
+  receiving bank/card account or another real refund destination such as vendor
+  advances, and credits expense, inventory/asset, tax, or a vendor-balance
+  account
 - credit-card payment: debit the specific card liability; credit the paying
   bank account
 - payroll run: use the payroll workflow so wages, employee withholdings,
