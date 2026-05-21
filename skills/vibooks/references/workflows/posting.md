@@ -244,7 +244,9 @@ Use:
   movements between the business's own accounts
 - `settlements` for platform, payment-processor, POS-summary, OTA, and other
   external payout events where gross activity, fees, refunds, taxes, reserves,
-  and net cash settle together
+  adjustments, and net cash settle together; use `lines[]` when the statement
+  has variable processor components instead of forcing every amount into the
+  fixed gross/tax/fee/refund/reserve fields
 - on invoices, bills, sales receipts, and expenses, use document
   `adjustments[]` for separate non-tax fee, levy, tip, rebate, or similar
   components instead of hiding them inside subtotal lines or tax setup
@@ -273,14 +275,34 @@ Use:
 - `bank-lines/{lineId}:create-processor-settlement` only as a statement-line
   shortcut when the evidence is a payout that should still become a canonical
   `settlement`
+- for Stripe, payment processor, marketplace, POS, or OTA evidence that
+  identifies customer-level sales, create the customer sale first as a
+  `sales-receipt` with `payment_account_id` set to the configured processor
+  clearing account such as `Merchant Clearing`, then create a `settlement`
+  for the payout. Prefer `settlement.lines[]`: gross/sales lines increase the
+  payout and credit the same clearing account, fee/refund/reserve/custom
+  deduction lines decrease the payout and debit their expense, refund, reserve,
+  or clearing accounts. Link the settled sales with `sales_receipt_ids`, or
+  put `sales_receipt_id` on the gross line when tracing one receipt to one
+  processor component
+- if discovery does not expose `SalesReceiptCreateRequest.payment_account_id`
+  or settlement `sales_receipt_ids`, do not invent hidden fields or bypass the
+  workflow with manual journals; use the supported legacy settlement-only
+  summary workflow, attach the processor evidence, and tell the user that
+  customer-level Sales Receipt reporting requires a newer Vibooks version
 - manual journal entries only when no better workflow exists
 
 Subledger integrity rules:
 
 - invoices create receivables; receipts settle receivables through apply
   workflows
-- sales receipts recognize revenue and cash immediately and do not leave AR
-  open
+- sales receipts recognize revenue and debit the selected payment account
+  immediately; for direct cash sales that account is bank or cash, and for
+  processor-funded sales it is a clearing account that remains open until the
+  payout settlement
+- when a settlement links `sales_receipt_ids`, the settlement must clear the
+  same processor payment account through gross/sales settlement lines; do not
+  credit revenue again on the settlement
 - customer refunds either reverse immediate-sale revenue/tax lines or return
   customer deposits and overpayments without creating new AR
 - inventory item lines on customer refunds receive stock automatically and
@@ -305,9 +327,11 @@ Subledger integrity rules:
   without creating new AP
 - inventory item lines on vendor refunds issue stock automatically using the
   refund line value instead of requiring a separate inventory issue
-- bank deposits debit the destination bank statement account and credit one or
-  more non-statement source accounts such as undeposited funds, cash on hand,
-  revenue, equity, loan liabilities, or customer-deposit holding balances
+- bank deposits debit the destination bank statement account and use signed
+  source lines: positive lines credit non-statement sources such as
+  undeposited funds, cash on hand, revenue, equity, loan liabilities, or
+  customer-deposit holding balances; negative lines debit deductions such as
+  merchant fees so the bank line stays at the net deposit
 - do not replace receipt or payment application with ad hoc journal lines
   against AR or AP control accounts
 - if a document or settlement uses a non-default control account, pass the
@@ -351,17 +375,26 @@ Reimbursement and vendor-advance rule:
 
 ## Common Posting Patterns
 
-- cash sale: prefer `sales-receipt`; economically it debits bank or cash and
-  credits revenue
+- direct cash sale: prefer `sales-receipt`; economically it debits bank or
+  cash and credits revenue
+- processor-funded customer sale: prefer `sales-receipt` with
+  `payment_account_id` set to processor clearing, then a linked `settlement`
+  when the payout arrives; economically the receipt debits clearing and
+  credits revenue, while the settlement debits bank and fees and credits
+  clearing
 - bank transfer or credit-card payment: prefer `transfers`; economically it
   debits the destination statement account and credits the source statement
   account
 - bank deposit: prefer `bank-deposits`; economically it debits the destination
-  bank statement account and credits the source cash, tax receivable, clearing,
-  revenue, equity, loan, or holding balance that explains the deposit
+  bank statement account, credits positive source lines such as cash, tax
+  receivable, clearing, revenue, equity, loan, or holding balances, and debits
+  negative deduction lines such as merchant fees so the deposit matches the
+  bank's net amount
 - platform payout, merchant-processor remittance, OTA remittance, or other
-  net settlement: prefer `settlements`; economically it ties gross activity,
-  fees, refunds, reserves, taxes, and net cash to one source-aware event
+  net settlement without customer-level sale evidence: prefer flexible
+  `settlements` with `lines[]`; economically it ties gross activity, fees,
+  refunds, reserves, taxes, custom adjustments, and net cash to one
+  source-aware event
 - summary-based restaurant or small-lodging close: use sales receipts,
   expenses, receipts or payments, and settlements plus dimensions such as
   store, channel, or property; do not model POS or PMS front-office activity
