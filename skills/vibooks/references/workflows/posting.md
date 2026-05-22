@@ -275,6 +275,16 @@ Use:
 - `bank-lines/{lineId}:create-processor-settlement` only as a statement-line
   shortcut when the evidence is a payout that should still become a canonical
   `settlement`
+- for Stripe, payment processor, marketplace, POS, or OTA payout evidence,
+  choose the accounting depth before posting: never record only the net bank
+  deposit as revenue; either post a summary settlement from the payout report,
+  or post customer/order-level sales first and then settle them. Customer-level
+  `sales-receipt` detail is required when the user needs customer history,
+  order-level reporting, refund tracing, or invoice-like support. Summary
+  settlement is acceptable for anonymous POS, restaurant, retail, marketplace,
+  or Stripe batches when the external report is retained as evidence and
+  Vibooks only needs gross sales, tax, refunds, reserves, fees, adjustments,
+  and net payout at the batch level
 - for Stripe, payment processor, marketplace, POS, or OTA evidence that
   identifies customer-level sales, create the customer sale first as a
   `sales-receipt` with `payment_account_id` set to the configured processor
