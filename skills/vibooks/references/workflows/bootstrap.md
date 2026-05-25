@@ -275,8 +275,23 @@ Recommended defaults for a normal small business:
 - `presentation_currency`: usually the same as `functional_currency`
 - `scale`: `2`
 - `rounding_mode`: `half_up`
+- `posting_scale`: omit unless the book needs a currency-specific posting
+  scale; omitted values inherit `scale`
+- `reporting_scale`: omit unless accountant-facing reports need a different
+  scale; omitted values inherit `posting_scale`
+- `calculation_scale`: omit for the default high-precision calculation policy
+- `tax_rounding_mode`: omit for `half_up`; use an explicit value only when the
+  book's jurisdiction or accountant-approved policy requires it
+- `tax_rounding_scope`: omit for current line-level behavior; do not set
+  `invoice_rate` in routine bootstrap until the official jurisdiction workflow
+  requires invoice/rate-level tax rounding
 - `year_close_mode`: `closing_entries`
 - `tax_mode`: `none` unless the user explicitly wants tax-coded bookkeeping
+
+Do not treat UI display formatting as a substitute for posting precision. For
+example, an ordinary Japanese JPY company book should post whole-yen functional
+amounts while keeping higher internal calculation precision for tax, FX, and
+allocations.
 
 When tax registration or tax handling changes later:
 

@@ -95,7 +95,8 @@ The summary exposes, per tax code:
 - `purchase_base_total` and `purchase_tax_total` for claimable input-tax
   activity
 - `net_tax` as sales tax less claimable purchase tax
-- `source_currency` and `scale` from the effective book policy when available
+- `source_currency`, `scale`, `posting_scale`, `reporting_scale`, and
+  `calculation_scale` from the effective book policy when available
 
 For VAT/GST/consumption-tax profiles, use these fields to prepare review
 workpapers. Keep statutory tax codes on the source documents, and use the
