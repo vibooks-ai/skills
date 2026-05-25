@@ -207,6 +207,8 @@ Open only the references needed for the current task:
     [jurisdictions/ca/smb.md](jurisdictions/ca/smb.md)
   - `us_smb`:
     [jurisdictions/us/smb.md](jurisdictions/us/smb.md)
+  - `jp_smb`:
+    [jurisdictions/jp/smb.md](jurisdictions/jp/smb.md)
 - API discovery, jurisdiction selection, bootstrap, and book rebuilds:
   [references/workflows/bootstrap.md](references/workflows/bootstrap.md)
 - posting rules, chart-of-accounts choices, dates, and first-class workflows:

@@ -134,6 +134,11 @@ Exercise at least these three patterns:
   a new US small-business book where the walkthrough should route to `us_smb`,
   avoid inventing one national US sales-tax code, and stop if the relevant
   state or local tax context is unclear
+- Japan SMB:
+  a new Japanese small-company book where the walkthrough should route to
+  `jp_smb`, keep consumption-tax and qualified-invoice evidence separate from
+  industry presets, and stop if registration status or input-tax credit
+  treatment is unclear
 - uncovered jurisdiction:
   a book in a country without a documented dedicated profile where the
   walkthrough should route to `generic_global`, research official country rules

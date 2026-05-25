@@ -56,6 +56,33 @@ Expected behavior:
   unknown
 - does not mix payroll tax and sales-tax liabilities together
 
+## Japan SMB
+
+Prompt:
+
+```text
+Use Vibooks to set up a bookkeeping-ready book for a Japanese small company.
+Keep jurisdiction and industry separate. Use Japanese consumption-tax
+bookkeeping defaults only if registration status is clear, preserve qualified
+invoice evidence issues for tax accountant review, and do not claim Vibooks
+files Japanese tax returns.
+```
+
+Expected behavior:
+
+- routes to `jp_smb`
+- keeps jurisdiction and industry separate
+- treats JPY as the ordinary operating currency unless the saved setup says
+  otherwise
+- creates or recommends Japan consumption-tax master data only when the book is
+  registered or the accountant explicitly wants tax-coded management books
+- treats qualified invoice registration and per-rate tax summaries as evidence
+  review items
+- uses `tax_claimable_ratio` for partial input-tax credit instead of cloning
+  supplier-specific tax codes
+- does not imply Vibooks files Japanese corporation tax or consumption-tax
+  returns
+
 ## Uncovered Jurisdiction
 
 Prompt:

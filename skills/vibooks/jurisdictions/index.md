@@ -120,6 +120,12 @@ as `ca_restaurant_summary`. Keep them as separate layers.
     and local tax stop conditions
   - reference:
     [us/smb.md](us/smb.md)
+- `jp_smb`
+  - status: `skill_guided`
+  - use for ordinary Japanese small-company books, with explicit consumption-
+    tax, qualified-invoice evidence, and accountant-review stop conditions
+  - reference:
+    [jp/smb.md](jp/smb.md)
 
 When a future shipped product release adds first-class jurisdiction support,
 keep the same profile id and switch the status to `official` instead of

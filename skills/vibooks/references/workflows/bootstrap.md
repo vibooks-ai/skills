@@ -126,6 +126,9 @@ Current public profiles:
 - `us_smb`: routing skeleton for ordinary United States small-business books
   with explicit state and local tax stop conditions
   [../../jurisdictions/us/smb.md](../../jurisdictions/us/smb.md)
+- `jp_smb`: ordinary Japanese small-company books with explicit consumption-
+  tax, qualified-invoice evidence, and accountant-review stop conditions
+  [../../jurisdictions/jp/smb.md](../../jurisdictions/jp/smb.md)
 
 Reference:
 
