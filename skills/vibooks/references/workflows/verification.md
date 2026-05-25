@@ -83,6 +83,25 @@ Rules:
   on the books, do not use `replace-tax-code`; use the normal corrective
   document flow instead
 
+## Tax Summary Review
+
+Use `get-v1-books-book-id-tax-summary` as the authoritative tax-code summary
+before tax settlement, accountant handoff, or jurisdiction-specific review.
+Do not reconstruct tax totals from journal rows unless the API is unavailable.
+
+The summary exposes, per tax code:
+
+- `sales_base_total` and `sales_tax_total` for output-tax activity
+- `purchase_base_total` and `purchase_tax_total` for claimable input-tax
+  activity
+- `net_tax` as sales tax less claimable purchase tax
+- `source_currency` and `scale` from the effective book policy when available
+
+For VAT/GST/consumption-tax profiles, use these fields to prepare review
+workpapers. Keep statutory tax codes on the source documents, and use the
+source document and evidence review to explain any override or partial
+claimability instead of changing the tax-code master data.
+
 ## Tax Returns
 
 Use `tax-returns` as the first-class filing workflow. Do not treat tax filing
