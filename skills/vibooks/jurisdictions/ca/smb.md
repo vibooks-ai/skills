@@ -155,6 +155,25 @@ Quebec, PST, and other province-specific commodity-tax setups can require extra
 jurisdiction detail. Stop and ask before creating them when the obligation is
 not explicit.
 
+## Accountant Handoff Package
+
+For Canadian books, the accountant handoff is a bookkeeping workpaper package,
+not a CRA filing output.
+
+Use `get-v1-books-book-id-accountant-handoff` for the review date range to
+prepare the accountant-facing trial balance, general ledger, GST/HST summary,
+evidence review, attachment manifest, and Canada jurisdiction notes.
+
+Use `post-api-admin-export-accountant-package` when the accountant needs files:
+
+- `format = xlsx` creates the styled Excel workbook intended for accountant
+  review
+- `format = zip` includes the Excel workbook, JSON workpaper payload, and
+  package manifest
+
+Do not claim that the package files a GST/HST return, T2, T1 business schedule,
+payroll return, or other CRA filing.
+
 ## Suggested Optional Accounts
 
 When the product applies `ca_smb`, it may also surface optional chart

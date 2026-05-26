@@ -137,6 +137,27 @@ If the business has marketplace facilitator, exemption certificate, resale,
 manufacturer exemption, or multi-state nexus complexity, stop and ask before
 creating the tax model.
 
+## Accountant Handoff Package
+
+For United States books, the accountant handoff is a bookkeeping workpaper
+package, not a federal, state, payroll, sales-tax, or information-return filing
+output.
+
+Use `get-v1-books-book-id-accountant-handoff` for the review date range to
+prepare the accountant-facing trial balance, general ledger, tax category
+summary, deduction-support review, attachment manifest, and US jurisdiction
+notes.
+
+Use `post-api-admin-export-accountant-package` when the accountant needs files:
+
+- `format = xlsx` creates the styled Excel workbook intended for accountant
+  review
+- `format = zip` includes the Excel workbook, JSON workpaper payload, and
+  package manifest
+
+Do not claim that the package files income tax, payroll tax, sales tax, 1099, or
+other US returns.
+
 ## Account Numbering Guidance
 
 Account numbering is recommended, not mandatory.
