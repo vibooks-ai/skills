@@ -113,6 +113,9 @@ Rules:
 - treat the operator's nationality or UI language as non-authoritative
 - choose the jurisdiction profile before choosing the industry preset
 - keep jurisdiction and industry as separate layers
+- keep accountant-facing report language explicit on the book; for Japanese
+  accountant workpapers use `report_export_language = ja` instead of inferring it
+  from the desktop UI language
 - if the shipped product later exposes first-class jurisdiction setup, prefer
   that official product path over skill-only manual setup
 

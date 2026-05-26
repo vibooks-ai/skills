@@ -45,6 +45,9 @@ Rules:
 - keep the true operating currency, usually `JPY`
 - keep accountant-facing exports separate from the operator's desktop UI
   language
+- when the accountant wants Japanese workpapers, set the book's
+  `report_export_language` to `ja`; do not rely on the operator's UI language
+  to change export labels
 - do not infer tax filing elections from country alone
 - stop and ask when the accountant requires a special tax basis, industry
   treatment, or reporting framework beyond ordinary small-company books
@@ -58,11 +61,14 @@ Japan first, then keep remaining chart and workflow choices conservative.
    and `commodity_tax_registration_status`
 2. set or confirm `jurisdiction_profile_id = jp_smb`
 3. set the operating currency, usually `JPY`
-4. apply the nearest official Vibooks industry preset when one matches the
+4. set `report_export_language = ja` when the accountant-facing package should
+   be Japanese; otherwise keep the language explicitly requested by the
+   accountant or operator
+5. apply the nearest official Vibooks industry preset when one matches the
    business
-5. run the jurisdiction-profile apply flow only when the operator wants Japan
+6. run the jurisdiction-profile apply flow only when the operator wants Japan
    defaults applied
-6. configure consumption-tax codes only when the business is registered or the
+7. configure consumption-tax codes only when the business is registered or the
    accountant explicitly wants tax-coded bookkeeping
 
 Current official product path:
