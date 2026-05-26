@@ -282,9 +282,10 @@ Recommended defaults for a normal small business:
 - `calculation_scale`: omit for the default high-precision calculation policy
 - `tax_rounding_mode`: omit for `half_up`; use an explicit value only when the
   book's jurisdiction or accountant-approved policy requires it
-- `tax_rounding_scope`: omit for current line-level behavior; do not set
-  `invoice_rate` in routine bootstrap until the official jurisdiction workflow
-  requires invoice/rate-level tax rounding
+- `tax_rounding_scope`: omit for default line-level behavior; set
+  `invoice_rate` only when the official jurisdiction workflow or accountant-
+  approved policy requires invoice/rate-level tax rounding, such as Japanese
+  qualified-invoice consumption-tax books
 - `year_close_mode`: `closing_entries`
 - `tax_mode`: `none` unless the user explicitly wants tax-coded bookkeeping
 

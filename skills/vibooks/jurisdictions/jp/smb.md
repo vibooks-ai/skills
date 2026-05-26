@@ -2,11 +2,11 @@
 
 Profile id: `jp_smb`
 
-Status: `skill_guided`
+Status: `official`
 
 Scope: ordinary Japanese company bookkeeping for small-business management
-books and accountant review packages on the current shipped Vibooks product.
-This profile is not a tax-return filing workflow or tax advice substitute.
+books and accountant review packages on the current Vibooks product. This
+profile is not a tax-return filing workflow or tax advice substitute.
 
 ## Use This Profile When
 
@@ -128,7 +128,9 @@ Default tax-code set for registered books:
 Tax-code rules:
 
 - do not create rounding-variant tax codes to absorb one-yen differences
-- preserve source invoice tax with `tax_amount_override` and a clear reason
+- preserve source invoice tax with `tax_amount_override` and a clear reason;
+  use `statutory_invoice_rounding` when the source tax is preserved because a
+  Japanese qualified invoice rounds once per invoice and tax rate
 - for non-qualified invoices or partial input-tax credit, keep the statutory tax
   code and use `tax_claimable_ratio` on the document line instead of cloning
   tax-code master data
@@ -146,10 +148,22 @@ Japan source-document review should capture or flag:
 - whether evidence is qualified, simplified, non-qualified, missing, or unclear
 - electronic or paper preservation status
 
-Current shipped-product support can preserve attachments and audit history, but
-deeper qualified-invoice evidence metadata is a product roadmap item. Until the
-product exposes those first-class fields, keep review notes explicit and do not
-claim the evidence package is complete.
+Current product support:
+
+- document lines accept an extensible `evidence` object for qualified-invoice
+  status, issuer registration number, recipient, transaction date,
+  `tax_rate_breakdown`, preservation status, review status, and review flags
+- registered Japan purchase lines with tax codes generate `needs_review`
+  evidence flags instead of silently guessing when qualified-invoice status,
+  per-rate totals, or preservation status is missing
+- `get-v1-books-book-id-tax-summary` includes source-document
+  `invoice_rate_groups` for per-invoice/per-rate consumption-tax review
+- `get-v1-books-book-id-accountant-handoff` returns trial balance, general
+  ledger, tax summary, evidence exception report, attachment manifest, and
+  Japan accountant-facing labels for tax accountant review
+
+Use these fields instead of burying qualified-invoice facts in free-form notes
+when posting or reviewing Japan source documents.
 
 ## Account Numbering Guidance
 
@@ -209,4 +223,3 @@ from manual guidance to:
   <https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/tokusetsu/index.htm>
 - Japan Peppol Authority and JP PINT:
   <https://www.digital.go.jp/en/policies/electronic_invoice>
-

@@ -24,7 +24,9 @@ Use these rules:
 - if line splitting still cannot match the source tax exactly, keep the normal
   tax code and use `tax_amount_override` plus `tax_override_reason` on the
   affected line
-- use a short auditable reason such as `supplier_rounding`
+- use a short auditable reason such as `supplier_rounding`; for Japanese
+  qualified-invoice per-invoice/per-rate rounding, use
+  `statutory_invoice_rounding`
 - if a posted bill or invoice already used the wrong tax code but the posted
   amount is otherwise correct, use `invoice:replace-tax-code` or
   `bill:replace-tax-code` to relabel the posted tax lines back to the statutory
@@ -97,11 +99,18 @@ The summary exposes, per tax code:
 - `net_tax` as sales tax less claimable purchase tax
 - `source_currency`, `scale`, `posting_scale`, `reporting_scale`, and
   `calculation_scale` from the effective book policy when available
+- `invoice_rate_groups` for source-document, per-tax-code review of
+  invoice-rate VAT/GST/consumption-tax totals
 
 For VAT/GST/consumption-tax profiles, use these fields to prepare review
 workpapers. Keep statutory tax codes on the source documents, and use the
 source document and evidence review to explain any override or partial
 claimability instead of changing the tax-code master data.
+
+For accountant handoff, use `get-v1-books-book-id-accountant-handoff` with the
+true review date range. It returns trial balance, general ledger, tax summary,
+evidence exceptions, attachment manifest, and jurisdiction notes as review
+workpapers; it does not file a tax return.
 
 ## Tax Returns
 

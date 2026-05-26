@@ -121,7 +121,7 @@ as `ca_restaurant_summary`. Keep them as separate layers.
   - reference:
     [us/smb.md](us/smb.md)
 - `jp_smb`
-  - status: `skill_guided`
+  - status: `official`
   - use for ordinary Japanese small-company books, with explicit consumption-
     tax, qualified-invoice evidence, and accountant-review stop conditions
   - reference:
