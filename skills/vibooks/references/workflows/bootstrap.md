@@ -90,6 +90,7 @@ Useful operations include:
 - `post-v1-books-book-id-settlements-settlement-id-replace`
 - `post-v1-books-book-id-reconciliations`
 - report operations under `get-v1-books-book-id-reports-*`
+- `post-api-admin-export-accountant-package`
 
 When you already know a Vibooks resource id, fetch it with the matching detail
 `GET` operation instead of listing the collection and filtering client-side.

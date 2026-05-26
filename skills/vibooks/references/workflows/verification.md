@@ -112,6 +112,11 @@ true review date range. It returns trial balance, general ledger, tax summary,
 evidence exceptions, attachment manifest, and jurisdiction notes as review
 workpapers; it does not file a tax return.
 
+When the accountant needs downloadable workpapers, use
+`post-api-admin-export-accountant-package` for the same date range. Prefer
+`format = xlsx` for a professional Excel workbook; use `format = zip` when the
+recipient also needs the JSON workpaper payload and package manifest.
+
 ## Tax Returns
 
 Use `tax-returns` as the first-class filing workflow. Do not treat tax filing

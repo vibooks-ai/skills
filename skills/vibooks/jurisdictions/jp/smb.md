@@ -167,6 +167,9 @@ Current product support:
 - `get-v1-books-book-id-accountant-handoff` returns trial balance, general
   ledger, tax summary, evidence exception report, attachment manifest, and
   Japan accountant-facing labels for tax accountant review
+- `post-api-admin-export-accountant-package` writes the same handoff as a
+  styled Excel workbook, or as a zip package containing the workbook, JSON
+  workpaper payload, and manifest
 
 Use these fields instead of burying qualified-invoice facts in free-form notes
 when posting or reviewing Japan source documents.
