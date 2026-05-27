@@ -154,6 +154,8 @@ Use `post-api-admin-export-accountant-package` when the accountant needs files:
   review
 - `format = zip` includes the Excel workbook, JSON workpaper payload, and
   package manifest
+- in the desktop app, use `Reports > Accountant Package`; choose `Full fiscal
+  year` for year-end handoff or `Fiscal year to date` for interim review
 
 Do not claim that the package files income tax, payroll tax, sales tax, 1099, or
 other US returns.

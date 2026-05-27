@@ -116,6 +116,11 @@ When the accountant needs downloadable workpapers, use
 `post-api-admin-export-accountant-package` for the same date range. Prefer
 `format = xlsx` for a professional Excel workbook; use `format = zip` when the
 recipient also needs the JSON workpaper payload and package manifest.
+In the desktop app, use `Reports > Accountant Package` for operator-driven
+exports. Choose `Full fiscal year` for year-end handoff, `Fiscal year to date`
+for interim accountant review, `Current period` for monthly close review, or
+`Custom range` only when the accountant explicitly asks for a nonstandard
+period. The normal report export menu is only a shortcut into this workflow.
 
 ## Tax Returns
 

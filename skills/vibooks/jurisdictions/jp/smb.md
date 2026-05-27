@@ -170,6 +170,9 @@ Current product support:
 - `post-api-admin-export-accountant-package` writes the same handoff as a
   styled Excel workbook, or as a zip package containing the workbook, JSON
   workpaper payload, and manifest
+- in the desktop app, use `Reports > Accountant Package` and select `Full
+  fiscal year` for year-end tax-accountant delivery unless the tax accountant
+  asks for an interim or custom review period
 
 Use these fields instead of burying qualified-invoice facts in free-form notes
 when posting or reviewing Japan source documents.
