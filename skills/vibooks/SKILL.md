@@ -1,11 +1,13 @@
 ---
 name: vibooks
 description: >
-  Installs or reuses Vibooks locally, connects an agent to a trusted Vibooks
-  company or book, records or corrects small-business bookkeeping
-  transactions, reconciles bank or card statements, and runs close and
-  verification checks through official Vibooks workflows rather than direct
-  database or runtime file edits.
+  Installs or reuses Vibooks desktop, headless packages, or vibooks-cli;
+  verifies local API readiness, first-token access, trusted company or book
+  connection, and public skill-manifest freshness before high-risk writes;
+  bootstraps or rebuilds small-business books with jurisdiction, accounting,
+  and tax setup for covered or uncovered countries; records, corrects,
+  reconciles, verifies, and closes real bookkeeping through official Vibooks
+  workflows rather than direct storage edits.
 metadata:
   skill_version: 1.1.0
   source_repo: vibooks-ai/skills

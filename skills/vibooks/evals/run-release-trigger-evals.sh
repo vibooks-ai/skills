@@ -5,7 +5,7 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 OUTPUT_DIR="$SCRIPT_DIR/output"
 
 if [ -z "${TRIGGER_EVAL_COMMAND:-}" ]; then
-  TRIGGER_EVAL_COMMAND='claude -p "$TRIGGER_EVAL_QUERY" --output-format json'
+  TRIGGER_EVAL_COMMAND='claude -p "$TRIGGER_EVAL_QUERY" --output-format stream-json --verbose --allowedTools Skill --permission-mode dontAsk'
 fi
 
 if [ -z "${TRIGGER_EVAL_MATCH:-}" ]; then
@@ -23,6 +23,7 @@ VALIDATION_OUTPUT="$OUTPUT_DIR/trigger-eval-validation.json"
 COMBINED_OUTPUT="$OUTPUT_DIR/trigger-eval-results.json"
 SUMMARY_OUTPUT="$OUTPUT_DIR/trigger-eval-summary.txt"
 
+TRAIN_STATUS=0
 node "$SCRIPT_DIR/run-trigger-eval.mjs" \
   --queries "$SCRIPT_DIR/train_queries.json" \
   --runs "$TRIGGER_EVAL_RUNS" \
@@ -30,8 +31,9 @@ node "$SCRIPT_DIR/run-trigger-eval.mjs" \
   --timeout-ms "$TRIGGER_EVAL_TIMEOUT_MS" \
   --command "$TRIGGER_EVAL_COMMAND" \
   --match "$TRIGGER_EVAL_MATCH" \
-  > "$TRAIN_OUTPUT"
+  > "$TRAIN_OUTPUT" || TRAIN_STATUS=$?
 
+VALIDATION_STATUS=0
 node "$SCRIPT_DIR/run-trigger-eval.mjs" \
   --queries "$SCRIPT_DIR/validation_queries.json" \
   --runs "$TRIGGER_EVAL_RUNS" \
@@ -39,13 +41,15 @@ node "$SCRIPT_DIR/run-trigger-eval.mjs" \
   --timeout-ms "$TRIGGER_EVAL_TIMEOUT_MS" \
   --command "$TRIGGER_EVAL_COMMAND" \
   --match "$TRIGGER_EVAL_MATCH" \
-  > "$VALIDATION_OUTPUT"
+  > "$VALIDATION_OUTPUT" || VALIDATION_STATUS=$?
 
-node - "$TRAIN_OUTPUT" "$VALIDATION_OUTPUT" > "$COMBINED_OUTPUT" <<'EOF'
+node - "$TRAIN_OUTPUT" "$VALIDATION_OUTPUT" "$TRAIN_STATUS" "$VALIDATION_STATUS" > "$COMBINED_OUTPUT" <<'EOF'
 const fs = require('node:fs')
 
 const trainPath = process.argv[2]
 const validationPath = process.argv[3]
+const trainStatus = Number(process.argv[4])
+const validationStatus = Number(process.argv[5])
 const train = JSON.parse(fs.readFileSync(trainPath, 'utf8'))
 const validation = JSON.parse(fs.readFileSync(validationPath, 'utf8'))
 
@@ -53,6 +57,9 @@ process.stdout.write(
   JSON.stringify(
     {
       generated_at: new Date().toISOString(),
+      execution_failed: Boolean(train.execution_failed || validation.execution_failed),
+      train_status: trainStatus,
+      validation_status: validationStatus,
       train,
       validation,
     },
@@ -71,9 +78,19 @@ EOF
   printf 'runs=%s\n' "$TRIGGER_EVAL_RUNS"
   printf 'threshold=%s\n' "$TRIGGER_EVAL_THRESHOLD"
   printf 'timeout_ms=%s\n' "$TRIGGER_EVAL_TIMEOUT_MS"
+  printf 'train_status=%s\n' "$TRAIN_STATUS"
+  printf 'validation_status=%s\n' "$VALIDATION_STATUS"
 } > "$SUMMARY_OUTPUT"
 
 printf 'wrote %s\n' "$COMBINED_OUTPUT"
 printf 'wrote %s\n' "$TRAIN_OUTPUT"
 printf 'wrote %s\n' "$VALIDATION_OUTPUT"
 printf 'wrote %s\n' "$SUMMARY_OUTPUT"
+
+if [ "$TRAIN_STATUS" -eq 2 ] || [ "$VALIDATION_STATUS" -eq 2 ]; then
+  exit 2
+fi
+if [ "$TRAIN_STATUS" -ne 0 ]; then
+  exit "$TRAIN_STATUS"
+fi
+exit "$VALIDATION_STATUS"

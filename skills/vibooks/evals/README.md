@@ -61,13 +61,32 @@ Example shape:
 node evals/run-trigger-eval.mjs \
   --queries evals/train_queries.json \
   --runs 3 \
-  --command 'claude -p "$TRIGGER_EVAL_QUERY" --output-format json' \
+  --command 'claude -p "$TRIGGER_EVAL_QUERY" --output-format stream-json --verbose --allowedTools Skill --permission-mode dontAsk' \
   --match '"type":"tool_use".*"name":"Skill".*"skill":"vibooks"'
 ```
 
 The runner injects each prompt into the command through the
 `TRIGGER_EVAL_QUERY` environment variable and marks the run as triggered when
 the combined stdout/stderr matches the supplied regex.
+
+The runner consumes output as a stream and terminates the client as soon as the
+match appears. This keeps positive trigger checks from continuing into a real
+bookkeeping workflow after the skill has been selected.
+
+When using Claude Code, restrict the allowed tool set to `Skill` for this eval.
+The trigger test is only checking whether the skill should be selected; it must
+not continue into Bash, file reads, subagents, browser automation, or live
+bookkeeping work.
+
+Timeouts, spawn errors, and client rate limits are recorded as execution
+failures rather than false negatives. Non-zero client exits are recorded as
+`command_failed`; they do not become infrastructure failures by themselves
+because a Skill-only eval client may exit non-zero after correctly refusing
+unrelated non-Skill work. The JSON output includes truncated stdout/stderr
+excerpts for diagnosis, and the runner exits non-zero when any query fails or
+when the client command cannot be evaluated cleanly. Exit status `1` means one
+or more trigger expectations failed; exit status `2` means at least one client
+invocation failed before the trigger decision could be trusted.
 
 For release review, you can also use the local wrapper script to write a
 combined result file plus the raw train and validation output files into
@@ -78,16 +97,28 @@ cd skills/vibooks
 ./evals/run-release-trigger-evals.sh
 ```
 
+Before running the wrapper, make sure the target client is seeing the release
+candidate skill revision, not an older globally installed copy. One local check
+is:
+
+```bash
+npx skills add . --skill vibooks --agent claude-code -l
+```
+
+If that lists the expected candidate description, install or sync that candidate
+into the Claude Code skill path used by the eval client before treating trigger
+results as release evidence.
+
 By default that wrapper uses:
 
 ```bash
-claude -p "$TRIGGER_EVAL_QUERY" --output-format json
+claude -p "$TRIGGER_EVAL_QUERY" --output-format stream-json --verbose --allowedTools Skill --permission-mode dontAsk
 ```
 
 Override the client command when needed:
 
 ```bash
-TRIGGER_EVAL_COMMAND='your-client -p "$TRIGGER_EVAL_QUERY" --output-format json' \
+TRIGGER_EVAL_COMMAND='your-client -p "$TRIGGER_EVAL_QUERY" --output-format stream-json --verbose --allowedTools Skill --permission-mode dontAsk' \
   ./evals/run-release-trigger-evals.sh
 ```
 
