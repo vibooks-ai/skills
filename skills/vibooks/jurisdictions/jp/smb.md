@@ -164,15 +164,23 @@ Current product support:
   per-rate totals, or preservation status is missing
 - `get-v1-books-book-id-tax-summary` includes source-document
   `invoice_rate_groups` for per-invoice/per-rate consumption-tax review
-- `get-v1-books-book-id-accountant-handoff` returns trial balance, general
-  ledger, tax summary, evidence exception report, attachment manifest, and
-  Japan accountant-facing labels for tax accountant review
+- `get-v1-books-book-id-accountant-handoff` returns financial statements,
+  trial balance, general ledger, journal entries, A/R and A/P aging and open
+  items, bank reconciliation summary, tax summary, evidence exception report,
+  attachment manifest, and Japan accountant-facing labels for tax accountant
+  review
 - `post-api-admin-export-accountant-package` writes the same handoff as a
-  styled Excel workbook, or as a zip package containing the workbook, JSON
-  workpaper payload, and manifest
+  styled Excel workbook, or as a zip package containing the full workbook, each
+  selected report as an independent XLSX workbook, the JSON workpaper payload,
+  and manifest with report filenames that include company, book, date range,
+  and report language
+- omit `sections` for the default full report pack; pass `sections` only when
+  the tax accountant asks for selected workpapers, so the workbook tabs,
+  independent report files, and JSON payload include only those reports
 - in the desktop app, use `Reports > Accountant Package` and select `Full
   fiscal year` for year-end tax-accountant delivery unless the tax accountant
-  asks for an interim or custom review period
+  asks for an interim or custom review period, then leave all workpapers
+  selected or clear reports the tax accountant did not request
 
 Use these fields instead of burying qualified-invoice facts in free-form notes
 when posting or reviewing Japan source documents.

@@ -108,19 +108,34 @@ source document and evidence review to explain any override or partial
 claimability instead of changing the tax-code master data.
 
 For accountant handoff, use `get-v1-books-book-id-accountant-handoff` with the
-true review date range. It returns trial balance, general ledger, tax summary,
-evidence exceptions, attachment manifest, and jurisdiction notes as review
-workpapers; it does not file a tax return.
+true review date range. It returns financial statements, trial balance, general
+ledger, journal entries, A/R and A/P aging and open items, bank reconciliation
+summary, tax summary, evidence exceptions, attachment manifest, and
+jurisdiction notes as review workpapers; it does not file a tax return.
+Omit `sections` for the full package. When the accountant asks for a narrower
+package, pass repeated `sections` values for only the needed workpapers so the
+JSON payload and workbook tabs match the selected report pack.
 
 When the accountant needs downloadable workpapers, use
 `post-api-admin-export-accountant-package` for the same date range. Prefer
 `format = xlsx` for a professional Excel workbook; use `format = zip` when the
-recipient also needs the JSON workpaper payload and package manifest.
+recipient also needs each selected report as an independent XLSX workbook, the
+JSON workpaper payload, and package manifest. ZIP report filenames include the
+company, book, date range, and report language so extracted year-end packages do
+not overwrite similarly named reports. Include a `sections` array only when the
+accountant explicitly wants a subset; supported ids are
+`trial_balance`, `general_ledger`, `journal_entries`,
+`income_statement`, `balance_sheet`, `cash_flow`, `equity_rollforward`,
+`ar_ap_aging`, `open_receivables`, `open_payables`,
+`bank_reconciliation_summary`, `tax_summary`, `invoice_tax_detail`,
+`evidence_exception_report`, `attachment_manifest`, and `jurisdiction_notes`.
 In the desktop app, use `Reports > Accountant Package` for operator-driven
 exports. Choose `Full fiscal year` for year-end handoff, `Fiscal year to date`
 for interim accountant review, `Current period` for monthly close review, or
 `Custom range` only when the accountant explicitly asks for a nonstandard
-period. The normal report export menu is only a shortcut into this workflow.
+period. Leave all workpapers selected for the default accountant package, or
+clear the reports the accountant did not request. The normal report export menu
+is only a shortcut into this workflow.
 
 ## Tax Returns
 

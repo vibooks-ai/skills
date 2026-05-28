@@ -144,18 +144,25 @@ package, not a federal, state, payroll, sales-tax, or information-return filing
 output.
 
 Use `get-v1-books-book-id-accountant-handoff` for the review date range to
-prepare the accountant-facing trial balance, general ledger, tax category
-summary, deduction-support review, attachment manifest, and US jurisdiction
-notes.
+prepare the accountant-facing financial statements, trial balance, general
+ledger, journal entries, A/R and A/P aging and open items, bank reconciliation
+summary, tax category summary, deduction-support review, attachment manifest,
+and US jurisdiction notes.
 
 Use `post-api-admin-export-accountant-package` when the accountant needs files:
 
 - `format = xlsx` creates the styled Excel workbook intended for accountant
   review
-- `format = zip` includes the Excel workbook, JSON workpaper payload, and
-  package manifest
+- `format = zip` includes the full Excel workbook, each selected report as an
+  independent XLSX workbook, the JSON workpaper payload, and package manifest
+  with report filenames that include company, book, date range, and report
+  language
+- omit `sections` for the default full report pack; pass `sections` only when
+  the accountant asks for selected workpapers, so the workbook tabs,
+  independent report files, and JSON payload include only those reports
 - in the desktop app, use `Reports > Accountant Package`; choose `Full fiscal
-  year` for year-end handoff or `Fiscal year to date` for interim review
+  year` for year-end handoff or `Fiscal year to date` for interim review, then
+  leave all workpapers selected or clear reports the accountant did not request
 
 Do not claim that the package files income tax, payroll tax, sales tax, 1099, or
 other US returns.
