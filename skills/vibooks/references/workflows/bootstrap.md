@@ -284,8 +284,9 @@ Recommended defaults for a normal small business:
 - `reporting_scale`: omit unless accountant-facing reports need a different
   scale; omitted values inherit `posting_scale`
 - `calculation_scale`: omit for the default high-precision calculation policy
-- `tax_rounding_mode`: omit for `half_up`; use an explicit value only when the
-  book's jurisdiction or accountant-approved policy requires it
+- `tax_rounding_mode`: omit for `half_up`; for registered Japanese JPY
+  consumption-tax books use `floor` unless the accountant or source documents
+  require `half_up` or `ceiling`
 - `tax_rounding_scope`: omit for default line-level behavior; set
   `invoice_rate` only when the official jurisdiction workflow or accountant-
   approved policy requires invoice/rate-level tax rounding, such as Japanese

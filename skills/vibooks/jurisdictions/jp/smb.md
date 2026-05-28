@@ -134,6 +134,9 @@ Default tax-code set for registered books:
 Tax-code rules:
 
 - do not create rounding-variant tax codes to absorb one-yen differences
+- for registered JPY books, set the book policy to
+  `tax_rounding_scope: invoice_rate`; use `tax_rounding_mode: floor` unless
+  the accountant or source-document policy requires `half_up` or `ceiling`
 - preserve source invoice tax with `tax_amount_override` and a clear reason;
   use `statutory_invoice_rounding` when the source tax is preserved because a
   Japanese qualified invoice rounds once per invoice and tax rate

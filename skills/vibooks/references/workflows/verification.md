@@ -19,6 +19,9 @@ rounding.
 
 Use these rules:
 
+- before posting Japanese qualified-invoice workflows, verify that the book
+  policy uses `tax_rounding_scope: invoice_rate` and the accountant-approved
+  `tax_rounding_mode`
 - if the source shows separate taxable lines, preserve them as separate
   `lines[]` entries under the normal tax code such as `HST15`
 - if line splitting still cannot match the source tax exactly, keep the normal
