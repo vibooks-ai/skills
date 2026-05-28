@@ -177,6 +177,9 @@ Use `post-api-admin-export-accountant-package` when the accountant needs files:
 - omit `sections` for the default full report pack; pass `sections` only when
   the accountant asks for selected workpapers, so the workbook tabs,
   independent report files, and JSON payload include only those reports
+- leave `basis` unset for the normal accrual-basis package; pass `basis = cash`
+  or `basis = tax` only when the accountant explicitly requests that basis for
+  the Profit and Loss and Balance Sheet sections
 - in the desktop app, use `Reports > Accountant Package`; choose `Full fiscal
   year` for year-end handoff or `Fiscal year to date` for interim review, then
   leave all workpapers selected or clear reports the accountant did not request

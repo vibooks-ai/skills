@@ -115,6 +115,11 @@ jurisdiction notes as review workpapers; it does not file a tax return.
 Omit `sections` for the full package. When the accountant asks for a narrower
 package, pass repeated `sections` values for only the needed workpapers so the
 JSON payload and workbook tabs match the selected report pack.
+Leave `basis` unset for the default accrual-basis package. Pass `basis = cash`
+or `basis = tax` only when the accountant explicitly requests that basis; it
+applies to the included Profit and Loss and Balance Sheet sections, while other
+workpapers remain source-based or accrual-oriented review schedules. Tax basis
+currently resolves through the cash-basis view plus tax adjustments.
 
 When the accountant needs downloadable workpapers, use
 `post-api-admin-export-accountant-package` for the same date range. Prefer

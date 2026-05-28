@@ -177,6 +177,9 @@ Current product support:
 - omit `sections` for the default full report pack; pass `sections` only when
   the tax accountant asks for selected workpapers, so the workbook tabs,
   independent report files, and JSON payload include only those reports
+- leave `basis` unset for the normal accrual-basis package; pass `basis = cash`
+  or `basis = tax` only when the tax accountant explicitly requests that basis
+  for the Profit and Loss and Balance Sheet sections
 - in the desktop app, use `Reports > Accountant Package` and select `Full
   fiscal year` for year-end tax-accountant delivery unless the tax accountant
   asks for an interim or custom review period, then leave all workpapers
