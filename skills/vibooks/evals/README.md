@@ -26,9 +26,12 @@ For release review, also run behavior checks that cover:
 2. repeat use against an existing trusted local install and existing book
 3. a correction, reconciliation, or verification workflow that exercises the
    current official product behavior
-4. jurisdiction-profile routing for at least one covered country, one covered
+4. source-backed posting that uses OCR, parser, script, or model extraction and
+   then visually confirms material fields before proposal or posting
+5. jurisdiction-profile routing for at least one covered country, one covered
    country with strong subnational tax variation, and one uncovered country
-5. skill-version and public-manifest update prompting before high-risk writes
+6. skill-version and public-manifest update prompting before high-risk writes
+7. independent evidence-review behavior for AI-assisted bookkeeping checks
 
 For manual walkthroughs, use:
 

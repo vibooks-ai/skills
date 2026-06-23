@@ -13,6 +13,10 @@
   },
   {
     "should_trigger": true,
+    "query": "Use OCR or a script if helpful to prepare this supplier receipt in Vibooks, but visually check the original PDF fields before you ask me to confirm or post it."
+  },
+  {
+    "should_trigger": true,
     "query": "Help me bootstrap a new Vibooks book for a small business, then verify the chart of accounts and opening balances are sane."
   },
   {
@@ -38,6 +42,10 @@
   {
     "should_trigger": true,
     "query": "Before you post transactions in Vibooks, check whether my local vibooks skill is older than the public manifest and tell me whether I should update it."
+  },
+  {
+    "should_trigger": true,
+    "query": "Review these AI-posted Vibooks receipts independently as a complete review, do not sample, do not use the prior OCR or parser output, classify every scoped item, and give me a readable per-item report plus GST/HST, vendor, duplicate, and bookkeeping-treatment exceptions."
   },
   {
     "should_trigger": false,

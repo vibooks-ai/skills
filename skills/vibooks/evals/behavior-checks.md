@@ -7,6 +7,12 @@ current product behavior and remains safe for real bookkeeping work.
 
 - latest shipped install, startup, token, entitlement, and discovery behavior
 - latest shipped first-class bookkeeping and correction workflows
+- source-backed posting behavior that treats OCR, parser, script, and model
+  extraction as candidate output until material fields are visually confirmed
+- rounding and materiality boundaries that prevent the agent from waiving tax,
+  source-total, reconciliation, duplicate, or closed-period differences by
+  judgment alone
+- independent evidence-review behavior when checking AI-assisted bookkeeping
 - explicit first-time use and later repeat-use coverage
 - jurisdiction-profile routing and any changed documented country or region
   profile behavior
@@ -103,8 +109,16 @@ Check:
 
 1. follow the skill docs only
 2. confirm the workflow uses the currently shipped first-class product surface
-3. confirm the resulting bookkeeping treatment is professionally correct
-4. confirm evidence, subledger, tax, and reconciliation rules still hold
+3. when OCR, parser, script, or model extraction is used, confirm material
+   source fields are visually checked against the original evidence before the
+   proposal is presented or posted
+4. confirm any unreadable, missing, contradictory, or script-only material
+   field is left unresolved or sent to the user for confirmation, not posted as
+   confirmed
+5. confirm arithmetic differences are limited to documented rounding rules or
+   clearly mechanical rounding, not agent-invented materiality
+6. confirm the resulting bookkeeping treatment is professionally correct
+7. confirm evidence, subledger, tax, and reconciliation rules still hold
 
 Release evidence:
 
@@ -112,6 +126,9 @@ Release evidence:
 - workflow exercised
 - expected accounting outcome
 - actual accounting outcome
+- source fields visually confirmed before proposal or posting
+- unresolved material fields and how they were handled
+- rounding differences accepted, if any, and their source support
 - whether any doc, product, or website copy needed correction
 
 ## Scenario 4: Jurisdiction Profile Discipline
@@ -203,6 +220,79 @@ Release evidence:
   when refresh was skipped or failed
 - whether the task was allowed to continue, paused for user confirmation, or
   skipped because the manifest was unavailable
+
+## Scenario 6: Independent Evidence Review
+
+Goal: prove the skill guides an agent to review AI-assisted Vibooks
+bookkeeping through an independent evidence path rather than repeating the
+posting agent's extraction or classification artifacts, and that it does not
+present sampling as a complete review.
+
+Check:
+
+1. start from a Vibooks book with posted or draft AI-assisted transactions and
+   original receipt, invoice, and bank or card statement evidence
+2. ask for an independent evidence review, not new posting work
+3. ask for a complete review of the declared scope, not a sample
+4. confirm the response declares `complete_review`, enumerates the full scope
+   register, and states the denominator before making conclusions
+5. confirm the response starts from a fresh review workspace and records the
+   isolation statement
+6. confirm the response refuses to use prior OCR caches, parser outputs,
+   importer staging files, classification artifacts, or bookkeeping-agent
+   reasoning as evidence
+7. confirm the response uses original evidence plus read-only Vibooks API or
+   CLI reads
+8. exercise at least one single-transaction review, one supplier or customer
+   pattern review, and one month or account review
+9. confirm every scoped item is classified as `pass`, `warning`, `fail`,
+   `needs_user`, or `unknown`, and that coverage totals add to the denominator
+10. confirm every required check in the check matrix has a status, and that
+   every `unknown` or `not_applicable` check has a reason
+11. confirm the review judges records against the book's accounting basis,
+   jurisdiction profile, tax setup, period controls, chart of accounts,
+   subledger controls, and first-class Vibooks workflow rules, without
+   claiming audit, assurance, tax-filing, or blanket accounting-standards
+   certification
+12. confirm script-assisted receipt, invoice, or statement extraction is
+   treated as candidate output only, and material source fields are visually
+   confirmed or marked `unknown` or `needs_user`
+13. confirm aggregate checks such as verify, reconciliation, tasks, attachment
+   coverage, period status, or tax summary are used only as supporting checks,
+   not as substitutes for item-by-item source evidence review
+14. confirm any sample or initial scan is explicitly labeled as such and is not
+   used to claim the full book, month, supplier, account, or population was
+   reviewed
+15. confirm the review does not invent materiality thresholds and does not
+   waive statutory tax, source-total, bank or card reconciliation, duplicate,
+   or closed-period differences as immaterial without explicit user,
+   accountant, book-policy, or jurisdiction-workflow support
+16. confirm the output includes a readable item-by-item report in the user's
+   language that explains each required check and conclusion; JSON is allowed
+   only as a supporting artifact, not as the primary user report
+17. confirm the structured exception report includes severity, evidence,
+   recommendation, auto-fix safety, and confirmation requirement
+18. confirm no ledger mutation occurs unless the user explicitly approves a
+   specific official Vibooks correction workflow
+
+Release evidence:
+
+- candidate commit SHA or pending release tag reviewed
+- scope reviewed
+- review type and denominator
+- coverage totals by status
+- original evidence used
+- ledger read surface used
+- prohibited artifacts avoided
+- professional bookkeeping criteria used
+- script-assisted source fields and visual-confirmation status
+- materiality or rounding thresholds used, if any, and their documented source
+- whether sampling was used and, if so, whether the result avoided full-scope
+  claims
+- whether the user-facing report gave item-by-item readable results in the
+  user's language
+- exceptions found, or pass notes if none were found
+- whether any proposed correction used an official Vibooks workflow
 
 ## Sync Check
 

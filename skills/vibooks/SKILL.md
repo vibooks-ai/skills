@@ -7,9 +7,11 @@ description: >
   bootstraps or rebuilds small-business books with jurisdiction, accounting,
   and tax setup for covered or uncovered countries; records, corrects,
   reconciles, verifies, and closes real bookkeeping through official Vibooks
-  workflows rather than direct storage edits.
+  workflows rather than direct storage edits; independently reviews
+  AI-assisted Vibooks bookkeeping against original source evidence in a clean
+  review workspace without reusing prior extraction artifacts.
 metadata:
-  skill_version: 1.1.0
+  skill_version: 1.1.1
   source_repo: vibooks-ai/skills
   update_check: https://vibooks.ai/skills/manifest.json
   install_command: npx skills add vibooks-ai/skills --skill vibooks -g
@@ -107,6 +109,8 @@ and that the latest local skill refresh could not be confirmed.
 - connect to a trusted local Vibooks API and verify authenticated readiness
 - create, correct, or review bookkeeping records through official Vibooks
   workflows
+- independently review AI-assisted Vibooks bookkeeping against original
+  receipts, invoices, statements, and attachments without mutating the ledger
 - bootstrap new books with the official Vibooks presets that best match the
   business
 - reconcile bank, debit-card, or credit-card statement accounts
@@ -154,6 +158,28 @@ direct mutation of Vibooks storage.
   already exposes a reusable setup
 - treat statements and source files as evidence and import them when the
   workflow supports attachments
+- when normal bookkeeping uses OCR, parsers, scripts, or model extraction to
+  read a receipt, invoice, statement, or payout report, treat extracted values
+  as candidates only; before presenting a proposal or posting, visually confirm
+  material fields from the original evidence, compare them to the Vibooks
+  payload, and leave unreadable or conflicting fields unresolved for user
+  confirmation
+- for independent evidence review, use a fresh working directory, a clean
+  evidence bundle, and read-only Vibooks API or CLI access; do not reuse local
+  OCR caches, parser outputs, classification artifacts, importer intermediates,
+  or bookkeeping-agent reasoning as evidence
+- for independent evidence review, default to complete item-by-item review of
+  the declared scope; use sampling or aggregate-only scanning only when the
+  user explicitly asks for it, label it as incomplete, and never present it as
+  a full-scope review conclusion
+- for independent evidence review, report item-by-item results in the user's
+  language; JSON may support automation, but it is not a substitute for a
+  readable review report that explains each required check and conclusion
+- for independent evidence review, judge records against professional
+  bookkeeping criteria, the book's accounting basis, jurisdiction profile, tax
+  setup, period controls, chart of accounts, and first-class workflow rules;
+  do not present the result as an audit, assurance opinion, tax filing opinion,
+  or blanket accounting-standards certification
 - for restaurant and small-lodging books, keep Vibooks on summary-based
   post-facto bookkeeping through settlements, receipts or payments, expenses,
   dimensions, and reports; do not present Vibooks as POS, PMS, or front-office
@@ -218,6 +244,9 @@ Open only the references needed for the current task:
 - tax corrections, evidence attachments, reconciliation, month-end validation,
   and completion checks:
   [references/workflows/verification.md](references/workflows/verification.md)
+- independent review of AI-assisted or posted bookkeeping against original
+  evidence:
+  [references/workflows/evidence-review.md](references/workflows/evidence-review.md)
 - uninstall paths and escalation checkpoints:
   [references/escalation.md](references/escalation.md)
 

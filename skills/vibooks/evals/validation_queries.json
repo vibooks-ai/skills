@@ -9,6 +9,10 @@
   },
   {
     "should_trigger": true,
+    "query": "Record this invoice in Vibooks from the image, but do a visual second check of the date, vendor, GST/HST, subtotal, total, and card payment before proposing the entry."
+  },
+  {
+    "should_trigger": true,
     "query": "I want to replace an old messy Vibooks book with a clean rebuild under the same company without hard-deleting posted history."
   },
   {
@@ -30,6 +34,10 @@
   {
     "should_trigger": true,
     "query": "My installed Vibooks skill might be stale. Before you change tax setup or create real entries, compare it to the public skill manifest and recommend the update path."
+  },
+  {
+    "should_trigger": true,
+    "query": "Before I trust this month's AI bookkeeping in Vibooks, start a clean review workspace, ignore prior extraction caches, do not sample, enumerate the full scope, compare every item to original evidence where applicable, and give me readable per-item results in my language."
   },
   {
     "should_trigger": false,

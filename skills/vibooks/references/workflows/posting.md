@@ -3,6 +3,7 @@
 ## Contents
 
 - Hard accounting rules
+- Source-document extraction and visual confirmation
 - Resource-creation defaults
 - Recurring bookkeeping
 - Customer-facing document templates
@@ -54,6 +55,58 @@
 - financial reports follow posted entry dates, not the current document status
   alone
 
+## Source-Document Extraction And Visual Confirmation
+
+OCR, scripts, parsers, and model extraction may prepare normal bookkeeping, but
+they are not source evidence. Treat every extracted field as a candidate until
+it has been checked against the original receipt, invoice, statement, payout
+report, or other source document.
+
+Before presenting a proposed entry to the user or posting a Vibooks resource,
+visually confirm every material field that is visible in the source document:
+
+- counterparty name and any relevant merchant, legal, or payee alias
+- document number, statement reference, or payout reference when present
+- document, transaction, payment, sale, expense, or statement date
+- currency
+- subtotal, statutory tax such as GST/HST, VAT, or sales tax, adjustments,
+  tips, shipping, discounts, fees, and total
+- payment account, statement account, card, bank line, or payout line when
+  visible from the evidence
+- item, account, category, tax code, or first-class workflow treatment when it
+  is directly supported by the source document, saved master data, prior
+  confirmed pattern, or user/accountant instruction
+
+Run deterministic arithmetic checks before relying on the proposal:
+
+- subtotal plus or minus adjustments plus statutory tax must reconcile to the
+  total, allowing only rounding differences supported by the source document,
+  tax rounding policy, or a clearly mechanical one-cent calculation difference
+- statutory tax amount must be plausible for the jurisdiction, tax code, and
+  claimability available in the book
+- bank or card statement amount must reconcile to the payment, receipt,
+  expense, bill payment, transfer, refund, settlement, or payout treatment
+
+Compare the visually confirmed source facts to the Vibooks create or correction
+payload before posting. If a material field is unreadable, missing,
+contradictory, or only supported by OCR or script output, do not silently fill
+it as confirmed. Ask the user, leave the field unresolved when the workflow
+allows it, or classify the proposed posting as needing user confirmation.
+
+When asking the user to confirm a proposed source-backed posting, include a
+brief readable check summary in the user's language:
+
+- visually confirmed fields
+- fields supported only by statement evidence, saved master data, prior
+  confirmed pattern, or user/accountant explanation
+- unresolved fields and why they need confirmation
+- the proposed Vibooks workflow and accounting treatment
+
+Do not reuse stale OCR, parser, cache, or importer output from an earlier run as
+confirmation. Rendering a PDF to an image, cropping, zooming, rotating,
+enhancing readability, or using scripts for arithmetic is allowed because those
+steps help inspect the original evidence rather than replace it.
+
 ## Resource-Creation Rule
 
 When the user does not explicitly say which Vibooks business resources to
@@ -76,6 +129,8 @@ Default priority:
   support them
 - populate as many fields as the materials support, but do not invent parties,
   amounts, dates, tax treatment, currencies, or statement details
+- when the materials are source documents, populate material fields only after
+  the extraction and visual-confirmation rule above has been satisfied
 - if the source materials are incomplete but still sufficient for a normal
   business-document workflow, create the supported resource and leave only the
   unsupported fields unresolved
