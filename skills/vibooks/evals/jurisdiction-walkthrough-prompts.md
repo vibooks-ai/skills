@@ -83,6 +83,156 @@ Expected behavior:
 - does not imply Vibooks files Japanese corporation tax or consumption-tax
   returns
 
+## Statement-Evidence Review
+
+### Canada
+
+Prompt:
+
+```text
+Use Vibooks to review a Canadian corporate credit-card charge using only the
+monthly card statement. The statement clearly shows the amount, merchant, and
+date, but the supplier receipt or invoice is missing. Separate what the
+statement proves from the business-purpose, recognition-date, and GST/HST
+documentary checks. Do not assume the input tax credit is supported.
+```
+
+Expected behavior:
+
+- routes to `ca_smb`
+- records the observable payment facts as `statement_supported`
+- keeps `payment_or_receipt_supported`, `business_nature_supported`,
+  `recognition_date_supported`, and `tax_documentation_supported` separate
+- does not mark the ordinary monthly statement alone as sufficient GST/HST
+  input-tax-credit documentation when it lacks prescribed information and no
+  documented CRA-authorized exception applies
+- allows an owner explanation to support classification without treating it as
+  a substitute for prescribed GST/HST documentation
+
+### United States
+
+Prompt:
+
+```text
+Use Vibooks to review three U.S. small-business payments shown on legible
+financial account statements but supported by no invoice or receipt: a check
+line showing check number, amount, payee, and the date the bank posted it; an
+EFT line showing amount, payee, and the date the bank posted the transfer; and a
+credit-card line showing amount, payee, transaction date, and a later posting
+date. Separate proof of payment from proof that each cost was incurred for a
+deductible business purpose, and respect the book's cash or accrual basis.
+```
+
+Expected behavior:
+
+- routes to `us_smb`
+- applies the check, EFT, and credit-card statement-field requirements
+  separately, including the correct posted or transaction date for each method
+- treats each qualifying statement record as payment evidence without turning
+  it into a blanket deduction conclusion
+- keeps the business-purpose and recognition-date checks unresolved when the
+  remaining evidence does not support them
+- does not substitute either per-line statement date for accrual recognition or
+  cutoff, and never treats the statement closing date as the transaction date
+
+### Statement-Primary Exceptions
+
+Prompt:
+
+```text
+Use Vibooks to review a bank-originated monthly account fee and a transfer
+between two accounts owned by the same business. Both movements are clearly
+identified on legible statements, the transfer amount and dates agree across
+the two accounts, and no jurisdiction-specific rule requires another source
+record. Decide whether statement evidence supports the full bookkeeping
+treatment without turning either item into a deduction or tax claim.
+```
+
+Expected behavior:
+
+- records the observable statement facts as `statement_supported`
+- allows the bank-originated fee and clearly evidenced own-account transfer to
+  rely primarily on statement evidence because that evidence establishes their
+  full bookkeeping treatment and no applicable rule requires more
+- records the fee as a bank charge and the transfer as an own-account transfer;
+  does not invent a supplier purchase, revenue, expense for the transfer, or a
+  commodity-tax claim
+- keeps any conclusion unresolved if account ownership, counterpart movement,
+  amount, date, or a material jurisdictional requirement is not supported
+
+### Uncovered Jurisdiction
+
+Prompt:
+
+```text
+Review a statement-only business expense for a country that has no dedicated
+Vibooks jurisdiction profile. Record what the bank statement proves, then use
+current official local sources before deciding whether the evidence supports a
+deduction or VAT/GST claim. If the local rule is not clear, keep the result
+unresolved.
+```
+
+Expected behavior:
+
+- routes to `generic_global`
+- limits statement support to observable account movement and reconciliation
+- researches government, regulator, or official standards sources before a
+  local tax or documentary conclusion
+- returns `needs_user` or `unknown` instead of claiming local compliance when
+  the evidence rule remains unclear
+
+### Cross-Period Date Boundary
+
+Prompt:
+
+```text
+Use Vibooks to review a statement line with a December 31 transaction date, a
+January 2 posting date, and a January 31 statement closing date. Explain the
+timing result for cash-basis and accrual-basis books. Apply the book policy,
+payment method, and jurisdiction rules when deciding which per-line date
+supports cash timing, and do not assume the statement closing date is the
+payment, receipt, or recognition date.
+```
+
+Expected behavior:
+
+- identifies the transaction date, posting date, and statement closing date as
+  three distinct facts
+- uses January 2 as Vibooks' matching-oriented `statement_date`, while retaining
+  December 31 in the original evidence and the bank-line `reference` or `note`
+- never uses January 31 as the payment, receipt, or recognition date merely
+  because it is the statement period end
+- selects between the per-line dates for cash-basis timing only when the book
+  policy, payment method, and jurisdiction rules support that conclusion;
+  otherwise keeps the timing conclusion unresolved
+- uses the applicable invoice, supply, service, delivery, or other recognition
+  evidence for accrual-basis cutoff instead of substituting either statement-
+  line date
+
+### Genuine Movement With Unresolved Classification
+
+Prompt:
+
+```text
+Use Vibooks to review a genuine bank-statement outflow whose account, amount,
+payee, and posting date are clear but whose business purpose, offset account,
+recognition date, and tax treatment are not supported. Explain how to preserve
+the bank movement without guessing an expense or tax claim, and state what
+happens when the owner has or has not approved temporary suspense treatment.
+```
+
+Expected behavior:
+
+- does not invent an expense, deduction, or tax claim from the bank memo
+- without explicit owner or accountant approval, keeps the line `unmatched` so
+  reconciliation and period close remain blocked; does not use
+  `reviewed_exception` for the unrecorded movement
+- with explicit approval, records only the supported statement-account movement
+  against a dedicated suspense or clearing balance, claims no tax, retains the
+  source dates and review note, and auto-matches the line
+- keeps business-nature, recognition-date, and tax-documentation conclusions
+  unresolved until the suspense balance is properly reclassified
+
 ## Uncovered Jurisdiction
 
 Prompt:

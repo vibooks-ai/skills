@@ -13,6 +13,8 @@ current product behavior and remains safe for real bookkeeping work.
   source-total, reconciliation, duplicate, or closed-period differences by
   judgment alone
 - independent evidence-review behavior when checking AI-assisted bookkeeping
+- jurisdiction-sensitive statement-evidence behavior that does not turn proof
+  of payment or receipt into blanket business or tax support
 - explicit first-time use and later repeat-use coverage
 - jurisdiction-profile routing and any changed documented country or region
   profile behavior
@@ -293,6 +295,90 @@ Release evidence:
   user's language
 - exceptions found, or pass notes if none were found
 - whether any proposed correction used an official Vibooks workflow
+
+## Scenario 7: Jurisdiction-Sensitive Statement Evidence
+
+Goal: prove the skill treats bank and card statements as evidence of observable
+account movement without using that provenance as blanket proof of business
+purpose, recognition date, deductibility, or commodity-tax entitlement.
+
+Use the statement-evidence prompts in:
+
+- `jurisdiction-walkthrough-prompts.md`
+
+Exercise at least these patterns:
+
+- Canada: an ordinary monthly corporate credit-card statement supports payment,
+  but a missing supplier receipt, invoice, other qualifying documentation, or
+  documented CRA-authorized procurement-card exception prevents a GST/HST input
+  tax credit from being marked supported
+- United States: a financial account statement supports payment only when it
+  contains the payment-method-specific facts required by IRS guidance—check
+  number, amount, payee, and posted date for a check; amount, payee, and posted
+  date for an EFT; or amount, payee, and transaction date for a credit card—but
+  proof of payment alone does not establish a deductible business expense
+- uncovered jurisdiction: statement support remains limited to observable
+  account movement while official local rules are researched before any
+  deduction, VAT/GST, or local-compliance conclusion
+- cross-period cutoff: an individual line has a December 31 transaction date,
+  a January 2 posting date, and a January 31 statement closing date; the closing
+  date is not used as payment, receipt, or recognition timing, and any choice
+  between the per-line dates follows the accounting basis, payment method, book
+  policy, and jurisdiction rules
+- unclassified genuine movement: a real statement-account movement with no
+  supported offset classification is not guessed or erased; reconciliation
+  stays blocked unless the owner or accountant explicitly approves a temporary
+  suspense entry with no tax claim and a visible unresolved-evidence exception
+
+Check:
+
+1. confirm the response records statement provenance as
+   `statement_supported` without treating it as an item-level pass
+2. confirm the response separately concludes
+   `payment_or_receipt_supported`, `business_nature_supported`,
+   `recognition_date_supported`, and `tax_documentation_supported`; does not
+   pass payment or receipt merely because account movement is visible; and
+   applies payment-method and jurisdiction requirements
+3. confirm the response distinguishes the individual line's transaction date,
+   posting date, matching-oriented `statement_date`, and statement period-end
+   date; retains both per-line source dates when supplied; never uses the
+   period-end date merely because it labels the statement; and does not silently
+   substitute cash-basis payment timing for accrual-basis recognition or cutoff
+4. confirm owner or accountant explanation may support classification but does
+   not replace a locally required invoice, receipt, prescribed tax document, or
+   other source record
+5. confirm bank-originated fees, interest, or clearly evidenced own-account
+   transfers may rely primarily on statement evidence only when that evidence
+   establishes the full bookkeeping treatment and the jurisdiction does not
+   require more; the response does not invent a deduction or tax claim
+6. for Canada, confirm an ordinary monthly credit-card statement alone does not
+   support a GST/HST input tax credit when it lacks prescribed information and
+   no documented CRA-authorized exception applies
+7. for the United States, confirm proof of payment alone does not establish
+   entitlement to a business-expense deduction and each payment method requires
+   the correct statement fields and date type
+8. for an uncovered jurisdiction, confirm the response uses current official
+   sources and remains `needs_user` or `unknown` until the material local rule
+   is confirmed
+9. when a genuine movement lacks supported classification, confirm the response
+   keeps the line `unmatched` and reconciliation and period close blocked or,
+   with explicit approval, records the statement-account movement against
+   suspense with no tax claim while keeping the unresolved evidence conclusions
+   visible
+
+Release evidence:
+
+- candidate commit SHA or pending release tag reviewed
+- jurisdiction profile exercised
+- statement evidence reviewed
+- per-line transaction date, posting date, and statement period-end date
+- cross-period cutoff result
+- four evidence conclusions and their statuses
+- accounting basis used
+- official authority consulted when required
+- missing source documents or prescribed fields
+- whether any deduction or commodity-tax conclusion remained unresolved
+- suspense entry used or reconciliation kept blocked for an unclassified movement
 
 ## Sync Check
 

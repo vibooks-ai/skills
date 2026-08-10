@@ -72,6 +72,35 @@ repository.
 - update recommendation shown:
 - task continued or paused correctly:
 
+### Scenario 6: Independent Evidence Review
+
+- status: pass / fail / blocked
+- scope and denominator:
+- original evidence and read-only ledger surface used:
+- prohibited prior artifacts avoided:
+- item-by-item and coverage result:
+- sampling or materiality boundary honored:
+- ledger mutation avoided or explicitly approved:
+
+### Scenario 7: Jurisdiction-Sensitive Statement Evidence
+
+- status: pass / fail / blocked
+- jurisdiction profile exercised:
+- statement evidence reviewed:
+- per-line transaction date:
+- per-line posting date:
+- statement period-end or closing date:
+- cross-period cutoff result:
+- accounting basis used:
+- payment or receipt support result:
+- business-nature support result:
+- recognition-date support result:
+- tax-documentation support result:
+- official authority consulted when required:
+- missing source documents or prescribed fields:
+- unresolved deduction or commodity-tax conclusion:
+- suspense entry used or reconciliation kept blocked:
+
 ## Sync And Packaging Checks
 
 - `make check-skill-docs-sync` result:

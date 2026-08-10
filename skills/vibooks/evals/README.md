@@ -32,6 +32,8 @@ For release review, also run behavior checks that cover:
    country with strong subnational tax variation, and one uncovered country
 6. skill-version and public-manifest update prompting before high-risk writes
 7. independent evidence-review behavior for AI-assisted bookkeeping checks
+8. jurisdiction-sensitive statement-evidence behavior that separates proof of
+   account movement from business, recognition-date, deduction, and tax support
 
 For manual walkthroughs, use:
 
