@@ -25,6 +25,7 @@
 ## Authoring Rules
 
 - Keep the skill docs generic to supported public Vibooks behavior; do not document workspace-only commands, private environments, unsupported local shortcuts, or developer assumptions as normal user flows.
+- Keep distribution-channel guidance explicit. When Vibooks is loaded through the official plugin, treat the bundled workflow as already installed, never direct the agent to create a duplicate standalone skill installation, and route plugin updates through the host client's plugin directory or marketplace. Reserve `npx skills` install and update commands for standalone or direct-read web use.
 - Keep the documented logic internally consistent and use official Vibooks workflows rather than unsupported shortcuts.
 - Write the skill so it matches the latest shipped product behavior across install, authentication, bookkeeping, reconciliation, verification, and maintenance flows.
 - Cover both first-time use and later repeat-use or reuse paths so a user can start cleanly and return safely without guessing.
