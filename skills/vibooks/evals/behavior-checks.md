@@ -16,6 +16,9 @@ current product behavior and remains safe for real bookkeeping work.
 - jurisdiction-sensitive statement-evidence behavior that does not turn proof
   of payment or receipt into blanket business or tax support
 - explicit first-time use and later repeat-use coverage
+- plain-language project book memory that works across new conversations
+  without exposing instruction files, resource identifiers, or local paths to
+  the user
 - jurisdiction-profile routing and any changed documented country or region
   profile behavior
 - professional-bookkeeping correctness, not only API reachability
@@ -83,8 +86,18 @@ Check:
    documented trusted access path
 2. rerun `vibooks-cli doctor --json`
 3. confirm the discovered local install and token source are still valid
-4. continue into an existing company or book using the documented reuse path
-5. verify that the docs tell the user when to reuse state and when to stop and
+4. tell the agent in ordinary language to keep using the current company and
+   book for this project, without naming an instruction file or storage method
+5. confirm the agent remembers the trusted company and book through the
+   client's supported project instructions, stores no credentials or local
+   paths, and replies only with a simple confirmation such as "I'll keep using
+   Ontario Demo Book for this project"
+6. start a new conversation in the same project and confirm the agent reuses
+   the remembered company and book after verifying the active selection
+7. introduce an active-book mismatch and confirm the agent stops and asks
+   before switching or writing
+8. continue into an existing company or book using the documented reuse path
+9. verify that the docs tell the user when to reuse state and when to stop and
    ask because machine state, entitlement, or book identity is ambiguous
 
 Release evidence:
@@ -93,6 +106,9 @@ Release evidence:
 - exact local state used for the walkthrough
 - whether token reuse, entitlement reuse, and existing-book reuse behaved as
   documented
+- whether the remembered book was reused in a new conversation and the user
+  received only a simple, non-technical confirmation
+- whether a mismatched active book stopped before any write
 - any ambiguity or hidden prerequisite that should be added to the docs
 
 ## Scenario 3: Accounting Workflow Correctness

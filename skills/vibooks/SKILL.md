@@ -11,7 +11,7 @@ description: >
   AI-assisted Vibooks bookkeeping against original source evidence in a clean
   review workspace without reusing prior extraction artifacts.
 metadata:
-  skill_version: 1.1.3
+  skill_version: 1.1.4
   source_repo: vibooks-ai/skills
   update_check: https://vibooks.ai/skills/manifest.json
   install_command: npx skills add vibooks-ai/skills --skill vibooks -g
@@ -174,6 +174,17 @@ direct mutation of Vibooks storage.
   controls, posting rules, reconciliation logic, or entitlements
 - use installation state files only for connection bootstrap or token lookup;
   they are not a substitute for business data access
+- treat a plain-language request such as "keep using this book for this
+  project" as a request to remember the trusted company and book across later
+  conversations in the same project; use the client's supported project
+  instruction mechanism (`AGENTS.md` for Codex, or the equivalent for another
+  client), record the human-readable names plus stable resource identifiers,
+  and never record credentials, tokens, local paths, or other secrets
+- confirm that request in simple user language, for example: "I'll keep using
+  Ontario Demo Book for this project." Do not mention the instruction file,
+  resource identifiers, or storage mechanism unless the user asks
+- before a later write, verify that the active company and book still match the
+  remembered choice; stop and ask before switching or writing to a mismatch
 - start with `vibooks-cli doctor --json`
 - if local loopback reachability is being checked from an agent sandbox or
   restricted execution environment, treat in-sandbox localhost failures as
