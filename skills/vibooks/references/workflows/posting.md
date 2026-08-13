@@ -443,7 +443,13 @@ Subledger integrity rules:
   payroll workflow must be used instead of guessing statutory amounts
 - carry the preview's calculation snapshot, published release ID, formula ID,
   official verification identity, and fingerprint unchanged into the payroll
-  batch or run; use the payroll reversal, replacement, or correction workflow
+  batch or run; the snapshot fingerprint also binds the normalized component
+  posting contract, so do not rename, remove, reclassify, or change a
+  calculated component even when aggregate totals would remain unchanged;
+  ordinary reviewed account selections remain separate, but never supply a
+  liability override for the canonical Quebec FTQ or Fondaction components,
+  whose dedicated payable accounts are assigned by the server; use the payroll
+  reversal, replacement, or correction workflow
   for later changes so historical calculations keep their original rule release
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
