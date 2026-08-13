@@ -443,7 +443,7 @@ Subledger integrity rules:
   payroll workflow must be used instead of guessing statutory amounts
 - carry the preview's calculation snapshot, published release ID, formula ID,
   official verification identity, and fingerprint unchanged into the payroll
-  batch or run; the snapshot fingerprint also binds the normalized component
+  batch or run; the server-authenticated keyed snapshot fingerprint also binds the normalized component
   posting contract, so do not rename, remove, reclassify, or change a
   calculated component even when aggregate totals would remain unchanged;
   ordinary reviewed account selections remain separate, but never supply a
