@@ -424,6 +424,16 @@ Subledger integrity rules:
   payroll profile, schedule, statutory payroll items, jurisdiction, and verified
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
+- for Quebec employees, record the current-period Fonds de solidarité FTQ and
+  Fondaction share-purchase withholdings on the payroll profile when they
+  apply; preserve the combined prior-period amount in verified YTD history so
+  current plus YTD never exceeds the official $5,000 annual limit. Vibooks
+  records the full Q/Q1 amounts as employee deductions as well as applying the
+  tax credit, so never repeat the same purchase in generic pre-tax or post-tax
+  deductions and never combine Q/Q1 with the alternative 75% gross-
+  remuneration-reduction method. Send explicit zero values outside Quebec so
+  TP-1015.F factors `Q` and `Q1` are never inferred from a generic deduction
+  line
 - let Vibooks select the statutory release from the book country, employee
   jurisdiction, and pay date; never request an older release, extend a prior
   release, or substitute a draft rule when the preview reports that no
