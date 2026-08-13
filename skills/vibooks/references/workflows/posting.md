@@ -420,6 +420,21 @@ Subledger integrity rules:
   should remain open outside the main receivable or payable balance
 - do not record payroll through generic journal entries when the payroll
   workflow can express it
+- for supported Canadian payroll, configure the employee's effective-dated
+  payroll profile, schedule, statutory payroll items, jurisdiction, and verified
+  YTD history before calculation; use the employee payroll-calculation preview
+  instead of entering tax deductions as operator-calculated amounts
+- let Vibooks select the statutory release from the book country, employee
+  jurisdiction, and pay date; never request an older release, extend a prior
+  release, or substitute a draft rule when the preview reports that no
+  officially verified published release covers the date
+- treat missing payroll-rule coverage as an unsupported calculation boundary;
+  retain the external provider calculation and source evidence when an external
+  payroll workflow must be used instead of guessing statutory amounts
+- carry the preview's calculation snapshot, published release ID, formula ID,
+  official verification identity, and fingerprint unchanged into the payroll
+  batch or run; use the payroll reversal, replacement, or correction workflow
+  for later changes so historical calculations keep their original rule release
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
   and `1`; Vibooks will keep the non-claimable portion inside the business
