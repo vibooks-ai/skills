@@ -450,6 +450,10 @@ Subledger integrity rules:
   liability override for the canonical Quebec FTQ or Fondaction components,
   whose dedicated payable accounts are assigned by the server; use the payroll
   reversal, replacement, or correction workflow
+- use a full database backup and restore when moving natively authenticated
+  payroll history; a portable book bundle cannot prove the source payroll key
+  and must not turn an embedded, self-consistent component contract into native
+  posting, remittance, or year-end evidence
   for later changes so historical calculations keep their original rule release
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
