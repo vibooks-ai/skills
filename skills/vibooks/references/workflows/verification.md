@@ -396,6 +396,18 @@ Before closing a period:
 9. when dimensions are used for departments, projects, branches, or locations,
    run grouped management reports with `group_by_dimension_id` and targeted
    slices with `dimension_filter`
+10. when Canadian vacation pay is active, run the vacation-pay report as of the
+    close date; require employee event balances to equal the active Vacation Pay
+    Payable GL balance, each period oracle to equal zero with owed nonnegative,
+    no unresolved period blocker, and no quarantined portable package awaiting
+    attestation
+
+For a vacation correction, inspect the full append-only chain: source and
+replacement carry-forwards, opening event and exact reversal, period close and
+reopen history, payment parent and server-owned children, journal entries,
+control-account version, HMAC-backed fingerprints, approvals, and audit rows.
+Do not accept matching aggregate totals when a component, period allocation,
+account, source identity, or lineage differs.
 
 Preferred verification command:
 

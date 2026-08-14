@@ -120,6 +120,52 @@ Current official product path:
 Do not claim that Vibooks has a built-in CRA filing integration or a complete
 Canadian chart package unless the shipped product actually exposes one.
 
+## Canadian Payroll And Vacation-Pay Bookkeeping
+
+For supported Canadian payroll dates, treat statutory payroll and vacation pay
+as effective-dated, server-selected bookkeeping workflows. Never extend a prior
+rule release because the next interval appears unchanged. If Vibooks reports a
+missing official release, unresolved coverage, incomplete service history, an
+unsupported employee class, or an unknown earning meaning, stop rather than
+guessing.
+
+Vacation pay is a general employee-liability capability, not a restaurant or
+POS feature. Use it for any supported employer that must track money earned,
+paid, and still owed to an employee:
+
+1. establish sourced employment-standards coverage and complete service history
+2. configure the employee's effective-dated retained-vacation policy and the
+   active `Vacation Pay Payable` control account
+3. for a mid-year or Sage cutover, provide complete historical semantic earning
+   components plus employee vacation detail that ties exactly to the source
+   control total; never derive historical wages from the closing liability
+4. preview the protected carry-forward or accrual, then post the exact
+   server-authenticated calculation snapshot without changing components,
+   accounts, dates, or totals
+5. allocate a posted vacation payout only through the vacation-payment workflow;
+   exact period evidence and certified FIFO are distinct methods and the server
+   creates their child allocations
+6. use the vacation-pay report to prove the employee event subledger equals the
+   active Vacation Pay Payable general-ledger balance and that each period obeys
+   `O = S + X - P` with no negative owed balance
+7. correct history through source-aware reverse, replace, close-reopen, or
+   payment reversal actions; never edit a posted vacation event or its journal
+
+Portable book data is evidence only. It stays quarantined and excluded from the
+live vacation subledger until a native carry-forward attestation ties every
+source employee balance to the source control total. Use full backup and restore
+when preserving native authenticated history.
+
+AI analysis of Sage reports, payroll registers, employment agreements, or other
+source material produces proposed facts and first-class Vibooks calls; it is not
+a file-import shortcut and must not bypass the same preview, approval, HMAC,
+reconciliation, and correction controls.
+
+Keep the scope bookkeeping-first. Vibooks records vacation money and the
+payable; it does not schedule PTO, approve leave, calculate a restaurant tip
+pool, operate a POS, submit government filings, or replace professional legal
+advice.
+
 ## Chart-Of-Accounts Rules
 
 Rules:

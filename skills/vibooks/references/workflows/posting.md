@@ -450,6 +450,36 @@ Subledger integrity rules:
   liability override for the canonical Quebec FTQ or Fondaction components,
   whose dedicated payable accounts are assigned by the server; use the payroll
   reversal, replacement, or correction workflow
+- for Canadian retained vacation pay, use the dedicated vacation resources for
+  coverage, service history, policy, control account, carry-forward, accrual,
+  period close, payment allocation, correction, and reporting; do not recreate
+  vacation liability through generic payroll deductions or manual journals
+- treat each source earning meaning and earned-date segment as protected input;
+  unknown semantics, uncovered dates, incomplete service or coverage, and rule
+  gaps fail closed instead of falling back to taxable wages or a prior release
+- when moving from Sage or another prior ledger, provide complete historical
+  semantic earnings and employee vacation detail that equals the source
+  Vacation Pay Payable control total; never derive historical earnings from a
+  liability balance, and use `replacement_of_carry_forward_id` plus the atomic
+  `:replace` action when supported source evidence corrects an opening before
+  dependent native activity
+- after each retained accrual, true-up, payment, reversal, replacement, or
+  control-account transfer, verify the employee vacation event balance equals
+  the active Vacation Pay Payable balance and every reference period preserves
+  `owed = satisfied + external corrections - paid` with owed nonnegative
+- vacation-payment allocation children are server-owned: period-specific
+  evidence must be followed exactly, while certified FIFO uses the protected
+  eligible order; never submit caller-calculated children, aliases, or account
+  overrides
+- do not treat a portable book bundle as native vacation history. Keep its
+  evidence quarantined until the explicit carry-forward attestation ties every
+  employee amount to the source control total; use full backup and restore to
+  preserve native HMAC identity
+- source files and AI extraction do not directly import vacation transactions.
+  Analyze and visually verify the evidence, propose explicit facts, then call
+  the same first-class preview/post/correction endpoints used by every client
+- keep vacation scope bookkeeping-only: do not represent PTO scheduling, leave
+  approval, POS operation, or tip-pool allocation as Vibooks vacation features
 - use a full database backup and restore when moving natively authenticated
   payroll history; a portable book bundle cannot prove the source payroll key
   and must not turn an embedded, self-consistent component contract into native
