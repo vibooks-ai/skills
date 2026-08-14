@@ -453,8 +453,12 @@ Subledger integrity rules:
 - use a full database backup and restore when moving natively authenticated
   payroll history; a portable book bundle cannot prove the source payroll key
   and must not turn an embedded, self-consistent component contract into native
-  posting, remittance, or year-end evidence
-  for later changes so historical calculations keep their original rule release
+  posting, remittance, or year-end evidence; an older portable snapshot retained
+  only under a public integrity hash is marked untrusted by the receiving
+  installation and remains blocked from automatic YTD and all statutory use
+  until a complete append-only `legacy_run_attestation` links the posted run to
+  retained source records and supplies every applicable employee and employer amount;
+  never overwrite either the retained snapshot or attestation for later changes
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
   and `1`; Vibooks will keep the non-claimable portion inside the business
