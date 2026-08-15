@@ -466,12 +466,15 @@ Subledger integrity rules:
   reference period; do not provide `rule_release_ids` because Vibooks selects the
   release and recalculates statutory earned from the certified jurisdiction,
   service dates, wages, and cutover date; split a row when a service-rate boundary
-  requires dated detail; positive employee openings must equal the source
-  Vacation Pay Payable control total, and historical wages must never be inferred
-  from a liability balance
+  requires dated detail; for a Québec protected-absence period, create the exact
+  reviewed section-74 fact set first so the opening uses that official formula;
+  positive employee openings must equal the source Vacation Pay Payable control
+  total, and historical wages must never be inferred from a liability balance
 - for pay-each earnings, bind the exact posted payroll vacation-pay component;
   for a later retained payout, bind the exact component that debits Vacation Pay
-  Payable. A matching payroll total or caller-supplied label is not sufficient
+  Payable and use its immutable payroll pay date. A matching payroll total,
+  caller-supplied date, or label is not sufficient, and a payout cannot consume
+  a balance earned after that pay date
 - after each retained accrual, true-up, payment, reversal, replacement, or
   control-account transfer, verify the employee vacation event balance equals
   the active Vacation Pay Payable balance and every reference period preserves

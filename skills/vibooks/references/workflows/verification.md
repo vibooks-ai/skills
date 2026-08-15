@@ -400,7 +400,9 @@ Before closing a period:
     close date; require employee event balances to equal the active Vacation Pay
     Payable GL balance, each reference period's target/credit/true-up trace to
     agree with its server-selected published release and formula, payroll earning
-    dates to agree with the source run, owed to stay nonnegative, and no unresolved
+    and payout dates to agree with the source run, every payment allocation to use
+    an already-earned bucket, Québec protected-absence openings to retain their
+    exact fact set and section-74 trace, owed to stay nonnegative, and no unresolved
     period blocker
 
 For a vacation correction, inspect the full append-only chain: source and

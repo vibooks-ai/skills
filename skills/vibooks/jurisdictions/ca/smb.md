@@ -143,6 +143,8 @@ paid, and still owed to an employee:
    earned, contractual extra, paid, owed, vacationable-wage, and reference-period
    facts; never propose a rule-release ID because Vibooks selects it from the
    employee jurisdiction and cutover date and recalculates the statutory amount;
+   for Québec protected-absence history, record the reviewed exact-period
+   absence fact set before preview so opening uses the section-74 formula;
    split history at a service-rate boundary when Vibooks asks for dated detail;
    the sum of positive openings must tie to the source control balance, while a
    fully paid pay-each history uses the zero-control history disposition
@@ -152,8 +154,9 @@ paid, and still owed to an employee:
    payable, while pay-each must bind the exact vacation-pay component already
    present in the posted payroll run
 5. settle retained vacation only through the vacation-payment workflow, binding
-   the exact payroll component that debits `Vacation Pay Payable`; Vibooks owns
-   the oldest-due employee allocation
+   the exact payroll component that debits `Vacation Pay Payable`; use the source
+   payroll run's pay date and never backdate it or allocate a later-earned balance;
+   Vibooks owns the oldest-due employee allocation
 6. close reference periods so the official whole-period target and any true-up
    are preserved with the exact published rule release, then use the report to
    prove employee owed equals the Vacation Pay Payable general-ledger balance
