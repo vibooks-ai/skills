@@ -489,6 +489,13 @@ Subledger integrity rules:
   until a complete append-only `legacy_run_attestation` links the posted run to
   retained source records and supplies every applicable employee and employer amount;
   never overwrite either the retained snapshot or attestation for later changes
+- before the first full backup, the owner must deliberately display the backup
+  recovery code in the local desktop, save it outside the backup location, and
+  confirm that separate copy. A backup from another or replacement installation
+  must be previewed with that recovery code before restore. Agents must not call
+  the reveal endpoint or pass a recovery code into backup preview/restore unless
+  the user explicitly requests that local recovery operation. Never place a
+  recovery code in chat, logs, filenames, bookkeeping evidence, or portable bundles
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
   and `1`; Vibooks will keep the non-claimable portion inside the business
