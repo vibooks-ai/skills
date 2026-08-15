@@ -158,6 +158,13 @@ paid, and still owed to an employee:
    `replaces_calculation_id` and post it with another fresh request ID; never
    edit a posted vacation event, allocation, or journal
 
+If a vacation post or reversal returns
+`VACATION_STRICT_APPROVAL_UNSUPPORTED`, stop. The initial small-business
+vacation workflow does not post while the book requires separate strict
+approvals. Do not treat a free-text approver as authority and do not recreate
+the vacation entry manually; ask whether the operator wants to use a supported
+light/standard approval mode.
+
 AI analysis of Sage reports, payroll registers, employment agreements, or other
 source material produces proposed facts and first-class Vibooks calls; it is not
 a file-import shortcut and must not bypass the same preview, approval,

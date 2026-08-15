@@ -479,6 +479,11 @@ Subledger integrity rules:
   `approved_by` identity. Retry only the exact same request. After a reversal,
   create a fresh preview with `replaces_calculation_id` so the report retains
   the original, reversal, approver, and replacement chain
+- if posting returns `VACATION_STRICT_APPROVAL_UNSUPPORTED`, stop and explain
+  that vacation posting is unavailable while the book requires separate strict
+  approvals. Do not change `approved_by`, retry, or recreate the result through
+  a generic journal; ask the operator whether the book should use a supported
+  light/standard approval mode
 - source files and AI extraction do not directly import vacation transactions.
   Analyze and visually verify the evidence, propose explicit facts, then call
   the same first-class preview/post/correction endpoints used by every client
