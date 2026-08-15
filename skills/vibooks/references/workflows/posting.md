@@ -457,13 +457,18 @@ Subledger integrity rules:
   deductions or manual journals
 - treat each source earning meaning and earned-date segment as protected input;
   unknown semantics, uncovered dates, incomplete service or coverage, and rule
-  gaps fail closed instead of falling back to taxable wages or a prior release
+  gaps fail closed instead of falling back to taxable wages or a prior release;
+  `effective_date` must equal the source payroll pay date and every segment must
+  remain inside that immutable payroll period
 - when moving from Sage or another prior ledger, provide complete historical
   employee vacation detail decomposed into vacationable wages, statutory earned,
   contractual extra, statutory paid, contractual-extra paid, and owed by
-  reference period; positive employee openings must equal the source Vacation
-  Pay Payable control total, and historical wages must never be inferred from a
-  liability balance
+  reference period; do not provide `rule_release_ids` because Vibooks selects the
+  release and recalculates statutory earned from the certified jurisdiction,
+  service dates, wages, and cutover date; split a row when a service-rate boundary
+  requires dated detail; positive employee openings must equal the source
+  Vacation Pay Payable control total, and historical wages must never be inferred
+  from a liability balance
 - for pay-each earnings, bind the exact posted payroll vacation-pay component;
   for a later retained payout, bind the exact component that debits Vacation Pay
   Payable. A matching payroll total or caller-supplied label is not sufficient

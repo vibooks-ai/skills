@@ -399,7 +399,8 @@ Before closing a period:
 10. when Canadian vacation pay is active, run the vacation-pay report as of the
     close date; require employee event balances to equal the active Vacation Pay
     Payable GL balance, each reference period's target/credit/true-up trace to
-    agree with its published rule, owed to stay nonnegative, and no unresolved
+    agree with its server-selected published release and formula, payroll earning
+    dates to agree with the source run, owed to stay nonnegative, and no unresolved
     period blocker
 
 For a vacation correction, inspect the full append-only chain: source and

@@ -141,12 +141,16 @@ paid, and still owed to an employee:
    also require the written or electronic agreement record
 3. for a Sage or other cutover, analyze employee detail into explicit statutory
    earned, contractual extra, paid, owed, vacationable-wage, and reference-period
-   facts; the sum of positive openings must tie to the source control balance,
-   while a fully paid pay-each history uses the zero-control history disposition
+   facts; never propose a rule-release ID because Vibooks selects it from the
+   employee jurisdiction and cutover date and recalculates the statutory amount;
+   split history at a service-rate boundary when Vibooks asks for dated detail;
+   the sum of positive openings must tie to the source control balance, while a
+   fully paid pay-each history uses the zero-control history disposition
 4. preview each earning from exact posted payroll components and dated earning
-   semantics, then post only the returned calculation ID; retained mode posts
-   expense/payable, while pay-each must bind the exact vacation-pay component
-   already present in the posted payroll run
+   semantics inside that payroll run's immutable pay period, using its exact pay
+   date, then post only the returned calculation ID; retained mode posts expense/
+   payable, while pay-each must bind the exact vacation-pay component already
+   present in the posted payroll run
 5. settle retained vacation only through the vacation-payment workflow, binding
    the exact payroll component that debits `Vacation Pay Payable`; Vibooks owns
    the oldest-due employee allocation
