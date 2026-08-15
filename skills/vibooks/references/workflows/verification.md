@@ -398,16 +398,16 @@ Before closing a period:
    slices with `dimension_filter`
 10. when Canadian vacation pay is active, run the vacation-pay report as of the
     close date; require employee event balances to equal the active Vacation Pay
-    Payable GL balance, each period oracle to equal zero with owed nonnegative,
-    no unresolved period blocker, and no quarantined portable package awaiting
-    attestation
+    Payable GL balance, each reference period's target/credit/true-up trace to
+    agree with its published rule, owed to stay nonnegative, and no unresolved
+    period blocker
 
 For a vacation correction, inspect the full append-only chain: source and
-replacement carry-forwards, opening event and exact reversal, period close and
-reopen history, payment parent and server-owned children, journal entries,
-control-account version, HMAC-backed fingerprints, approvals, and audit rows.
-Do not accept matching aggregate totals when a component, period allocation,
-account, source identity, or lineage differs.
+replacement openings, opening event and exact reversal, period close and
+true-up history, payment parent and server-owned children, journal entries,
+effective account version, approvals, and audit rows. Do not accept matching
+aggregate totals when the exact payroll component, period allocation, account,
+published rule release, or correction lineage differs.
 
 Preferred verification command:
 

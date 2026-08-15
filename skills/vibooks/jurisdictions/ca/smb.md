@@ -133,32 +133,32 @@ Vacation pay is a general employee-liability capability, not a restaurant or
 POS feature. Use it for any supported employer that must track money earned,
 paid, and still owed to an employee:
 
-1. establish sourced employment-standards coverage and complete service history
-2. configure the employee's effective-dated retained-vacation policy and the
-   active `Vacation Pay Payable` control account
-3. for a mid-year or Sage cutover, provide complete historical semantic earning
-   components plus employee vacation detail that ties exactly to the source
-   control total; never derive historical wages from the closing liability
-4. preview the protected carry-forward or accrual, then post the exact
-   server-authenticated calculation snapshot without changing components,
-   accounts, dates, or totals
-5. allocate a posted vacation payout only through the vacation-payment workflow;
-   exact period evidence and certified FIFO are distinct methods and the server
-   creates their child allocations
-6. use the vacation-pay report to prove the employee event subledger equals the
-   active Vacation Pay Payable general-ledger balance and that each period obeys
-   `O = S + X - P` with no negative owed balance
-7. correct history through source-aware reverse, replace, close-reopen, or
-   payment reversal actions; never edit a posted vacation event or its journal
-
-Portable book data is evidence only. It stays quarantined and excluded from the
-live vacation subledger until a native carry-forward attestation ties every
-source employee balance to the source control total. Use full backup and restore
-when preserving native authenticated history.
+1. propose the employee's jurisdiction, general-class status, service start,
+   reference year, and policy mode from reviewed business evidence; ask the
+   operator to confirm uncertain facts instead of making a legal-coverage claim
+2. configure effective-dated Vacation Pay Expense and `Vacation Pay Payable`
+   accounts, then create the effective employee policy; BC/ON pay-each policies
+   also require the written or electronic agreement record
+3. for a Sage or other cutover, analyze employee detail into explicit statutory
+   earned, contractual extra, paid, owed, vacationable-wage, and reference-period
+   facts; the sum of positive openings must tie to the source control balance,
+   while a fully paid pay-each history uses the zero-control history disposition
+4. preview each earning from exact posted payroll components and dated earning
+   semantics, then post only the returned calculation ID; retained mode posts
+   expense/payable, while pay-each must bind the exact vacation-pay component
+   already present in the posted payroll run
+5. settle retained vacation only through the vacation-payment workflow, binding
+   the exact payroll component that debits `Vacation Pay Payable`; Vibooks owns
+   the oldest-due employee allocation
+6. close reference periods so the official whole-period target and any true-up
+   are preserved with the exact published rule release, then use the report to
+   prove employee owed equals the Vacation Pay Payable general-ledger balance
+7. correct history through the owning vacation calculation's reversal and a new
+   preview/post; never edit a posted vacation event, allocation, or journal
 
 AI analysis of Sage reports, payroll registers, employment agreements, or other
 source material produces proposed facts and first-class Vibooks calls; it is not
-a file-import shortcut and must not bypass the same preview, approval, HMAC,
+a file-import shortcut and must not bypass the same preview, approval,
 reconciliation, and correction controls.
 
 Keep the scope bookkeeping-first. Vibooks records vacation money and the

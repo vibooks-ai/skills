@@ -450,31 +450,31 @@ Subledger integrity rules:
   liability override for the canonical Quebec FTQ or Fondaction components,
   whose dedicated payable accounts are assigned by the server; use the payroll
   reversal, replacement, or correction workflow
-- for Canadian retained vacation pay, use the dedicated vacation resources for
-  coverage, service history, policy, control account, carry-forward, accrual,
-  period close, payment allocation, correction, and reporting; do not recreate
-  vacation liability through generic payroll deductions or manual journals
+- for Canadian vacation pay, use the dedicated vacation resources for approved
+  jurisdiction/class facts, service history, policy/arrangement, effective-dated
+  accounts, opening, earning, period close, payment allocation, correction, and
+  reporting; do not recreate vacation liability through generic payroll
+  deductions or manual journals
 - treat each source earning meaning and earned-date segment as protected input;
   unknown semantics, uncovered dates, incomplete service or coverage, and rule
   gaps fail closed instead of falling back to taxable wages or a prior release
 - when moving from Sage or another prior ledger, provide complete historical
-  semantic earnings and employee vacation detail that equals the source
-  Vacation Pay Payable control total; never derive historical earnings from a
-  liability balance, and use `replacement_of_carry_forward_id` plus the atomic
-  `:replace` action when supported source evidence corrects an opening before
-  dependent native activity
+  employee vacation detail decomposed into vacationable wages, statutory earned,
+  contractual extra, statutory paid, contractual-extra paid, and owed by
+  reference period; positive employee openings must equal the source Vacation
+  Pay Payable control total, and historical wages must never be inferred from a
+  liability balance
+- for pay-each earnings, bind the exact posted payroll vacation-pay component;
+  for a later retained payout, bind the exact component that debits Vacation Pay
+  Payable. A matching payroll total or caller-supplied label is not sufficient
 - after each retained accrual, true-up, payment, reversal, replacement, or
   control-account transfer, verify the employee vacation event balance equals
   the active Vacation Pay Payable balance and every reference period preserves
-  `owed = satisfied + external corrections - paid` with owed nonnegative
-- vacation-payment allocation children are server-owned: period-specific
-  evidence must be followed exactly, while certified FIFO uses the protected
-  eligible order; never submit caller-calculated children, aliases, or account
-  overrides
-- do not treat a portable book bundle as native vacation history. Keep its
-  evidence quarantined until the explicit carry-forward attestation ties every
-  employee amount to the source control total; use full backup and restore to
-  preserve native HMAC identity
+  `owed = statutory earned + contractual extra - paid` with owed nonnegative;
+  target credit is reported separately and never creates a second bucket or GL
+  amount
+- vacation-payment allocation children are server-owned and use the documented
+  oldest-due order; never submit caller-calculated children or account overrides
 - source files and AI extraction do not directly import vacation transactions.
   Analyze and visually verify the evidence, propose explicit facts, then call
   the same first-class preview/post/correction endpoints used by every client
