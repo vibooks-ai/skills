@@ -153,8 +153,10 @@ paid, and still owed to an employee:
 6. close reference periods so the official whole-period target and any true-up
    are preserved with the exact published rule release, then use the report to
    prove employee owed equals the Vacation Pay Payable general-ledger balance
-7. correct history through the owning vacation calculation's reversal and a new
-   preview/post; never edit a posted vacation event, allocation, or journal
+7. correct history through the owning vacation calculation's reversal using a
+   fresh request ID and reviewed approver, then create a new preview with
+   `replaces_calculation_id` and post it with another fresh request ID; never
+   edit a posted vacation event, allocation, or journal
 
 AI analysis of Sage reports, payroll registers, employment agreements, or other
 source material produces proposed facts and first-class Vibooks calls; it is not

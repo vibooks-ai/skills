@@ -405,7 +405,8 @@ Before closing a period:
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and
 true-up history, payment parent and server-owned children, journal entries,
-effective account version, approvals, and audit rows. Do not accept matching
+effective account version, post/reversal request IDs, approval identities,
+`replaces_calculation_id` / `replaced_by_calculation_id`, and audit rows. Do not accept matching
 aggregate totals when the exact payroll component, period allocation, account,
 published rule release, or correction lineage differs.
 

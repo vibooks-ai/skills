@@ -475,6 +475,10 @@ Subledger integrity rules:
   amount
 - vacation-payment allocation children are server-owned and use the documented
   oldest-due order; never submit caller-calculated children or account overrides
+- every vacation post and reversal needs a new `request_id` plus the reviewed
+  `approved_by` identity. Retry only the exact same request. After a reversal,
+  create a fresh preview with `replaces_calculation_id` so the report retains
+  the original, reversal, approver, and replacement chain
 - source files and AI extraction do not directly import vacation transactions.
   Analyze and visually verify the evidence, propose explicit facts, then call
   the same first-class preview/post/correction endpoints used by every client
