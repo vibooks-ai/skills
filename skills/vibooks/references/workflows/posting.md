@@ -424,6 +424,33 @@ Subledger integrity rules:
   payroll profile, schedule, statutory payroll items, jurisdiction, and verified
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
+- for an ordinary Canadian pay period on a light- or standard-approval book,
+  use the guided payroll batch workflow: choose one schedule and exact period
+  dates, preview every selected employee, review the server-returned totals and
+  posting defaults, create one draft batch, approve it, and post it atomically;
+  keep the individual-run workflow for genuine one-employee exceptions rather
+  than preparing a normal multi-employee period one run at a time
+- send an explicit employee `calculation_mode`: use `profile_regular` for
+  profile-derived salary or hourly pay with no item input,
+  `itemized_regular` for a complete assigned regular earning set, and
+  `profile_regular_with_items` for profile-derived salary or hourly pay plus
+  assigned fixed deductions or employer contributions; never infer the mode
+  from whether `payroll_items` happens to be present
+- regular item calculations support only assigned `regular_salary`,
+  `regular_hourly`, `overtime`, `fixed_pre_tax`, `fixed_post_tax`, and
+  `fixed_employer` meanings. Do not turn a percentage, bonus, retroactive pay,
+  vacation payout, accumulated overtime, commission, taxable benefit,
+  vacation-taken line, reimbursement, inactive item, or unknown future type
+  into a fixed dollar amount; use its dedicated supported workflow or stop
+- generate one stable UUID `client_operation_id` and one stable idempotency key
+  for a logical payroll-batch create. After an ambiguous response, read
+  `/v1/books/{book_id}/payroll-batches/by-client-operation/{client_operation_id}`
+  before retrying; reuse the same identifiers only for the exact unchanged
+  request, and use stable action keys while reconciling approve or post results
+- guided payroll batches are intentionally unavailable for books whose current
+  `approval_level` is `strict`. Stop on
+  `PAYROLL_BATCH_STRICT_APPROVAL_UNSUPPORTED`; do not create an arbitrary
+  approval, claim another principal, or suggest weakening the book policy
 - for Quebec employees, record the current-period Fonds de solidarité FTQ and
   Fondaction share-purchase withholdings on the payroll profile when they
   apply; preserve the combined prior-period amount in verified YTD history so
