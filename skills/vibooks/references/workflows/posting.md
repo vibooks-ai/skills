@@ -493,6 +493,17 @@ Subledger integrity rules:
   fingerprint unchanged into individual or batch post. A missing/mismatched
   fact, unpublished pay-date rule, unsupported earning meaning or incomplete
   setup must stop before any payroll, journal or statement mutation
+- reverse or replace Canadian payroll only with the complete retained
+  employee/profile identity, calculation release/snapshot/fingerprint,
+  pay-statement facts, detailed component arrays, cash account, date, and
+  correction reason required by the typed request. For standard or strict
+  approval, request `entry.reverse` approval for the exact request body and
+  consume only an approved record whose `target_id` and `payload_hash` still
+  match. If any date, fact, amount, account, or reason changes, request a new
+  approval. Keep one stable idempotency key for the unchanged approval request
+  and one for the unchanged final reverse or replacement until the outcome is
+  known; after an ambiguous response, retry those exact identifiers instead of
+  creating a second correction
 - after posting, use the statement list/detail/payroll-run-link/render and
   batch-export APIs. Viewing, downloading, printing or creating a ZIP does not
   prove delivery. Record `paper_in_person` only after the real handoff, with the
