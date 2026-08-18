@@ -149,12 +149,14 @@ For an ordinary supported pay period:
 4. after post, read the statement through its payroll-run link or list API;
    render the retained PDF/HTML or export the batch ZIP without marking it as
    delivered
-5. record `paper_in_person` only after the real paper handoff, exact handoff
-   time, payment time and employee-recipient confirmation occurred; an
-   `external_handoff_note` is retained but is never described as qualified
-   delivery
-6. use payroll reversal/replacement for corrections; never edit a statement or
-   regenerate historical content from current templates or current rules
+5. record `paper_in_person` only after the real paper handoff, binding the exact
+   retained language artifact and strict handoff timestamp; do not infer payment,
+   timeliness, compliance qualification or recipient confirmation from this fact
+6. correct a mistaken handoff through preview/commit correction so the original
+   fact remains and a void or replacement successor is appended
+7. use payroll reversal/replacement for payroll corrections; send the complete
+   current statement facts and calculation fingerprint, and never edit a
+   statement or regenerate historical content from current templates or rules
 
 Québec statements default to French. Select English only when an effective
 employee request has been retained. The desktop/UI language never chooses the

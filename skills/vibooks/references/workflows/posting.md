@@ -493,9 +493,10 @@ Subledger integrity rules:
   setup must stop before any payroll, journal or statement mutation
 - after posting, use the statement list/detail/payroll-run-link/render and
   batch-export APIs. Viewing, downloading, printing or creating a ZIP does not
-  prove delivery. Record `paper_in_person` only after the real handoff and
-  payment times are known and the employee recipient was confirmed;
-  `external_handoff_note` is never a qualified provision event
+  prove delivery. Record `paper_in_person` only after the real handoff, with the
+  exact retained language artifact and strict factual timestamp. This event
+  does not assert payment, timeliness or legal qualification. Correct a mistake
+  only through the append-only provision-event preview/commit correction APIs
 - Québec statement language is French unless an effective employee English
   request exists. UI language is irrelevant. Use shared English/French branded
   templates with the one protected statement-content slot; never hide or

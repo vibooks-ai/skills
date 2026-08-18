@@ -413,10 +413,11 @@ Before closing a period:
     request, and rendered artifact hashes remain stable on re-read
 
 For a statement correction, verify the original remains reproducible, reversal
-marks its active generation and statement voided, replacement appends a new
-generation/revision, and no view/render/ZIP action created a provision event.
-Inspect paper-handoff events as operator assertions about an external action;
-only the policy-qualified event may be described as on time.
+appends a new voided statement revision and exact artifact, replacement appends
+a new generation/revision, and no view/render/ZIP action created a provision
+event. Inspect paper-handoff events only as factual external-action records;
+mistakes must have an append-only void/replacement successor, and Vibooks must
+not infer payment, timeliness or legal qualification from the handoff timestamp.
 
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and
