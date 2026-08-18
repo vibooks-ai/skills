@@ -129,6 +129,44 @@ missing official release, unresolved coverage, incomplete service history, an
 unsupported employee class, or an unknown earning meaning, stop rather than
 guessing.
 
+Canadian pay statements are part of the posted payroll record, not a separate
+document-import or POS workflow. Before activation, use setup readiness to
+confirm one pay-date-effective employer payroll identity, each employee's sole
+payroll identity and employee code, and an explicit employment-standards
+jurisdiction. Tax province and employment-standards jurisdiction are separate;
+never infer federal coverage from the business industry or tax province.
+
+For an ordinary supported pay period:
+
+1. create the employer identity and employee statement profile through their
+   first-class APIs, then activate pay statements only when setup readiness is
+   complete
+2. treat a saved default-hours value only as a proposal; confirm the exact
+   current-period paid, worked and payment hours from a timesheet, employer
+   record, employee record or explicit operator confirmation
+3. pass the typed `pay_statement_facts` through calculation preview and carry
+   the server-returned draft and fingerprint unchanged into run or batch post
+4. after post, read the statement through its payroll-run link or list API;
+   render the retained PDF/HTML or export the batch ZIP without marking it as
+   delivered
+5. record `paper_in_person` only after the real paper handoff, exact handoff
+   time, payment time and employee-recipient confirmation occurred; an
+   `external_handoff_note` is retained but is never described as qualified
+   delivery
+6. use payroll reversal/replacement for corrections; never edit a statement or
+   regenerate historical content from current templates or current rules
+
+Québec statements default to French. Select English only when an effective
+employee request has been retained. The desktop/UI language never chooses the
+formal statement language. Vibooks may brand the shared English or French
+template, while jurisdiction-specific protected content remains owned by the
+effective rule package; do not create one appearance template per province.
+
+If Vibooks returns `PAY_STATEMENT_RULE_NOT_PUBLISHED`, missing confirmed facts,
+an unsupported earning meaning or incomplete setup, do not post the payroll or
+create a manual stub. Retain the evidence, correct setup or use an external
+payroll workflow until an exact verified rule interval exists.
+
 Vacation pay is a general employee-liability capability, not a restaurant or
 POS feature. Use it for any supported employer that must track money earned,
 paid, and still owed to an employee:

@@ -404,6 +404,19 @@ Before closing a period:
     an already-earned bucket, Québec protected-absence openings to retain their
     exact fact set and section-74 trace, owed to stay nonnegative, and no unresolved
     period blocker
+11. when Canadian pay statements are active, list every statement for the
+    payroll period and require one active statement for each active posted run;
+    verify pay date selected the exact published rule interval, current gross
+    minus employee deductions equals net, employer contributions do not reduce
+    net, protected earning hours match the confirmed run facts, YTD agrees with
+    active native payroll history, Québec formal language follows the effective
+    request, and rendered artifact hashes remain stable on re-read
+
+For a statement correction, verify the original remains reproducible, reversal
+marks its active generation and statement voided, replacement appends a new
+generation/revision, and no view/render/ZIP action created a provision event.
+Inspect paper-handoff events as operator assertions about an external action;
+only the policy-qualified event may be described as on time.
 
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and

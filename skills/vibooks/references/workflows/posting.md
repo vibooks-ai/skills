@@ -477,6 +477,30 @@ Subledger integrity rules:
   liability override for the canonical Quebec FTQ or Fondaction components,
   whose dedicated payable accounts are assigned by the server; use the payroll
   reversal, replacement, or correction workflow
+- when Canadian pay statements are enabled, complete
+  `/pay-statements/setup-readiness`, the pay-date-effective employer identity,
+  employee payroll identity/code, and employee statement profile before
+  activation. Keep tax province separate from the explicit employment-
+  standards jurisdiction and never infer federal coverage
+- for every supported current period, submit exact typed
+  `pay_statement_facts` to calculation preview. Saved hours are proposals only;
+  confirm actual worked hours, hours paid/for which payment is made, salary
+  hours and the permitted source kind. Phase one ordinary periods require an
+  explicit confirmation that there are no paid non-work hours
+- carry the server-returned statement facts, calculation snapshot and
+  fingerprint unchanged into individual or batch post. A missing/mismatched
+  fact, unpublished pay-date rule, unsupported earning meaning or incomplete
+  setup must stop before any payroll, journal or statement mutation
+- after posting, use the statement list/detail/payroll-run-link/render and
+  batch-export APIs. Viewing, downloading, printing or creating a ZIP does not
+  prove delivery. Record `paper_in_person` only after the real handoff and
+  payment times are known and the employee recipient was confirmed;
+  `external_handoff_note` is never a qualified provision event
+- Québec statement language is French unless an effective employee English
+  request exists. UI language is irrelevant. Use shared English/French branded
+  templates with the one protected statement-content slot; never hide or
+  rewrite statutory content and never make province-specific appearance
+  templates
 - for Canadian vacation pay, use the dedicated vacation resources for approved
   jurisdiction/class facts, service history, policy/arrangement, effective-dated
   accounts, opening, earning, period close, payment allocation, correction, and
