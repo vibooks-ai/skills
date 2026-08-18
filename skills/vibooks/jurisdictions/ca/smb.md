@@ -146,6 +146,8 @@ For an ordinary supported pay period:
    record, employee record or explicit operator confirmation
 3. pass the typed `pay_statement_facts` through calculation preview and carry
    the server-returned draft and fingerprint unchanged into run or batch post
+   (`salary_hours_worked` is supplied only for a salary profile; earning meaning
+   always comes from the server's versioned payroll item and is never caller-set)
 4. after post, read the statement through its payroll-run link or list API;
    render the retained PDF/HTML or export the batch ZIP without marking it as
    delivered
@@ -163,6 +165,10 @@ employee request has been retained. The desktop/UI language never chooses the
 formal statement language. Vibooks may brand the shared English or French
 template, while jurisdiction-specific protected content remains owned by the
 effective rule package; do not create one appearance template per province.
+When a request is recorded after payroll was posted, use the returned statement
+successor IDs. If a future-dated request has since become effective, call the
+employee language-companion materialization endpoint before rendering English;
+the prior French revision and bytes remain retained.
 
 If Vibooks returns `PAY_STATEMENT_RULE_NOT_PUBLISHED`, missing confirmed facts,
 an unsupported earning meaning or incomplete setup, do not post the payroll or

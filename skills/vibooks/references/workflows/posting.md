@@ -485,7 +485,9 @@ Subledger integrity rules:
 - for every supported current period, submit exact typed
   `pay_statement_facts` to calculation preview. Saved hours are proposals only;
   confirm actual worked hours, hours paid/for which payment is made, salary
-  hours and the permitted source kind. Phase one ordinary periods require an
+  hours only for salary profiles, and the permitted source kind. Do not send a
+  caller-selected statement semantic: the versioned payroll item owns the
+  earning meaning. Phase one ordinary periods require an
   explicit confirmation that there are no paid non-work hours
 - carry the server-returned statement facts, calculation snapshot and
   fingerprint unchanged into individual or batch post. A missing/mismatched
@@ -501,12 +503,17 @@ Subledger integrity rules:
   request exists. UI language is irrelevant. Use shared English/French branded
   templates with the one protected statement-content slot; never hide or
   rewrite statutory content and never make province-specific appearance
-  templates
+  templates. A current request appends successor statements with retained
+  English companions; when a future-dated request becomes effective, call
+  `/employees/{employeeId}/pay-statement-language-companions:materialize`
+  before rendering or handing off the English artifact
 - for Canadian vacation pay, use the dedicated vacation resources for approved
   jurisdiction/class facts, service history, policy/arrangement, effective-dated
   accounts, opening, earning, period close, payment allocation, correction, and
   reporting; do not recreate vacation liability through generic payroll
-  deductions or manual journals
+  deductions or manual journals. Vacation post/reversal responses expose any
+  pay-statement successor IDs; follow those immutable successors instead of
+  continuing to use a superseded statement revision
 - treat each source earning meaning and earned-date segment as protected input;
   unknown semantics, uncovered dates, incomplete service or coverage, and rule
   gaps fail closed instead of falling back to taxable wages or a prior release;
