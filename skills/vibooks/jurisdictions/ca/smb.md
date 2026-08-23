@@ -170,10 +170,27 @@ whose date must still match the reviewed plan. If the server reports that the
 plan is stale, discard it, read the new graph, and obtain a fresh review; never
 retry with an old fingerprint or mutate individual dependent rows by hand.
 
+When the mistake is in a protected upstream source rather than the payroll
+result, use the same statutory correction planner with exactly one typed
+replacement for the original weekly work-fact generation, prior-provider
+opening-earning generation, or reviewed tip-collection event. Review the plan's
+exact source-rooted dependency graph, replacement summary, accounting-period
+checks, and `entry_reverse_approval_targets`. On standard or strict approval
+books, create the listed `entry.reverse` approvals with the exact returned
+payloads and pass their IDs to `:execute`. Execution must receive the unchanged
+plan ID and graph fingerprint; it atomically reverses every dependent result,
+appends the source successor, and posts the verified payroll successors. A stale
+graph, prepared or paid remittance, closed period, missing approval, changed
+calculation, or failed successor blocks and rolls back the entire operation.
+
 For the certified PEI `general-hourly-v1` operation, use only the server-derived
 weekly period aligned to the effective employer work-week policy. Retain one
 reviewed fact for every date and every physical report-to-work occurrence; do
-not submit a legal eligibility result, overtime threshold, minimum rate,
+not infer attendance from scheduled hours. Every occurrence must state whether
+physical attendance was required, whether the employee attended or was a
+documented no-show, and, when attended, the full local arrival date and time.
+A documented no-show carries zero worked/paid hours and does not create
+reporting pay. Do not submit a legal eligibility result, overtime threshold, minimum rate,
 holiday date, holiday amount, tip tax class, or pay date. The server derives
 those results from the bounded PEI employment-standard package. Carry the
 returned draft and fingerprint unchanged. Certified PEI posting requires an

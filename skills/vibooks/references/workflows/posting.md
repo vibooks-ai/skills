@@ -448,6 +448,15 @@ Subledger integrity rules:
   remittance, dependent later run, consumed vacation bucket or missing retained
   node blocks the whole correction transaction; do not manually edit one side
   of the payroll/vacation/statement relationship
+- when correcting a weekly work-fact generation, prior-provider opening-earning
+  generation, or reviewed tip-collection event, plan from that source root with
+  one complete typed replacement. Review the replacement and transitive graph,
+  create every exact `entry.reverse` approval target returned for a standard or
+  strict book, then execute with the unchanged plan ID, graph fingerprint and
+  approval map. Vibooks must reverse dependents, append the protected source
+  successor and post all recalculated payroll successors atomically; a stale
+  graph, finalized remittance, closed period, missing approval or changed result
+  fails without partial source, ledger, vacation or statement changes
 - list durable payroll compliance issues after certified payroll post. A late
   PEI employee-property payout remains payable and posted, but its blocking
   issue must be reviewed. `acknowledge` records that review; `resolve` requires
