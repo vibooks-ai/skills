@@ -160,6 +160,65 @@ For an ordinary supported pay period:
    current statement facts and calculation fingerprint, and never edit a
    statement or regenerate historical content from current templates or rules
 
+Before reversing or replacing a certified employment-standard payroll run,
+create a statutory correction plan for that run and the exact reversal or
+replacement pay date. Read its transitive dependency graph and stop on every
+returned blocker, including a closed or unavailable accounting period, a
+prepared or paid remittance, a later payroll consumer, or missing retained
+evidence. Carry the unchanged plan ID and graph fingerprint into the action,
+whose date must still match the reviewed plan. If the server reports that the
+plan is stale, discard it, read the new graph, and obtain a fresh review; never
+retry with an old fingerprint or mutate individual dependent rows by hand.
+
+For the certified PEI `general-hourly-v1` operation, use only the server-derived
+weekly period aligned to the effective employer work-week policy. Retain one
+reviewed fact for every date and every physical report-to-work occurrence; do
+not submit a legal eligibility result, overtime threshold, minimum rate,
+holiday date, holiday amount, tip tax class, or pay date. The server derives
+those results from the bounded PEI employment-standard package. Carry the
+returned draft and fingerprint unchanged. Certified PEI posting requires an
+effective PEI vacation profile in `accrue_for_later` mode and matching vacation
+accounts; the wage journal, vacation accrual, vacation subledger event and pay
+statement post in one transaction. If a rule interval, external applicability
+determination, complete week, daily facts, prior holiday basis, vacation setup,
+or compatible statement/CRA/vacation package is missing, stop without posting.
+
+The first PEI operation supports initial, unchanged or increased hourly rates
+only. It blocks rate reductions, transition weeks, non-weekly/non-aligned
+periods, unsupported employee classes, holiday/overtime/reporting-pay
+interactions, and any caller attempt to extend a rule after its explicit end.
+After a vacation-bearing payroll post, reverse its owning vacation calculation
+before reversing payroll so both subledgers remain reconciled.
+
+For employer-collected PEI tips, never use a generic liability balance or a
+free-text account as the payroll source. First create
+`payroll-tip-collections` from a retained, reviewed processor or sales summary:
+post the gross employee-owned principal to the exact current-liability Tips
+Payable account and post processor fees separately. A controlled-tip or direct
+card-conduit payroll preview must select that source ID and cannot allocate more
+than its remaining principal. The server derives CRA treatment, custody
+settlement and the PEI property deadline. A card-conduit assertion additionally
+requires the retained CRA payout-timing fact supported by the current official
+package; a weekly-payroll or unspecified timing assertion does not qualify as
+CRA-direct. A payout after the PEI deadline may still be recorded so the
+employee receives the money, but the server creates a durable blocking payroll
+compliance issue. Acknowledge that issue only to record review, and resolve it
+only with a real corrective-action note; neither action rewrites the posted
+payroll evidence. Reverse an unused mistaken source through its `:reverse`
+action; if a posted payroll used it, reverse the dependent payroll first so
+source availability is restored.
+Direct cash tips never possessed by the employer use a retained record
+reference and create no employer cash or Tips Payable entry.
+
+When the first Vibooks week needs the preceding four-week holiday basis, use
+`payroll-opening-earnings` only from a retained prior-provider register. Cover
+every calendar date with exact supported earning semantics or explicit
+`no_earnings`, reconcile all semantic totals, assert the absence of other
+earnings and meals/lodging, and attach the source evidence. Do not use aggregate
+YTD totals. Correct an unused generation with an exact-interval successor; a
+generation already used by posted payroll remains immutable until its dependent
+payroll is reversed.
+
 Québec statements default to French. Select English only when an effective
 employee request has been retained. The desktop/UI language never chooses the
 formal statement language. Vibooks may brand the shared English or French
@@ -194,11 +253,13 @@ paid, and still owed to an employee:
    split history at a service-rate boundary when Vibooks asks for dated detail;
    the sum of positive openings must tie to the source control balance, while a
    fully paid pay-each history uses the zero-control history disposition
-4. preview each earning from exact posted payroll components and dated earning
+4. ordinary Canadian payroll outside the certified PEI operation previews each
+   vacation earning from exact posted payroll components and dated earning
    semantics inside that payroll run's immutable pay period, using its exact pay
    date, then post only the returned calculation ID; retained mode posts expense/
    payable, while pay-each must bind the exact vacation-pay component already
-   present in the posted payroll run
+   present in the posted payroll run; certified PEI payroll creates its retained
+   vacation accrual atomically during payroll post and must not be accrued again
 5. settle retained vacation only through the vacation-payment workflow, binding
    the exact payroll component that debits `Vacation Pay Payable`; use the source
    payroll run's pay date and never backdate it or allocate a later-earned balance;

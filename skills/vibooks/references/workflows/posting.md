@@ -424,6 +424,35 @@ Subledger integrity rules:
   payroll profile, schedule, statutory payroll items, jurisdiction, and verified
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
+- for certified PEI general-hourly payroll, first retain the external
+  applicability determination, one effective weekly work-week/payment-day
+  policy, all seven reviewed daily/occurrence facts, the PEI vacation profile
+  in retained-accrual mode, and the matching vacation accounts. Use the
+  employment-standard preview; its period end, pay date, rates, minimum-wage,
+  reporting-pay, overtime, holiday, tip-classification, protected totals,
+  source deductions and statement facts are server-owned. Post the unchanged
+  returned draft so payroll, vacation payable/subledger and the issued paystub
+  commit atomically. Never convert a missing PEI package or fact into zero or a
+  prior-period default
+- immediately before posting a certified PEI preview, let Vibooks revalidate
+  that every referenced determination, work-week policy, work-fact generation,
+  rate-profile version, tip arrangement/source, opening generation, holiday
+  component and vacation event is still the active retained source. If any
+  source changed after preview, create a new preview; never post the old signed
+  draft merely because its fingerprint is still internally valid
+- before reversing or replacing a certified employment-standard payroll run,
+  create `/payroll-statutory-corrections:plan` with the exact reversal or
+  replacement pay date, review the returned transitive graph and blockers, then
+  send the unchanged plan ID and graph fingerprint with an action using that
+  same date. A closed or unavailable accounting period, stale graph, finalized
+  remittance, dependent later run, consumed vacation bucket or missing retained
+  node blocks the whole correction transaction; do not manually edit one side
+  of the payroll/vacation/statement relationship
+- list durable payroll compliance issues after certified payroll post. A late
+  PEI employee-property payout remains payable and posted, but its blocking
+  issue must be reviewed. `acknowledge` records that review; `resolve` requires
+  the actual corrective-action note. Neither state transition certifies that
+  the original payout was timely
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and
@@ -504,6 +533,9 @@ Subledger integrity rules:
   and one for the unchanged final reverse or replacement until the outcome is
   known; after an ambiguous response, retry those exact identifiers instead of
   creating a second correction
+- when a certified PEI payroll run has an active vacation earning, reverse the
+  linked vacation calculation first; the payroll reversal intentionally blocks
+  a one-sided correction that would leave Vacation Pay Payable unreconciled
 - after posting, use the statement list/detail/payroll-run-link/render and
   batch-export APIs. Viewing, downloading, printing or creating a ZIP does not
   prove delivery. Record `paper_in_person` only after the real handoff, with the
