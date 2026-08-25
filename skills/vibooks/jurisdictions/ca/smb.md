@@ -151,12 +151,24 @@ For an ordinary supported pay period:
 4. after post, read the statement through its payroll-run link or list API;
    render the retained PDF/HTML or export the batch ZIP without marking it as
    delivered
-5. record `paper_in_person` only after the real paper handoff, binding the exact
-   retained language artifact and strict handoff timestamp; do not infer payment,
-   timeliness, compliance qualification or recipient confirmation from this fact
-6. correct a mistaken handoff through preview/commit correction so the original
-   fact remains and a void or replacement successor is appended
-7. use payroll reversal/replacement for payroll corrections; send the complete
+5. for every supported Canadian jurisdiction, read the statement's
+   server-derived `paper_handoff` projection before acting; `not_recorded` means
+   only that no current paper-delivery fact exists and never means the cash wage
+   is unpaid
+6. record `paper_in_person` only after the real paper handoff, binding the exact
+   retained language artifact and a handoff timestamp no later than server time;
+   optionally retain an employee-acknowledgement reference, source reference and
+   note, but do not infer payment, timeliness, compliance qualification or
+   recipient confirmation from any of them
+7. correct a mistaken current handoff through preview/commit correction so the
+   original fact remains and a void or replacement successor is appended; an
+   active handoff or replacement may be replaced or withdrawn, while an active
+   withdrawal may only be restored with replacement facts and imported legacy
+   history is read-only
+8. after any handoff write, re-read list, detail and owning-run views and require
+   their `paper_handoff` status, active count, last handoff and correction-history
+   flag to agree
+9. use payroll reversal/replacement for payroll corrections; send the complete
    current statement facts and calculation fingerprint, and never edit a
    statement or regenerate historical content from current templates or rules
 

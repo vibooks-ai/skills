@@ -418,6 +418,19 @@ a new generation/revision, and no view/render/ZIP action created a provision
 event. Inspect paper-handoff events only as factual external-action records;
 mistakes must have an append-only void/replacement successor, and Vibooks must
 not infer payment, timeliness or legal qualification from the handoff timestamp.
+Apply this workflow uniformly across every supported Canadian jurisdiction; a
+province-specific employment-standard workflow does not narrow pay-statement
+or paper-handoff support.
+
+For paper-handoff verification, require the server-derived `paper_handoff`
+projection to agree on statement list, detail and owning payroll-run responses.
+Reject a handoff timestamp later than server time. An active `handoff` or
+`correction_replace` may receive a `replace` or `void` successor; an active
+`correction_void` may receive only a `replace` successor to restore the handoff;
+`legacy_external_note` is read-only. Confirm the terminal current event drives
+the projected status, last handoff, optional employee acknowledgement and source
+reference, while every corrected event remains visible in the audit history.
+Treat paper delivery and cash-wage payment as separate evidence domains.
 
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and
