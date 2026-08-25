@@ -41,6 +41,14 @@
 - do not use `resources:batchDelete` to remove posted invoices, bills, sales
   receipts, customer refunds, receipts, expenses, vendor refunds, payments,
   payroll runs, inventory activity, or fixed-asset activity
+- permanently delete an employee only when the record was created by mistake
+  and has no saved payroll setup, legal identity, payroll run, pay statement,
+  vacation record, statutory record, accounting entry, or other retained
+  history. Use `POST /v1/books/{book_id}/resources:batchDelete` with
+  `resource: "employees"`, the confirmed employee IDs, Payroll module access,
+  and the normal idempotency controls. Treat `DELETE_CONFLICT` as authoritative:
+  never remove dependent payroll records to force deletion; edit the employee
+  and set the status to inactive instead
 - if an old hard-delete bug already left a posted invoice, bill, sales
   receipt, customer refund, receipt, expense, vendor refund, payment, payroll,
   inventory, or fixed-asset entry orphaned with no owning source row, confirm
