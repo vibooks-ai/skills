@@ -49,6 +49,12 @@
   and the normal idempotency controls. Treat `DELETE_CONFLICT` as authoritative:
   never remove dependent payroll records to force deletion; edit the employee
   and set the status to inactive instead
+- permanently delete a pay schedule only when it was created by mistake and has
+  never been assigned to an employee or referenced by payroll records. Use
+  `POST /v1/books/{book_id}/resources:batchDelete` with
+  `resource: "payroll_schedules"`, the confirmed schedule IDs, Payroll module
+  access, and the normal idempotency controls. Treat `DELETE_CONFLICT` as
+  authoritative and deactivate a referenced schedule instead
 - if an old hard-delete bug already left a posted invoice, bill, sales
   receipt, customer refund, receipt, expense, vendor refund, payment, payroll,
   inventory, or fixed-asset entry orphaned with no owning source row, confirm
