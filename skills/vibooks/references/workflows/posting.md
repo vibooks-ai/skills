@@ -439,8 +439,10 @@ Subledger integrity rules:
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
 - before an ordinary Canadian payroll post, read
-  `/v1/books/{book_id}/payroll-rule-readiness` and refresh that same resource
-  when its status is not `clear` or the app asks for verification. A `clear`
+  `/v1/books/{book_id}/payroll-rule-readiness`. Vibooks runs the same idempotent
+  check automatically when Payroll opens and before calculation, batch creation,
+  or posting. A headless client may POST that resource when it observes `pending`,
+  but neither the operator nor the Agent certifies statutory rules. A `clear`
   result means every retained native posted payroll source is unchanged under
   the currently activated immutable rule revision. A `blocked` result means a
   protected result changed or could not be replayed: do not choose an older

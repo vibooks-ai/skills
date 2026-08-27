@@ -138,12 +138,15 @@ never infer federal coverage from the business industry or tax province.
 
 For an ordinary supported pay period:
 
-1. read `/v1/books/{book_id}/payroll-rule-readiness` and refresh it when the
-   status is not `clear`; stop ordinary posting on `blocked`, correct every
+1. read `/v1/books/{book_id}/payroll-rule-readiness`; Vibooks runs this check
+   automatically when Payroll opens and before calculation, batch creation, or
+   posting. If a headless workflow observes `pending`, POST the same resource to
+   run the system-owned check; this is not a request for the user or Agent to
+   certify statutory rules. Stop ordinary posting on `blocked`, correct every
    affected historical payroll through the statutory reverse/replace workflow,
-   and refresh again. Never ask Vibooks to use an older revision. Posted payroll
-   keeps the exact revision originally used, while the payroll pay date selects
-   the applicable legal interval regardless of the current or activation date
+   then run the check again. Never ask Vibooks to use an older revision. Posted
+   payroll keeps the exact revision originally used, while the payroll pay date
+   selects the applicable legal interval regardless of the current or activation date
 2. create the employer identity and employee statement profile through their
    first-class APIs, then activate pay statements only when setup readiness is
    complete
