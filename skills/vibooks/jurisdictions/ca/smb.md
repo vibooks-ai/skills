@@ -181,6 +181,19 @@ For an ordinary supported pay period:
    current statement facts and calculation fingerprint, and never edit a
    statement or regenerate historical content from current templates or rules
 
+Treat Payroll work surfaced by `/v1/books/{book_id}/tasks` as a versioned
+server projection, not as a durable client-side checklist. Payroll task IDs
+contain an opaque instance token; preserve the complete ID, re-read
+`/v1/books/{book_id}/tasks/{task_id}` immediately before acting, and follow only
+the returned `actions[].target` for Review, Fix, or Correct payroll. Do not
+construct an action from the task title, family name, or a cached count. A
+`missing_scopes` action must remain unavailable. If the detail read returns
+`TASK_INSTANCE_CHANGED`, discard the old ID and present the current task; if it
+returns `TASK_VERIFICATION_REQUIRED`, run or complete the retained rule-impact
+check before continuing; if the task is no longer found, treat it as resolved
+rather than recreating it. These tasks report affected-item counts and must
+never be converted into invented monetary exposure.
+
 Before reversing or replacing a certified employment-standard payroll run,
 create a statutory correction plan for that run and the exact reversal or
 replacement pay date. Read its transitive dependency graph and stop on every

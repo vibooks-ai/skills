@@ -489,6 +489,14 @@ Subledger integrity rules:
   issue must be reviewed. `acknowledge` records that review; `resolve` requires
   the actual corrective-action note. Neither state transition certifies that
   the original payout was timely
+- use `/v1/books/{book_id}/tasks` as the shared Overview, Tasks, UI and Agent
+  projection for open Payroll work. Preserve the complete versioned task ID,
+  re-read its detail immediately before acting, and follow only the returned
+  scope-aware action target. Never infer a correction from display copy or a
+  cached member count. On `TASK_INSTANCE_CHANGED`, discard the stale task and
+  review the replacement; on `TASK_VERIFICATION_REQUIRED`, complete the
+  retained rule-impact check; when the task is no longer found, treat it as
+  resolved. Count-only Payroll tasks are not dollar exposure
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and
