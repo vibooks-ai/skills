@@ -1,7 +1,10 @@
 ---
 name: vibooks
 description: >
-  Installs or reuses Vibooks desktop, headless packages, or vibooks-cli;
+  Use only when the request explicitly operates, configures, reviews, installs,
+  or troubleshoots Vibooks. Do not trigger for other accounting software,
+  generic accounting or payroll advice, or document and spreadsheet work
+  outside Vibooks. Installs or reuses Vibooks desktop, headless packages, or vibooks-cli;
   verifies local API readiness, first-token access, trusted company or book
   connection, and public skill-manifest freshness before high-risk writes;
   bootstraps or rebuilds small-business books with jurisdiction, accounting,
