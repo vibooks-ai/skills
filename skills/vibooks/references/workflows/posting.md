@@ -438,6 +438,17 @@ Subledger integrity rules:
   payroll profile, schedule, statutory payroll items, jurisdiction, and verified
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
+- before an ordinary Canadian payroll post, read
+  `/v1/books/{book_id}/payroll-rule-readiness` and refresh that same resource
+  when its status is not `clear` or the app asks for verification. A `clear`
+  result means every retained native posted payroll source is unchanged under
+  the currently activated immutable rule revision. A `blocked` result means a
+  protected result changed or could not be replayed: do not choose an older
+  revision, alter the posted payroll, or guess a replacement amount. Keep
+  preview and correction planning available, use the statutory reverse/replace
+  workflow for every affected payroll, then refresh readiness before the next
+  ordinary post. The legal interval is selected from the payroll pay date, not
+  the activation date, current date, or date the user opens Vibooks
 - for certified PEI general-hourly payroll, first retain the external
   applicability determination, one effective weekly work-week/payment-day
   policy, all seven reviewed daily/occurrence facts, the PEI vacation profile

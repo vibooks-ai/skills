@@ -138,37 +138,43 @@ never infer federal coverage from the business industry or tax province.
 
 For an ordinary supported pay period:
 
-1. create the employer identity and employee statement profile through their
+1. read `/v1/books/{book_id}/payroll-rule-readiness` and refresh it when the
+   status is not `clear`; stop ordinary posting on `blocked`, correct every
+   affected historical payroll through the statutory reverse/replace workflow,
+   and refresh again. Never ask Vibooks to use an older revision. Posted payroll
+   keeps the exact revision originally used, while the payroll pay date selects
+   the applicable legal interval regardless of the current or activation date
+2. create the employer identity and employee statement profile through their
    first-class APIs, then activate pay statements only when setup readiness is
    complete
-2. treat a saved default-hours value only as a proposal; confirm the exact
+3. treat a saved default-hours value only as a proposal; confirm the exact
    current-period paid, worked and payment hours from a timesheet, employer
    record, employee record or explicit operator confirmation
-3. pass the typed `pay_statement_facts` through calculation preview and carry
+4. pass the typed `pay_statement_facts` through calculation preview and carry
    the server-returned draft and fingerprint unchanged into run or batch post
    (`salary_hours_worked` is supplied only for a salary profile; earning meaning
    always comes from the server's versioned payroll item and is never caller-set)
-4. after post, read the statement through its payroll-run link or list API;
+5. after post, read the statement through its payroll-run link or list API;
    render the retained PDF/HTML or export the batch ZIP without marking it as
    delivered
-5. for every supported Canadian jurisdiction, read the statement's
+6. for every supported Canadian jurisdiction, read the statement's
    server-derived `paper_handoff` projection before acting; `not_recorded` means
    only that no current paper-delivery fact exists and never means the cash wage
    is unpaid
-6. record `paper_in_person` only after the real paper handoff, binding the exact
+7. record `paper_in_person` only after the real paper handoff, binding the exact
    retained language artifact and a handoff timestamp no later than server time;
    optionally retain an employee-acknowledgement reference, source reference and
    note, but do not infer payment, timeliness, compliance qualification or
    recipient confirmation from any of them
-7. correct a mistaken current handoff through preview/commit correction so the
+8. correct a mistaken current handoff through preview/commit correction so the
    original fact remains and a void or replacement successor is appended; an
    active handoff or replacement may be replaced or withdrawn, while an active
    withdrawal may only be restored with replacement facts and imported legacy
    history is read-only
-8. after any handoff write, re-read list, detail and owning-run views and require
+9. after any handoff write, re-read list, detail and owning-run views and require
    their `paper_handoff` status, active count, last handoff and correction-history
    flag to agree
-9. use payroll reversal/replacement for payroll corrections; send the complete
+10. use payroll reversal/replacement for payroll corrections; send the complete
    current statement facts and calculation fingerprint, and never edit a
    statement or regenerate historical content from current templates or rules
 
