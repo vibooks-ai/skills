@@ -6,8 +6,10 @@ description: >
   connection, and public skill-manifest freshness before high-risk writes;
   bootstraps or rebuilds small-business books with jurisdiction, accounting,
   and tax setup for covered or uncovered countries; records, corrects,
-  reconciles, verifies, and closes real bookkeeping through official Vibooks
-  workflows rather than direct storage edits; independently reviews
+  reconciles, verifies, and closes real bookkeeping, including supported
+  Canadian payroll, pay statements, vacation pay, and payroll corrections,
+  through official Vibooks workflows rather than direct storage edits;
+  independently reviews
   AI-assisted Vibooks bookkeeping against original source evidence in a clean
   review workspace without reusing prior extraction artifacts.
 metadata:

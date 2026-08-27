@@ -24,6 +24,9 @@ current product behavior and remains safe for real bookkeeping work.
 - professional-bookkeeping correctness, not only API reachability
 - skill-version and public-manifest update prompts before high-risk writes
 - evidence that the website public copies still match the canonical skill
+- supported Canadian payroll readiness, immutable pay-date rule selection,
+  calculation/posting, pay statements, cash/paper-handoff separation, vacation
+  reconciliation, and complete reversal/replacement behavior
 
 ## Release Record Discipline
 
@@ -395,6 +398,49 @@ Release evidence:
 - missing source documents or prescribed fields
 - whether any deduction or commodity-tax conclusion remained unresolved
 - suspense entry used or reconciliation kept blocked for an unclassified movement
+
+## Scenario 8: Canadian Payroll And Pay Statements
+
+Goal: prove the skill can complete supported Canadian payroll through the same
+deterministic API as the desktop while preserving statutory rule selection,
+accounting, statements, vacation balances, and correction history.
+
+Check:
+
+1. start with a Canadian book, one effective payroll schedule, employer
+   identity, employee payroll profile, legal identity, statement profile, and
+   verified opening YTD facts
+2. read payroll-rule readiness and stop on `pending` or `blocked`; never ask the
+   user to certify a rule or choose an older revision
+3. preview and post one supported pay period using the server-selected rule for
+   the pay date and exact confirmed current-period hours or earnings
+4. verify gross, employee deductions, employer contributions, net pay, journal
+   liabilities, cash, and vacation earning agree across the posted run
+5. verify the immutable pay statement is linked to the run, renders in the
+   effective language, and has stable HTML/PDF output and YTD values
+6. keep cash payment separate from paper delivery; record a paper handoff only
+   after the external action, then verify the projection on list, detail, and
+   owning-run views
+7. plan and execute a supported reversal or replacement with the complete
+   dependency graph and unchanged fingerprint; confirm stale plans, missing
+   approvals, closed periods, finalized remittances, and active dependent
+   vacation calculations fail without partial mutation
+8. verify the original run and statement remain reproducible, the successor is
+   linked, the vacation subledger still reconciles to Vacation Pay Payable, and
+   the current statement/task projections identify only the active result
+9. repeat the journey using only authenticated discovery and API operations;
+   confirm no UI-only step, direct database edit, generic journal shortcut, or
+   caller-calculated statutory amount is required
+
+Release evidence:
+
+- candidate skill and product revisions reviewed
+- book country, jurisdiction, employee class, pay period, and pay date
+- readiness and selected rule release/revision
+- preview, post, journal, statement, vacation, and paper-handoff results
+- reversal/replacement plan, blockers tested, and successor lineage
+- API-only parity result
+- unsupported boundary or documentation drift found
 
 ## Sync Check
 

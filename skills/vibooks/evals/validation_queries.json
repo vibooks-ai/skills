@@ -40,6 +40,10 @@
     "query": "Before I trust this month's AI bookkeeping in Vibooks, start a clean review workspace, ignore prior extraction caches, do not sample, enumerate the full scope, compare every item to original evidence where applicable, and give me readable per-item results in my language."
   },
   {
+    "should_trigger": true,
+    "query": "A posted Canadian payroll in Vibooks is wrong. Plan the supported reversal and replacement through the API, preserve the old paystub, and verify the replacement statement and vacation balance."
+  },
+  {
     "should_trigger": false,
     "query": "Make this landing page look more premium and improve the CTA."
   },
@@ -58,5 +62,9 @@
   {
     "should_trigger": false,
     "query": "Explain how U.S. sales tax works in general. I am not using Vibooks."
+  },
+  {
+    "should_trigger": false,
+    "query": "Compare payroll pricing from Sage and QuickBooks without operating Vibooks."
   }
 ]

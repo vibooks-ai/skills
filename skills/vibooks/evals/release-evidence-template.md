@@ -101,6 +101,17 @@ repository.
 - unresolved deduction or commodity-tax conclusion:
 - suspense entry used or reconciliation kept blocked:
 
+### Scenario 8: Canadian Payroll And Pay Statements
+
+- status: pass / fail / blocked
+- product and skill revisions reviewed:
+- jurisdiction, employee class, period, and pay date:
+- readiness and selected rule release/revision:
+- preview, post, journal, statement, vacation, and paper-handoff result:
+- correction plan and successor-lineage result:
+- API-only parity result:
+- unsupported boundary or documentation drift:
+
 ## Sync And Packaging Checks
 
 - `make check-skill-docs-sync` result:

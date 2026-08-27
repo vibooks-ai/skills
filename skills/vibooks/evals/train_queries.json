@@ -48,6 +48,10 @@
     "query": "Review these AI-posted Vibooks receipts independently as a complete review, do not sample, do not use the prior OCR or parser output, classify every scoped item, and give me a readable per-item report plus GST/HST, vendor, duplicate, and bookkeeping-treatment exceptions."
   },
   {
+    "should_trigger": true,
+    "query": "Run this week's Canadian payroll in Vibooks for my PEI pizza shop, review the statutory calculation, issue each pay statement, and record the paper handoff after I pay the employees in cash."
+  },
+  {
     "should_trigger": false,
     "query": "Write a JavaScript fibonacci function."
   },
@@ -74,5 +78,9 @@
   {
     "should_trigger": false,
     "query": "Research Germany VAT rules for my ecommerce business, but I am not using Vibooks."
+  },
+  {
+    "should_trigger": false,
+    "query": "Explain Canadian payroll deductions in general; I am not using Vibooks or asking you to operate bookkeeping software."
   }
 ]

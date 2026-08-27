@@ -34,6 +34,9 @@ For release review, also run behavior checks that cover:
 7. independent evidence-review behavior for AI-assisted bookkeeping checks
 8. jurisdiction-sensitive statement-evidence behavior that separates proof of
    account movement from business, recognition-date, deduction, and tax support
+9. supported Canadian payroll behavior covering readiness, pay-date rule
+   selection, calculation/posting, pay statements, vacation linkage, and the
+   complete reversal/replacement path
 
 For manual walkthroughs, use:
 
