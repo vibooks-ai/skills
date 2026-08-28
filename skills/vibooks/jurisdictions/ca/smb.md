@@ -148,8 +148,10 @@ For an ordinary supported pay period:
    payroll keeps the exact revision originally used, while the payroll pay date
    selects the applicable legal interval regardless of the current or activation date
 2. create the employer identity and employee statement profile through their
-   first-class APIs, then activate pay statements only when setup readiness is
-   complete
+   first-class APIs and confirm setup readiness before posting; Vibooks
+   automatically activates mandatory statement generation with the first
+   supported native payroll post, and incomplete setup must fail that post
+   atomically rather than leave a posted payroll without a statement
 3. treat a saved default-hours value only as a proposal; confirm the exact
    current-period paid, worked and payment hours from a timesheet, employer
    record, employee record or explicit operator confirmation
