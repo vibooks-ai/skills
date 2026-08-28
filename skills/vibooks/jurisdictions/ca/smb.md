@@ -285,6 +285,52 @@ an unsupported earning meaning or incomplete setup, do not post the payroll or
 create a manual stub. Retain the evidence, correct setup or use an external
 payroll workflow until an exact verified rule interval exists.
 
+### Payroll Remittances And Year-End Preparation
+
+Treat payroll remittances, T4 previews, and RL-1 previews as preparation and
+evidence workflows. They do not file a return, transmit a slip, distribute a
+slip, or initiate a government payment.
+
+For a supported remittance period:
+
+1. require the pay-date-effective CRA or Revenu Québec authority account and
+   its exact remitter type; do not infer frequency from payroll frequency or
+   the size of the current payment
+2. preview the exact installed official period and review its authority,
+   period dates, due date, included active payroll sources, liability total,
+   blockers, and fingerprint; if the assigned accelerated, weekly, or
+   twice-monthly calendar is not installed, stop instead of substituting a
+   monthly or quarterly period
+3. create the prepared remittance from the unchanged preview; `prepared` means
+   an amount and evidence package are ready for review, not that money was sent
+4. make the real authority payment outside Vibooks, post the corresponding
+   cash-to-payroll-liability settlement through the applicable first-class
+   bookkeeping workflow, and call `:recordPayment` only after retaining the
+   actual external payment date and reference
+5. verify the prepared or paid record still ties to the active payroll sources
+   and payroll-liability balance; recording the external payment fact is not a
+   substitute for the ledger settlement
+6. cancel only a mistaken prepared record. Do not cancel a paid record or edit
+   its sources; use the supported reviewed correction path so the original
+   evidence and successor history remain visible
+
+For year-end preparation, use
+`/v1/books/{book_id}/payroll-tax-forms/t4:preview` for all included employees
+and also use `/v1/books/{book_id}/payroll-tax-forms/rl1:preview` for Québec
+employees. Require the previews to aggregate active immutable payroll history,
+effective legal identities, verified opening YTD facts, and signed box
+adjustments without blockers. Correct a box only through the employee's
+first-class `payroll-tax-form-adjustments` resource and reverse an incorrect
+adjustment through its reversal action; never rewrite a posted payroll snapshot
+or YTD history to force a slip total.
+
+The 2026 T4 and RL-1 filing schemas and government authorization are not
+installed. Do not describe a preview as filed, provide it as a government-
+accepted form, or mark the year complete merely because its totals balance.
+Export or file externally using the authority's accepted process until Vibooks
+publishes a separately verified filing workflow, then retain the external
+filing and distribution evidence required by that workflow.
+
 Vacation pay is a general employee-liability capability, not a restaurant or
 POS feature. Use it for any supported employer that must track money earned,
 paid, and still owed to an employee:

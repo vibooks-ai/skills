@@ -411,6 +411,16 @@ Before closing a period:
     net, protected earning hours match the confirmed run facts, YTD agrees with
     active native payroll history, Québec formal language follows the effective
     request, and rendered artifact hashes remain stable on re-read
+12. when payroll remittances are prepared, require each record to tie to the
+    exact installed authority period, active source payrolls, and payroll
+    liabilities; distinguish `prepared` from `paid`, require a retained
+    external payment date and reference before `paid`, and verify the separate
+    cash-to-liability bookkeeping settlement
+13. at Canadian payroll year-end, require T4 and, for Québec employees, RL-1
+    previews to agree with active immutable payroll YTD, effective legal
+    identities, opening YTD facts, and signed adjustment/reversal history;
+    require zero blockers and keep filing and employee distribution explicitly
+    incomplete while the final filing schema or authority workflow is absent
 
 For a statement correction, verify the original remains reproducible, reversal
 appends a new voided statement revision and exact artifact, replacement appends
@@ -431,6 +441,20 @@ Reject a handoff timestamp later than server time. An active `handoff` or
 the projected status, last handoff, optional employee acknowledgement and source
 reference, while every corrected event remains visible in the audit history.
 Treat paper delivery and cash-wage payment as separate evidence domains.
+
+For remittance verification, do not accept a prepared record as proof of
+payment and do not accept `:recordPayment` alone as proof that the general
+ledger was settled. Reconcile the remittance's active source payrolls and
+authority total to the relevant payroll liabilities, then separately verify
+the real external payment reference, payment date, cash movement, and liability
+relief. A cancelled prepared record remains part of the audit history; a paid
+record is not cancelled to rewrite the evidence.
+
+For T4 and RL-1 preparation, verify employee and province assignment, legal
+identity, active payroll and opening YTD sources, box mappings, and every signed
+tax-form adjustment and reversal. A balanced preview is still only preparation:
+do not report filing, authority acceptance, or employee distribution unless a
+separate supported workflow and retained external evidence prove those events.
 
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and

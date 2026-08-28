@@ -26,7 +26,9 @@ current product behavior and remains safe for real bookkeeping work.
 - evidence that the website public copies still match the canonical skill
 - supported Canadian payroll readiness, immutable pay-date rule selection,
   calculation/posting, pay statements, cash/paper-handoff separation, vacation
-  reconciliation, and complete reversal/replacement behavior
+  reconciliation, complete reversal/replacement behavior, exact remittance
+  preparation, and T4/RL-1 year-end preparation without false filing or
+  payment claims
 
 ## Release Record Discipline
 
@@ -431,6 +433,18 @@ Check:
 9. repeat the journey using only authenticated discovery and API operations;
    confirm no UI-only step, direct database edit, generic journal shortcut, or
    caller-calculated statutory amount is required
+10. preview and prepare one supported CRA or Revenu Québec remittance; verify
+    the authority account, remitter type, exact period, due date, active source
+    payrolls, amount, and fingerprint, and confirm an unsupported calendar
+    fails closed rather than falling back to another frequency
+11. confirm `prepared` does not mean paid; after a simulated or retained
+    external-payment fact, verify `:recordPayment` requires the payment date and
+    reference while the cash-to-liability ledger settlement remains a separate
+    bookkeeping event
+12. preview T4 and, for a Québec employee, RL-1 preparation; verify active YTD
+    and signed adjustment/reversal lineage, blockers, and the explicit boundary
+    that no electronic filing, authority acceptance, or employee distribution
+    is claimed while the final filing workflow is unavailable
 
 Release evidence:
 
@@ -440,6 +454,9 @@ Release evidence:
 - preview, post, journal, statement, vacation, and paper-handoff results
 - reversal/replacement plan, blockers tested, and successor lineage
 - API-only parity result
+- remittance preview/preparation, external-payment evidence, and separate
+  ledger-settlement result
+- T4/RL-1 preview, adjustment lineage, blockers, and filing-boundary result
 - unsupported boundary or documentation drift found
 
 ## Sync Check

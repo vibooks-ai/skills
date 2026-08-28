@@ -110,6 +110,10 @@ repository.
 - preview, post, journal, statement, vacation, and paper-handoff result:
 - correction plan and successor-lineage result:
 - API-only parity result:
+- remittance preview/preparation result:
+- external-payment evidence and ledger-settlement separation result:
+- T4/RL-1 preview and adjustment-lineage result:
+- filing, acceptance, and employee-distribution boundary result:
 - unsupported boundary or documentation drift:
 
 ## Sync And Packaging Checks

@@ -37,6 +37,10 @@ For release review, also run behavior checks that cover:
 9. supported Canadian payroll behavior covering readiness, pay-date rule
    selection, calculation/posting, pay statements, vacation linkage, and the
    complete reversal/replacement path
+10. supported Canadian payroll remittance preparation that keeps authority
+    payment evidence separate from the cash-to-liability ledger settlement
+11. T4/RL-1 year-end preparation and signed adjustment lineage without
+    claiming unsupported filing, acceptance, or employee distribution
 
 For manual walkthroughs, use:
 

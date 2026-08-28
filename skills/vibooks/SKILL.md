@@ -151,6 +151,9 @@ and that the latest local skill refresh could not be confirmed.
   business
 - reconcile bank, debit-card, or credit-card statement accounts
 - run month-end checks, verify balances, and close readiness
+- run supported Canadian payroll, remittance-preparation, and T4/RL-1
+  year-end-preparation workflows without claiming that Vibooks filed or paid
+  an authority
 
 Do not use this skill for generic accounting advice, spreadsheet-only work, or
 direct mutation of Vibooks storage.
@@ -292,7 +295,8 @@ Open only the references needed for the current task:
     [jurisdictions/jp/smb.md](jurisdictions/jp/smb.md)
 - API discovery, jurisdiction selection, bootstrap, and book rebuilds:
   [references/workflows/bootstrap.md](references/workflows/bootstrap.md)
-- posting rules, chart-of-accounts choices, dates, and first-class workflows:
+- posting rules, chart-of-accounts choices, dates, Canadian payroll
+  remittances/year-end preparation, and first-class workflows:
   [references/workflows/posting.md](references/workflows/posting.md)
 - tax corrections, evidence attachments, reconciliation, month-end validation,
   and completion checks:

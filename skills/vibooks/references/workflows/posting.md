@@ -594,6 +594,20 @@ Subledger integrity rules:
   English companions; when a future-dated request becomes effective, call
   `/employees/{employeeId}/pay-statement-language-companions:materialize`
   before rendering or handing off the English artifact
+- prepare CRA or Revenu Québec remittances only from the exact effective
+  authority account, installed remitter calendar, active payroll sources, and
+  unchanged preview fingerprint. `prepared` is not paid. Complete the real
+  authority payment outside Vibooks, post its cash-to-payroll-liability
+  settlement through the appropriate first-class bookkeeping workflow, and
+  call `:recordPayment` only after retaining the external payment date and
+  reference. Do not substitute an installed monthly or quarterly calendar for
+  an unsupported accelerated, weekly, or twice-monthly obligation
+- use T4 and RL-1 previews only for year-end preparation from active immutable
+  payroll, legal identity, opening YTD, and signed box-adjustment records.
+  Correct boxes through `payroll-tax-form-adjustments` and its reversal action,
+  not by editing payroll history. Until the final annual schema and government
+  authorization are installed, do not claim the preview was filed, accepted,
+  or distributed; follow the authority's external filing process
 - for Canadian vacation pay, use the dedicated vacation resources for approved
   jurisdiction/class facts, service history, policy/arrangement, effective-dated
   accounts, opening, earning, period close, payment allocation, correction, and
