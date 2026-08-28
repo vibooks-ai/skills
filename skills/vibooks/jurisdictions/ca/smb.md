@@ -303,16 +303,32 @@ For a supported remittance period:
    monthly or quarterly period
 3. create the prepared remittance from the unchanged preview; `prepared` means
    an amount and evidence package are ready for review, not that money was sent
-4. make the real authority payment outside Vibooks, post the corresponding
-   cash-to-payroll-liability settlement through the applicable first-class
-   bookkeeping workflow, and call `:recordPayment` only after retaining the
-   actual external payment date and reference
-5. verify the prepared or paid record still ties to the active payroll sources
-   and payroll-liability balance; recording the external payment fact is not a
-   substitute for the ledger settlement
-6. cancel only a mistaken prepared record. Do not cancel a paid record or edit
-   its sources; use the supported reviewed correction path so the original
-   evidence and successor history remain visible
+4. preview or download the retained remittance evidence when the owner needs the
+   exact amount breakdown and source-payroll support; preview, download and print
+   must use the same retained PDF bytes and do not mark the remittance paid
+5. make the real authority payment outside Vibooks, then call `:recordPayment`
+   once with the actual date, authority confirmation reference, funding account,
+   and unchanged remittance fingerprint. Vibooks atomically appends the payment
+   fact and posts the cash-to-payroll-liability journal, so do not create a
+   separate expense or manual journal for the same payment. If the payment is
+   greater than the remaining obligation, use the real authority-credit asset
+   account returned or selected for the excess instead of making the liability
+   negative
+6. re-read the remittance detail and require the active payment, confirmation
+   reference, journal link, paid amount, remaining amount, and any authority
+   credit to agree. Then confirm receipt or allocation independently in the CRA
+   or Revenu Québec account; Vibooks records the owner's evidence but does not
+   attest that the authority received or applied the funds
+7. fix only the mistaken field: use `:correctReference` for a confirmation-only
+   error without changing the journal; use `:withdrawPayment` to append the
+   payment and journal reversal; use `:replacePayment` to reverse the old payment
+   and atomically record its corrected successor. Carry the current snapshot
+   fingerprint and any required exact reversal approval. After an ambiguous
+   response, re-read the record before retrying and reuse identifiers only for
+   the exact unchanged action
+8. cancel only a mistaken prepared record that has no payment. Never delete or
+   cancel a paid record to rewrite history; require the payment, reference,
+   settlement and revision histories to retain every predecessor and successor
 
 For year-end preparation, use
 `/v1/books/{book_id}/payroll-tax-forms/t4:preview` for all included employees

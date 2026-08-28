@@ -151,9 +151,9 @@ and that the latest local skill refresh could not be confirmed.
   business
 - reconcile bank, debit-card, or credit-card statement accounts
 - run month-end checks, verify balances, and close readiness
-- run supported Canadian payroll, remittance-preparation, and T4/RL-1
-  year-end-preparation workflows without claiming that Vibooks filed or paid
-  an authority
+- run supported Canadian payroll, remittance preparation, external-payment
+  evidence and settlement, and T4/RL-1 year-end-preparation workflows without
+  claiming that Vibooks filed a return or confirmed an authority received money
 
 Do not use this skill for generic accounting advice, spreadsheet-only work, or
 direct mutation of Vibooks storage.

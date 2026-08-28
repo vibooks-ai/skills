@@ -597,11 +597,19 @@ Subledger integrity rules:
 - prepare CRA or Revenu Québec remittances only from the exact effective
   authority account, installed remitter calendar, active payroll sources, and
   unchanged preview fingerprint. `prepared` is not paid. Complete the real
-  authority payment outside Vibooks, post its cash-to-payroll-liability
-  settlement through the appropriate first-class bookkeeping workflow, and
-  call `:recordPayment` only after retaining the external payment date and
-  reference. Do not substitute an installed monthly or quarterly calendar for
-  an unsupported accelerated, weekly, or twice-monthly obligation
+  authority payment outside Vibooks, then call `:recordPayment` with its actual
+  date, confirmation reference, funding account, and unchanged remittance
+  fingerprint. That action atomically records the external-payment fact and
+  posts the cash-to-payroll-liability settlement; do not post a separate expense
+  or journal for the same payment. For an overpayment, provide a real authority-
+  credit asset account instead of driving the payroll liability below zero.
+  A corrected confirmation uses `:correctReference` and does not rewrite the
+  journal. Reverse or replace a mistaken recorded payment only through
+  `:withdrawPayment` or `:replacePayment` so the original fact, reversal entry,
+  and successor stay in the append-only history. Do not substitute an installed
+  monthly or quarterly calendar for an unsupported accelerated, weekly, or
+  twice-monthly obligation, and do not claim authority receipt from the Vibooks
+  record alone
 - use T4 and RL-1 previews only for year-end preparation from active immutable
   payroll, legal identity, opening YTD, and signed box-adjustment records.
   Correct boxes through `payroll-tax-form-adjustments` and its reversal action,

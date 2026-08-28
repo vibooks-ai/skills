@@ -413,9 +413,10 @@ Before closing a period:
     request, and rendered artifact hashes remain stable on re-read
 12. when payroll remittances are prepared, require each record to tie to the
     exact installed authority period, active source payrolls, and payroll
-    liabilities; distinguish `prepared` from `paid`, require a retained
-    external payment date and reference before `paid`, and verify the separate
-    cash-to-liability bookkeeping settlement
+    liabilities; distinguish `prepared` from a recorded external payment,
+    require the actual payment date and authority confirmation reference, and
+    verify the active payment's atomically linked cash-to-liability journal,
+    remaining obligation, authority credit, and append-only correction history
 13. at Canadian payroll year-end, require T4 and, for Québec employees, RL-1
     previews to agree with active immutable payroll YTD, effective legal
     identities, opening YTD facts, and signed adjustment/reversal history;
@@ -443,12 +444,24 @@ reference, while every corrected event remains visible in the audit history.
 Treat paper delivery and cash-wage payment as separate evidence domains.
 
 For remittance verification, do not accept a prepared record as proof of
-payment and do not accept `:recordPayment` alone as proof that the general
-ledger was settled. Reconcile the remittance's active source payrolls and
-authority total to the relevant payroll liabilities, then separately verify
-the real external payment reference, payment date, cash movement, and liability
-relief. A cancelled prepared record remains part of the audit history; a paid
-record is not cancelled to rewrite the evidence.
+payment. Reconcile the remittance's active source payrolls and authority total
+to the relevant payroll liabilities. After `:recordPayment`, verify that the
+same response and re-read detail retain the actual external reference and date,
+an active payment event, and its exact settlement journal; confirm that the
+funding-account credit, payroll-liability debit, any explicit authority-credit
+asset, paid amount, remaining amount and excess amount all agree. The atomic
+action is the Vibooks bookkeeping record, but it is not proof that CRA or Revenu
+Québec received or allocated the money; confirm that separately in the
+authority account.
+
+A confirmation-only correction must append a new reference version without
+changing the journal. A withdrawal must neutralize the payment and append a
+reversing journal link. A replacement must preserve both of those predecessors
+and append the corrected payment and settlement. Reconcile the terminal active
+event rather than summing neutralized events. A cancelled prepared record
+remains in revision history; a record with payment history is never cancelled
+or deleted to rewrite evidence. Preview, download and print must reproduce the
+same retained remittance PDF bytes and must not change lifecycle state.
 
 For T4 and RL-1 preparation, verify employee and province assignment, legal
 identity, active payroll and opening YTD sources, box mappings, and every signed
