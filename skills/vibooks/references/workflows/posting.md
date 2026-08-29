@@ -438,6 +438,12 @@ Subledger integrity rules:
   payroll profile, schedule, statutory payroll items, jurisdiction, and verified
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
+- when pay, schedule, province, or tax setup changes on a later date, append a
+  successor employee payroll profile through the payroll-profile API. The
+  server atomically closes the unique predecessor on the prior calendar day and
+  keeps historical selection intact. Never overwrite the earlier profile or
+  patch its dates directly; same-start, future, or ambiguous overlaps fail
+  closed and require reviewing the retained profile timeline
 - before an ordinary Canadian payroll post, read
   `/v1/books/{book_id}/payroll-rule-readiness`. Vibooks runs the same idempotent
   check automatically when Payroll opens and before calculation, batch creation,
