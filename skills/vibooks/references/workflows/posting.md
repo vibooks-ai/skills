@@ -610,12 +610,34 @@ Subledger integrity rules:
   monthly or quarterly calendar for an unsupported accelerated, weekly, or
   twice-monthly obligation, and do not claim authority receipt from the Vibooks
   record alone
-- use T4 and RL-1 previews only for year-end preparation from active immutable
-  payroll, legal identity, opening YTD, and signed box-adjustment records.
-  Correct boxes through `payroll-tax-form-adjustments` and its reversal action,
-  not by editing payroll history. Until the final annual schema and government
-  authorization are installed, do not claim the preview was filed, accepted,
-  or distributed; follow the authority's external filing process
+- prepare a retained T4 working-paper PDF only from active immutable payroll,
+  legal identity, opening YTD, and signed box-adjustment records. Correct boxes
+  through `payroll-tax-form-adjustments` and its reversal action, not by editing
+  payroll history. Create it through the discovered T4 preparation-artifact
+  operation, then use the shared statutory-artifact detail/content/render
+  operations to inspect or download the exact retained bytes. The artifact pins
+  the selected form-definition activation and PDF renderer release; it is not an
+  official T4 slip and does not prove filing, acceptance, or distribution
+- prepare an ROE worksheet only after creating the employee interruption event,
+  its employment-period boundary, each applicable typed statutory-payment fact,
+  and a complete statutory-input coverage review. Then create the discovered
+  ROE preparation artifact and use its retained render for handoff to the person
+  completing and validating the official record in ROE Web. Never put the full
+  SIN in ordinary API fields. If Block 19 special payments or another unsupported
+  field applies, stop instead of approximating it. Optional external-completion
+  evidence records only what the user says happened outside Vibooks; it is not a
+  Service Canada receipt
+- a T4 or ROE correction creates a successor preparation artifact through the
+  discovered successor operation, using the expected active head/fingerprint
+  and a factual correction reason. Never overwrite the original artifact or its
+  PDF. A later form-definition revision or PDF-renderer release applies only to
+  new preparation and must remain independently identifiable from the payroll
+  calculation release
+- use RL-1 previews only for year-end preparation from active immutable payroll,
+  legal identity, opening YTD, and signed box-adjustment records. Until its
+  verified annual PDF package and government workflow are installed, do not
+  claim the preview was filed, accepted, or distributed; follow the authority's
+  external filing process
 - for Canadian vacation pay, use the dedicated vacation resources for approved
   jurisdiction/class facts, service history, policy/arrangement, effective-dated
   accounts, opening, earning, period close, payment allocation, correction, and

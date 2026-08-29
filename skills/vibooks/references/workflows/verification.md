@@ -417,11 +417,17 @@ Before closing a period:
     require the actual payment date and authority confirmation reference, and
     verify the active payment's atomically linked cash-to-liability journal,
     remaining obligation, authority credit, and append-only correction history
-13. at Canadian payroll year-end, require T4 and, for Québec employees, RL-1
-    previews to agree with active immutable payroll YTD, effective legal
-    identities, opening YTD facts, and signed adjustment/reversal history;
-    require zero blockers and keep filing and employee distribution explicitly
-    incomplete while the final filing schema or authority workflow is absent
+13. at Canadian payroll year-end, require each retained T4 working paper and,
+    for Québec employees, each RL-1 preview to agree with active immutable
+    payroll YTD, effective legal identities, opening YTD facts, and signed
+    adjustment/reversal history; require zero blockers and keep filing and
+    employee distribution explicitly incomplete while the final filing schema
+    or authority workflow is absent
+14. when an ROE is required, require the active interruption event, exact
+    employment-history boundary, applicable typed statutory-payment facts, and
+    complete field coverage to agree with posted payroll and effective legal
+    identities before accepting a retained preparation worksheet; keep official
+    completion, validation, and submission explicitly external to Vibooks
 
 For a statement correction, verify the original remains reproducible, reversal
 appends a new voided statement revision and exact artifact, replacement appends
@@ -463,11 +469,18 @@ remains in revision history; a record with payment history is never cancelled
 or deleted to rewrite evidence. Preview, download and print must reproduce the
 same retained remittance PDF bytes and must not change lifecycle state.
 
-For T4 and RL-1 preparation, verify employee and province assignment, legal
-identity, active payroll and opening YTD sources, box mappings, and every signed
-tax-form adjustment and reversal. A balanced preview is still only preparation:
-do not report filing, authority acceptance, or employee distribution unless a
-separate supported workflow and retained external evidence prove those events.
+For T4, ROE, and RL-1 preparation, verify employee and province assignment,
+effective employer and employee legal identities, active payroll and opening
+YTD sources, box or field mappings, and every signed adjustment and reversal.
+For each retained T4 or ROE PDF, require the response and re-read detail to pin
+the exact form-definition activation, schema revision, PDF-renderer release,
+source fingerprint, revision lineage, immutable content hash, and byte length;
+rendering or downloading it again must reproduce the same bytes. A successor
+must preserve the original and point to its predecessor. A balanced preview or
+retained working paper is still only preparation: do not report filing,
+authority acceptance, employee distribution, ROE Web validation, or Service
+Canada receipt unless a separate supported workflow and retained external
+evidence prove that exact event.
 
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and
