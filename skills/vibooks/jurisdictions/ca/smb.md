@@ -342,12 +342,22 @@ first-class `payroll-tax-form-adjustments` resource and reverse an incorrect
 adjustment through its reversal action; never rewrite a posted payroll snapshot
 or YTD history to force a slip total.
 
-The 2026 T4 and RL-1 filing schemas and government authorization are not
-installed. Do not describe a preview as filed, provide it as a government-
-accepted form, or mark the year complete merely because its totals balance.
-Export or file externally using the authority's accepted process until Vibooks
-publishes a separately verified filing workflow, then retain the external
-filing and distribution evidence required by that workflow.
+The exact 2026 CRA T4 form package and the verified RL-1 filing package are not
+installed. T4 is therefore on-screen data review only: do not create, download,
+print, or synthesize a T4 PDF, and never fall back to another tax year's form.
+Do not describe either preview as filed, provide it as a government-accepted
+form, or mark the year complete merely because its totals balance. Export or
+file externally using the authority's accepted process until Vibooks publishes
+a separately verified filing workflow, then retain the external filing and
+distribution evidence required by that workflow.
+
+For ROE, use the discovered preparation options and retained non-official review
+report. Attempt a Payroll Extract `.BLK` only when the live contract explicitly
+returns `customer_export_ready: true`; otherwise complete the record in ROE Web.
+Even when enabled, the file is a draft `Issue=D`, not an issued ROE. Never place
+the full SIN or CRA payroll account number in HTTP API fields, CLI arguments,
+agent prompts, logs, or screenshots. Service Canada alone supplies the official
+PDF after issue.
 
 Vacation pay is a general employee-liability capability, not a restaurant or
 POS feature. Use it for any supported employer that must track money earned,

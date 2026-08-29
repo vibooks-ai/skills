@@ -610,17 +610,15 @@ Subledger integrity rules:
   monthly or quarterly calendar for an unsupported accelerated, weekly, or
   twice-monthly obligation, and do not claim authority receipt from the Vibooks
   record alone
-- prepare a retained T4 data-review report only from active immutable payroll,
+- review T4 data only through the discovered
+  `/payroll-tax-forms/t4:preview` operation, using active immutable payroll,
   legal identity, opening YTD, and signed box-adjustment records. Correct boxes
   through `payroll-tax-form-adjustments` and its reversal action, not by editing
-  payroll history. Create it through the discovered T4 preparation-artifact
-  operation, then use the shared statutory-artifact detail/content/render
-  operations to inspect or download the exact retained bytes. The artifact pins
-  the selected form-definition activation and PDF renderer release. Read the
-  returned `official_employee_copy_contract`; when
-  `official_employee_copy_ready` is false, do not reuse another tax year's form
-  or describe the report as a T4 slip. The report is not an official T4 employee
-  copy and does not prove filing, acceptance, or distribution
+  payroll history. While the exact annual CRA form package is unavailable,
+  there is no T4 artifact, PDF, download, print, or employee-copy workflow; do
+  not call a removed preparation-artifact operation, construct a lookalike
+  document, or reuse another tax year's form. A balanced preview is data review
+  only and does not prove filing, acceptance, or distribution
 - prepare an ROE data-review report only after creating the employee interruption event,
   its employment-period boundary, each applicable typed statutory-payment fact,
   and a complete statutory-input coverage review. Then create the discovered
@@ -634,12 +632,14 @@ Subledger integrity rules:
   stop instead of approximating it. Only Service Canada supplies the official
   ROE PDF after issue. Optional external-completion evidence records only what
   the user says happened outside Vibooks; it is not a Service Canada receipt
-- a T4 or ROE correction creates a successor preparation artifact through the
-  discovered successor operation, using the expected active head/fingerprint
-  and a factual correction reason. Never overwrite the original artifact or its
-  PDF. A later form-definition revision or PDF-renderer release applies only to
-  new preparation and must remain independently identifiable from the payroll
-  calculation release
+- an ROE review-report correction creates a successor preparation artifact
+  through the discovered successor operation, using the expected active
+  head/fingerprint and a factual correction reason. Never overwrite the
+  original report or its PDF. T4 data corrections instead use append-only box
+  adjustments and their reversal action; no T4 artifact exists to replace while
+  official PDF output is unavailable. A later verified form-definition revision
+  or renderer release applies only to new output and remains independently
+  identifiable from the payroll calculation release
 - use RL-1 previews only for year-end preparation from active immutable payroll,
   legal identity, opening YTD, and signed box-adjustment records. Until its
   verified annual PDF package and government workflow are installed, do not
