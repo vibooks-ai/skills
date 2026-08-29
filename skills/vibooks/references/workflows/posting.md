@@ -610,23 +610,30 @@ Subledger integrity rules:
   monthly or quarterly calendar for an unsupported accelerated, weekly, or
   twice-monthly obligation, and do not claim authority receipt from the Vibooks
   record alone
-- prepare a retained T4 working-paper PDF only from active immutable payroll,
+- prepare a retained T4 data-review report only from active immutable payroll,
   legal identity, opening YTD, and signed box-adjustment records. Correct boxes
   through `payroll-tax-form-adjustments` and its reversal action, not by editing
   payroll history. Create it through the discovered T4 preparation-artifact
   operation, then use the shared statutory-artifact detail/content/render
   operations to inspect or download the exact retained bytes. The artifact pins
-  the selected form-definition activation and PDF renderer release; it is not an
-  official T4 slip and does not prove filing, acceptance, or distribution
-- prepare an ROE worksheet only after creating the employee interruption event,
+  the selected form-definition activation and PDF renderer release. Read the
+  returned `official_employee_copy_contract`; when
+  `official_employee_copy_ready` is false, do not reuse another tax year's form
+  or describe the report as a T4 slip. The report is not an official T4 employee
+  copy and does not prove filing, acceptance, or distribution
+- prepare an ROE data-review report only after creating the employee interruption event,
   its employment-period boundary, each applicable typed statutory-payment fact,
   and a complete statutory-input coverage review. Then create the discovered
   ROE preparation artifact and use its retained render for handoff to the person
-  completing and validating the official record in ROE Web. Never put the full
-  SIN in ordinary API fields. If Block 19 special payments or another unsupported
-  field applies, stop instead of approximating it. Optional external-completion
-  evidence records only what the user says happened outside Vibooks; it is not a
-  Service Canada receipt
+  completing and validating the official record in ROE Web. Before attempting
+  any payroll-extract file, read `payroll_extract_export` from the discovered ROE
+  preparation options. If `customer_export_ready` is false, do not construct or
+  claim a `.BLK` file; retain the non-official review report and complete the
+  record in ROE Web. Never put the full SIN or payroll account number in ordinary
+  API fields. If Block 19 special payments or another unsupported field applies,
+  stop instead of approximating it. Only Service Canada supplies the official
+  ROE PDF after issue. Optional external-completion evidence records only what
+  the user says happened outside Vibooks; it is not a Service Canada receipt
 - a T4 or ROE correction creates a successor preparation artifact through the
   discovered successor operation, using the expected active head/fingerprint
   and a factual correction reason. Never overwrite the original artifact or its
