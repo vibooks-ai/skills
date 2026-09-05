@@ -250,7 +250,21 @@ post the gross employee-owned principal to the exact current-liability Tips
 Payable account and post processor fees separately. A controlled-tip or direct
 card-conduit payroll preview must select that source ID and cannot allocate more
 than its remaining principal. The server derives CRA treatment, custody
-settlement and the PEI property deadline. A card-conduit assertion additionally
+settlement and the PEI property deadline. For a service charge, retain the actual
+collection date separately from the service date. The deadline follows the next
+payment interval after collection, using the employee's effective weekly
+payment calendar, including payment lag and holidays. Missing or discontinuous
+calendar coverage must be completed before calculating; do not assume a fixed
+seven-day extension or reuse an expired policy. For the first employment
+interval, retain the actual hire date and the employee's effective initial
+payroll setup. Setup may be prepared in advance, but it does not prove that
+employment or employee payments occurred before the actual hire date.
+Incomplete migration or rehire evidence does not establish a first interval.
+When collection falls on a pay
+date and its order relative to that payment is unknown, the preview retains a
+deadline range rather than inventing a unique date. Payment by the earliest
+possible deadline remains timely; an indeterminate timing result needs review,
+not an assertion that the employee was paid late. A card-conduit assertion additionally
 requires the retained CRA payout-timing fact supported by the current official
 package; a weekly-payroll or unspecified timing assertion does not qualify as
 CRA-direct. A payout after the PEI deadline may still be recorded so the
