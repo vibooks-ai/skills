@@ -467,6 +467,12 @@ Subledger integrity rules:
   returned draft so payroll, vacation payable/subledger and the issued paystub
   commit atomically. Never convert a missing PEI package or fact into zero or a
   prior-period default
+- a PEI weekly schedule's first work-week policy fixes its start weekday and
+  payment lag. Later policies, including corrections, may reuse that schedule
+  only with identical timing. To change timing, create a new weekly schedule
+  and use it in the new dated policy and matching employee payroll profiles.
+  If `PEI_SCHEDULE_CADENCE_IMMUTABLE` is returned, do not alter older policies
+  or retry against historical records; use the new-schedule workflow
 - immediately before posting a certified PEI preview, let Vibooks revalidate
   that every referenced determination, work-week policy, work-fact generation,
   rate-profile version, tip arrangement/source, opening generation, holiday
