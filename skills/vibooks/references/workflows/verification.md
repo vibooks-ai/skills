@@ -145,6 +145,21 @@ period. Leave all workpapers selected for the default accountant package, or
 clear the reports the accountant did not request. The normal report export menu
 is only a shortcut into this workflow.
 
+Accountant packages follow report access, including Personal paid and trial
+access; they do not require the `export_import` module. Keep the export
+operation's admin scope and each selected report's module requirements from
+live discovery. Tax workpapers (`tax_summary`, `invoice_tax_detail`) require
+`taxes`; omitting `sections` or sending an empty array selects the full package,
+including tax workpapers. Without tax access, agree on an explicit non-tax
+subset instead of silently omitting requested workpapers. Existing read-only
+report access after expiry also applies to accountant packages.
+
+An accountant package is for review, not a restorable book transfer or database
+backup. Its attachment manifest lists evidence; it does not bundle the original
+attachment files. Portable whole-book export/import and backup/restore retain
+their separate module requirements. Check live discovery on the connected app;
+an older app may require an upgrade to provide report-based package access.
+
 ## Tax Returns
 
 Use `tax-returns` as the first-class filing workflow. Do not treat tax filing
