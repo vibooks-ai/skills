@@ -562,11 +562,19 @@ Subledger integrity rules:
   liability override for the canonical Quebec FTQ or Fondaction components,
   whose dedicated payable accounts are assigned by the server; use the payroll
   reversal, replacement, or correction workflow
-- when Canadian pay statements are enabled, complete
-  `/pay-statements/setup-readiness`, the pay-date-effective employer identity,
-  employee payroll identity/code, and employee statement profile before
-  activation. Keep tax province separate from the explicit employment-
-  standards jurisdiction and never infer federal coverage
+- every supported native Canadian payroll post must create its immutable pay
+  statement in the same transaction. Select the employee and complete the
+  pay-date-effective employer identity, employee payroll identity/code, and
+  employee statement profile before posting. `/pay-statements/setup-readiness`
+  is a current setup overview; it does not prove readiness for a different pay
+  date or the exact payroll facts. Keep tax province separate from the explicit
+  employment-standards jurisdiction and never infer federal coverage
+- a successful generic calculation preview is calculation evidence, not proof
+  that the payroll can be posted. An employee name alone cannot supply the
+  employee identity needed for a native pay statement. Follow actionable
+  missing-field errors, complete the employee and statement setup, and use a
+  fresh preview when protected facts change. Never strip calculation evidence
+  or switch to an external payroll variant to bypass native statement checks
 - for every supported current period, submit exact typed
   `pay_statement_facts` to calculation preview. Saved hours are proposals only;
   confirm actual worked hours, hours paid/for which payment is made, salary

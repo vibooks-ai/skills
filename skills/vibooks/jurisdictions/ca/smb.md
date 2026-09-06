@@ -151,7 +151,11 @@ For an ordinary supported pay period:
    first-class APIs and confirm setup readiness before posting; Vibooks
    automatically activates mandatory statement generation with the first
    supported native payroll post, and incomplete setup must fail that post
-   atomically rather than leave a posted payroll without a statement
+   atomically rather than leave a posted payroll without a statement. A generic
+   calculation preview does not establish posting readiness: select the
+   employee and complete the identities and statement setup for the actual pay
+   date. The current setup overview cannot certify another pay date. Follow
+   missing-field errors without removing native calculation evidence
 3. treat a saved default-hours value only as a proposal; confirm the exact
    current-period paid, worked and payment hours from a timesheet, employer
    record, employee record or explicit operator confirmation
