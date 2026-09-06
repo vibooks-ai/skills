@@ -136,15 +136,29 @@ payroll identity and employee code, and an explicit employment-standards
 jurisdiction. Tax province and employment-standards jurisdiction are separate;
 never infer federal coverage from the business industry or tax province.
 
+For actual-withholding correction matters, follow the live correction detail
+and the payroll posting workflow at skill-root path
+`references/workflows/posting.md`.
+Retained actual amounts, calculation eligibility and unresolved legal remedies
+are separate. A checkpoint never creates a refund, credit or amended filing;
+later facts remain in immutable history and may require revalidation. Keep
+unknown facts explicit and stop when the server reports unavailable rules or
+missing evidence.
+
 For an ordinary supported pay period:
 
 1. read `/v1/books/{book_id}/payroll-rule-readiness`; Vibooks runs this check
    automatically when Payroll opens and before calculation, batch creation, or
    posting. If a headless workflow observes `pending`, POST the same resource to
    run the system-owned check; this is not a request for the user or Agent to
-   certify statutory rules. Stop ordinary posting on `blocked`, correct every
-   affected historical payroll through the statutory reverse/replace workflow,
-   then run the check again. Never ask Vibooks to use an older revision. Posted
+   certify statutory rules. Follow `calculation_state` and the server's posting
+   guard: `pending` requires a fresh check and `blocked` requires reviewing the
+   server's current correction target. The legacy aggregate `status` may remain
+   `blocked` while `calculation_state` is `ready`; that does not resolve the
+   correction matter or its legal remedy. A retained actual-withholding matter is
+   reviewed through its correction detail, not automatically reversed. Other
+   supported corrections use the statutory reverse/replace workflow. Run the
+   check again after correction. Never ask Vibooks to use an older revision. Posted
    payroll keeps the exact revision originally used, while the payroll pay date
    selects the applicable legal interval regardless of the current or activation date
 2. create the employer identity and employee statement profile through their

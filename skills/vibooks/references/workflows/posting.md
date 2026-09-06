@@ -448,15 +448,48 @@ Subledger integrity rules:
   `/v1/books/{book_id}/payroll-rule-readiness`. Vibooks runs the same idempotent
   check automatically when Payroll opens and before calculation, batch creation,
   or posting. A headless client may POST that resource when it observes `pending`,
-  but neither the operator nor the Agent certifies statutory rules. A `clear`
-  result means every retained native posted payroll source is unchanged under
-  the currently activated immutable rule revision. A `blocked` result means a
-  protected result changed or could not be replayed: do not choose an older
+  but neither the operator nor the Agent certifies statutory rules. Use
+  `calculation_state` and the actual server guard for calculation/posting
+  eligibility. `pending` requires a fresh check; `blocked` requires reviewing
+  the protected result or evidence that could not be replayed. A compatible
+  checkpoint can produce `calculation_state: ready` while the legacy aggregate
+  `status` remains `blocked`. Read `correction_state` and `remedy_status`
+  separately; neither can be inferred from calculation eligibility. Do not choose an older
   revision, alter the posted payroll, or guess a replacement amount. Keep
-  preview and correction planning available, use the statutory reverse/replace
-  workflow for every affected payroll, then refresh readiness before the next
+  preview and correction planning available and follow the server's current
+  correction target. Review actual-withholding matters through their retained
+  correction detail; do not automatically reverse actual payments. Use the
+  statutory reverse/replace workflow for other supported corrections, then
+  refresh readiness before the next
   ordinary post. The legal interval is selected from the payroll pay date, not
   the activation date, current date, or date the user opens Vibooks
+- for a retained actual-withholding correction matter, discover the live
+  `payroll-rule-correction-roots` routes and schemas. Start from the task's
+  `root_id`/`detail_url`, or from a current readiness observation candidate:
+  retain the observation and open its stable matter using separate idempotency
+  keys. A candidate does not establish that a checkpoint is legally eligible.
+  Read the original actual payroll, statement and journal links, current facts,
+  blockers and `allowed_actions`. Follow only those exact action targets and
+  request schemas: record evidenced intent, project a plan, review actual versus
+  comparison amounts and zero financial effects, approve the exact plan, then
+  execute. Execution leaves calculation pending until a fresh update check;
+  the correction remains unresolved and its remedy requires determination.
+  Do not treat a checkpoint as a refund, employee balance, authority credit,
+  remittance, amended slip or filing authorization. An unavailable installed
+  rule package cannot be replaced with a prior or caller-selected rule.
+- retain later claims, agreements, directions, refunds, offsets, credits,
+  recoveries, payment conflicts or uncertain evidence through the matter's
+  development action. Preserve unknown dates or money with a reason; never
+  invent zero or infer an economic event from a source link. Use the current
+  required fact revisions for every affected matter. Correct mistakes,
+  subsequent changes and evidence-only additions through the explicit
+  successor action, preserving the original history. Follow a server-offered
+  revalidation intent through the same review stages when needed. After a
+  stale conflict, reload current detail/history and preserve the operator's
+  draft for review before a fresh submission. Follow every history cursor with
+  unchanged filters; a first page is not the full audit history. On success,
+  reload `detail_url` rather than treating an idempotent receipt as current
+  permission or readiness.
 - for certified PEI general-hourly payroll, first retain the external
   applicability determination, one effective weekly work-week/payment-day
   policy, all seven reviewed daily/occurrence facts, the PEI vacation profile
