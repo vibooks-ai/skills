@@ -528,6 +528,49 @@ records. Changed downstream owners, actual use or payment history can block
 reversal even when the displayed balance has returned to its earlier value;
 resolve those dependencies rather than deleting or rewriting the history.
 
+For a newly recognized or previously reversed terminated monthly spell, use
+`new_termination_sources` with its actual `spell_started_on` and complete
+ordinary `wage_history`. Include the current version of a reversed owner;
+do not invent another obligation to recover recognition. Corrections to an
+active terminal owner use its `termination_wage_histories` entry. Keep annual
+and terminal owners separate, including when due on the same date, and review
+the complete spell comparison before posting.
+
+For an advance, use an `advance_payment` assessment on the actual payroll pay
+date and explicitly allocate the intended gross amount to its owners. A
+proposed vacation schedule is not evidence of actual use. Preserve an advance
+when leave is postponed or cancelled; later actual leave is valued using its
+applicable normal wages, with the existing payment credited once. Zero payable
+does not establish that untaken leave is final or settled. A later increase
+adjusts the liability only. A paid excess requires separate review, not an
+automatic employee receivable or refund.
+
+Prepare the actual native payroll through the supported calculation and post
+its sealed draft. Retain its exact posted vacation earning component, pay
+date, statement and journal. For the vacation payment preview, supply
+`monthly_assessment_calculation_id`, `payroll_run_id` and
+`vacation_pay_component_id` from the reviewed current workflow. A selected
+terminal owner requires its complete spell wage evidence; an annual owner's
+payment must not invent terminal evidence. If facts or owning balances have
+changed, preserve the actual payroll and reassess the vacation rights before
+linking it. Do not recreate payroll to bypass a stale assessment.
+
+Post the stored payment preview using the same request identity for an
+identical retry. Linking the gross vacation component records no second cash
+movement. Keep that allocation separate from payroll deductions and net bank
+payment. A correction must follow the owning payroll, bank-match and vacation
+link dependencies and required approvals. Preserve the original receipt and
+use a newly reviewed assessment for any replacement payroll.
+
+The connected desktop monthly workflow can record compensation and employment
+facts, prepare and post assessments, and review their reversal. Complex
+historical opening reconciliation remains an agent/API preparation workflow.
+Review the opening date, source-owned periods, actual paid allocations, unpaid
+amounts and evidence in the opening view before recording the prepared
+calculation. Distinguish retaining historical facts, linking an existing
+payable and recording an opening liability. None records a new bank payment.
+Do not substitute the percentage-wage opening form for monthly source facts.
+
 For Alberta monthly opening calculations exposed by the connected API, obtain
 the current request contract through discovery. Each historical payment in
 `monthly_sources.actual_payments` needs its original `payment_id`, `paid_on`,
@@ -571,9 +614,9 @@ earlier mistaken retirement. If the versions changed, refresh and review again. 
 from the original evidence; never bypass it with new source IDs. An
 `VACATION_OPENING_PAYMENT_SOURCE_OVERALLOCATED` result means the proposed
 allocations exceed the actual source amount. Preserve the old operation's
-replay and correction history instead of rewriting it. This API workflow does
-not establish that a monthly-pay input form is available in every desktop
-version.
+replay and correction history instead of rewriting it. Use the capabilities exposed by the connected product version; a
+prepared historical reconciliation does not imply a desktop editor for those
+complex source inputs.
 
 If a vacation post or reversal returns
 `VACATION_STRICT_APPROVAL_UNSUPPORTED`, stop. The initial small-business
