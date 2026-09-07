@@ -507,6 +507,28 @@ effective account version, post/reversal request IDs, approval identities,
 aggregate totals when the exact payroll component, period allocation, account,
 published rule release, or correction lineage differs.
 
+For monthly vacation openings, reconcile distinct actual payment sources and
+their current period allocations as well as the liability total. Allocations
+against one source must not exceed its complete gross amount. One 500.00 source
+split 250.00 + 250.00 credits only 500.00; against 2,307.70 earned, 1,807.70
+remains owed. The same source repeated on two rows cannot credit 1,000.00.
+Check that replays add no journals or allocations, reversal does not refund
+cash or release attribution, and corrected allocations retain their predecessor
+and reviewed source evidence. Verify that a merged or retired source remains
+resolved after subsequent ordinary reopening, so an obsolete identifier cannot
+mint another payment allowance. Equal gross amounts such as 500, 500.0 and
+500.00 have the same cent value; harmless formatting must not change capacity
+or require correction of the original evidence. Unallocated gross and another period's paid
+excess are not available to offset an unrelated obligation automatically.
+
+`current_monthly_payment_history` is current source-attribution evidence,
+including recognition status and obligation versions. It is not an as-of-date
+balance report: use the report's dated financial totals and GL separately.
+Consistent older stored records can retain their original interpretation;
+ambiguous source history must be reconciled before fresh reuse. Exact old
+operation replay and authorized reversal must remain available without
+rewriting the saved request or inventing replacement payment identities.
+
 Preferred verification command:
 
 ```bash

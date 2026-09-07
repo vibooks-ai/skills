@@ -429,6 +429,39 @@ paid, and still owed to an employee:
    `replaces_calculation_id` and post it with another fresh request ID; never
    edit a posted vacation event, allocation, or journal
 
+For Alberta monthly opening calculations exposed by the connected API, obtain
+the current request contract through discovery. Each historical payment in
+`monthly_sources.actual_payments` needs its original `payment_id`, `paid_on`,
+complete `gross_amount`, the `allocated_amount` belonging to that reference
+period, and `source_reference`. Do not invent another payment identity for a
+second allocation. One actual 500.00 payment can fund 250.00 in each of two
+periods; it cannot fund 500.00 in each. Leave unallocated gross and an older
+period's paid excess separate from other periods' unpaid amounts. A zero
+allocation retains a known source without crediting the period; omitting the
+required allocation field is not equivalent to zero. These historical facts do
+not record another bank payment or create payroll wages.
+
+Reversing an opening journal reverses recognition, not the actual payment or its
+attribution. Reuse the same retained attribution when reopening. To correct an
+attribution, first reverse its owning opening recognition, then review the
+report's `current_monthly_payment_history` for the employee. Submit
+`payment_reconciliation` with all current `expected_obligation_versions`, a
+reason and source reference; cover every prior owning period and retain every
+actual source, including sources now allocated zero. Preview and post the
+reviewed replacement using the live contract. If original evidence shows a
+mistyped or duplicate payment identity, explicitly use the correction's
+`source_replacements` mapping to its final canonical identity. A null target
+retires an incorrectly recorded source; it does not record a refund. Do not
+silently trim colliding IDs, drop a genuine payment or reuse a retired ID as new
+capacity. Preserve evidence for the correction, including any reversal of an
+earlier mistaken retirement. If the versions changed, refresh and review again. Resolve `VACATION_PAYMENT_SOURCE_RECONCILIATION_REQUIRED`
+from the original evidence; never bypass it with new source IDs. An
+`VACATION_OPENING_PAYMENT_SOURCE_OVERALLOCATED` result means the proposed
+allocations exceed the actual source amount. Preserve the old operation's
+replay and correction history instead of rewriting it. This API workflow does
+not establish that a monthly-pay input form is available in every desktop
+version.
+
 If a vacation post or reversal returns
 `VACATION_STRICT_APPROVAL_UNSUPPORTED`, stop. The initial small-business
 vacation workflow does not post while the book requires separate strict
