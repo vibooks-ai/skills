@@ -507,6 +507,15 @@ effective account version, post/reversal request IDs, approval identities,
 aggregate totals when the exact payroll component, period allocation, account,
 published rule release, or correction lineage differs.
 
+For monthly compensation and employment facts, read all history pages and
+compare the current source identities, effective/reviewed dates, predecessor
+and authenticated author with the supplied evidence. Verify that an identical
+request retry returns the same retained result without another fact, audit
+record or journal. A changed source or connection authority is not the same
+request. Read-only access must not write facts, and a claimed author in a
+request header must not override the authenticated author. Source intake is
+not proof that an obligation was posted or that any cash was paid.
+
 For monthly vacation openings, reconcile distinct actual payment sources and
 their current period allocations as well as the liability total. Allocations
 against one source must not exceed its complete gross amount. One 500.00 source

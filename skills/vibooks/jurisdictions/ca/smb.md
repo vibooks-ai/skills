@@ -429,6 +429,35 @@ paid, and still owed to an employee:
    `replaces_calculation_id` and post it with another fresh request ID; never
    edit a posted vacation event, allocation, or journal
 
+For Alberta monthly vacation source facts exposed by the connected API, first
+read the current compensation and employment history using the employee's
+`vacation-pay/compensation-facts` and `vacation-pay/entitlement-facts` routes.
+Use live discovery for the complete request schemas and allowed operations.
+Follow `next_cursor` until `has_more` is false; a partial page is not the full
+source history. Read access requires `read`; recording facts requires
+`draft_write` and the effective payroll module.
+
+A compensation source requires `request_id`, `expected_revision_id` and typed
+`facts`. Send explicit null only for the first revision; otherwise name the
+highest numbered revision in the complete returned history; page order is not
+revision order. To correct an earlier source, also
+name its current `supersedes_id` and give `correction_reason`. Employment history
+requires `request_id`, an explicit `supersedes_id` (null on first creation),
+`reviewed_from`, `reviewed_through` and the complete typed facts. A replacement
+names the active prior history and gives a correction reason. Keep original
+source references and distinguish a real later compensation change from a
+transcription correction. If history changed, read and review the current
+sources before preparing a new request.
+
+Reuse the same authenticated connection, request ID and facts only to retry
+the same operation. The recorded author comes from that connection; request
+headers cannot assign the operation to another person. Retaining source facts
+creates neither a vacation payment nor a wage or bank journal. Verify the
+result and retain its returned revision. A retry reproduces the original
+creation result, so its employment-history status can describe an older active
+version. Read the current active employment history and latest compensation
+revision again before the subsequent supported opening workflow.
+
 For Alberta monthly opening calculations exposed by the connected API, obtain
 the current request contract through discovery. Each historical payment in
 `monthly_sources.actual_payments` needs its original `payment_id`, `paid_on`,
