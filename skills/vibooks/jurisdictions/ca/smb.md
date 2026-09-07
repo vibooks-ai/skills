@@ -441,6 +441,20 @@ allocation retains a known source without crediting the period; omitting the
 required allocation field is not equivalent to zero. These historical facts do
 not record another bank payment or create payroll wages.
 
+For an ended Alberta monthly employment spell, retain the complete sourced
+`termination_wage_history` required by the live opening contract. Its wage
+slices have inclusive `earned_from` and exclusive `earned_to_exclusive` dates,
+original component identities and reconciled component totals. Keep the
+original-anniversary and common-anniversary wage windows separate; let the
+product determine the statutory comparison and residual. Do not supply a
+pooled wage or paid total as a substitute. Include the terminal obligation even
+when its residual is zero or employment ended before the first annual award.
+Use `history_only_zero_control` for a wholly zero opening; do not create a zero
+journal. A monthly row's `vacationable_wages: null` means that scalar is not
+applicable, not that the employee earned zero wages. Actual payments after the
+termination date and before the opening date remain valid source facts, with
+their existing owning allocation. Keep them distinct from recording new cash.
+
 Reversing an opening journal reverses recognition, not the actual payment or its
 attribution. Reuse the same retained attribution when reopening. To correct an
 attribution, first reverse its owning opening recognition, then review the

@@ -521,6 +521,19 @@ mint another payment allowance. Equal gross amounts such as 500, 500.0 and
 or require correction of the original evidence. Unallocated gross and another period's paid
 excess are not available to offset an unrelated obligation automatically.
 
+For an ended monthly employment spell, verify the complete original/common
+statutory comparison, the already earned annual obligations, and the separate
+terminal residual. For example, a sourced 4,000.00 total with 1,209.86 already
+owned by an annual obligation leaves a 2,790.14 residual; 1,200.00 actually paid
+to that annual obligation leaves 2,800.00 owed across both owners. The gross
+comparison is not a second payable or a statement that nothing was paid.
+Check the actual row measurements and GL. A zero terminal residual must remain
+visible in the source history without adding weeks, wages or a zero journal.
+An anniversary on the termination day and that day's actual wages must remain
+in their correct source windows. Later payments before the opening date must
+not be lost merely because employment already ended. Reversal, reopening and
+restore must preserve every owning obligation and its actual payment history.
+
 `current_monthly_payment_history` is current source-attribution evidence,
 including recognition status and obligation versions. It is not an as-of-date
 balance report: use the report's dated financial totals and GL separately.
