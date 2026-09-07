@@ -348,6 +348,11 @@ to spend. Follow only a separately supported settlement workflow with its own
 current proof; do not override `settlement_ready: false` or a rule-certification
 blocker with manual totals.
 
+For employer insurance, combined authority payments or payments between books,
+read skill-root path `references/workflows/employer-insurance.md`. Use only
+operations exposed and permitted by the connected API; an unavailable Québec
+rule package remains a blocker even when documentary sources are retained.
+
 For a supported remittance period:
 
 1. require the pay-date-effective CRA or Revenu Québec authority account and
