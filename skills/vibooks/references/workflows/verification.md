@@ -499,6 +499,16 @@ only preparation: do not report filing, authority acceptance, employee
 distribution, ROE Web validation, or Service Canada receipt unless a separate
 supported workflow and retained external evidence prove that exact event.
 
+For retained external payroll origins, reconcile the complete registered credit
+and documentary components to the original posted journal without a second wage
+or cash entry. Check current generation, actual source reversal, historical
+payment associations and the separate settlement readiness result. Withdrawal
+of an active payment association does not erase its retained history. After a
+supported restore or clone, compare source and audit evidence: owned local IDs
+may be rebased, but external business identifiers and correction text must keep
+their meaning even if they equal an old internal ID. Matching aggregate totals
+alone does not prove that history was preserved.
+
 For a vacation correction, inspect the full append-only chain: source and
 replacement openings, opening event and exact reversal, period close and
 true-up history, payment parent and server-owned children, journal entries,

@@ -325,6 +325,29 @@ Treat payroll remittances, T4 previews, and RL-1 previews as preparation and
 evidence workflows. They do not file a return, transmit a slip, distribute a
 slip, or initiate a government payment.
 
+When the connected API exposes an authority account's `ledger-origins`, use it
+only to retain documentary ownership of an external payroll credit that is
+already posted. Require the original journal and attached register, the complete
+worker/payment/component decomposition, and both original CAD and book-currency
+amounts. Registration must not post the wages or bank movement again. Do not
+infer documentary source amounts from an account balance.
+
+Read the discovered request contract. Supply explicit `origin_id: null` and
+`expected_current_generation: null` for the first generation. A supported
+evidence correction names the existing origin and exact current generation,
+retains its correction reason and uses a new request ID. Retry the same operation
+with its original `Idempotency-Key`, request ID, payload and authenticated
+connection; do not turn a lost response into a second registration. Read current
+detail and all history pages after correction or source reversal. A retained
+historical receipt is not a current readiness result.
+
+Source registration alone does not establish payment, declaration, or available
+settlement capacity. In particular, `historical_payment_status: not_established`
+is not zero paid, and `available_for_settlement: null` is not an amount available
+to spend. Follow only a separately supported settlement workflow with its own
+current proof; do not override `settlement_ready: false` or a rule-certification
+blocker with manual totals.
+
 For a supported remittance period:
 
 1. require the pay-date-effective CRA or Revenu Québec authority account and
