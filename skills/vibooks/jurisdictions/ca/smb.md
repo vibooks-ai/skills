@@ -481,6 +481,53 @@ creation result, so its employment-history status can describe an older active
 version. Read the current active employment history and latest compensation
 revision again before the subsequent supported opening workflow.
 
+For current Alberta monthly obligations exposed by the connected API, use the
+employee's `vacation-pay/valuations:preview` workflow before posting a sourced
+reassessment. Read the current active employment fact, latest compensation
+revision and every active owning obligation version from the live facts and
+vacation report. Send the complete `expected_obligation_versions`, those fact
+IDs, `assessment_date`, `source_reference`, `purpose`, `actual_episodes` and
+`proposed_payment_allocations` required by the live request contract. For a
+`reporting_estimate`, use an empty actual-episode array and empty payment map.
+Do not supply an assessed total or replace missing source history with a
+percentage estimate.
+
+For `vacation_taken`, retain the actual dated work-day portions, evidence and
+any required shorter-period agreement. Name each owning obligation and a
+distinct source ID. An explicit correction identifies `replaces_source_ids`,
+or uses `retired_episode_sources` for incorrectly recorded use; it does not
+silently edit an older final amount. Both retained active use and new actual
+portions must occur on or before `assessment_date`. A request before any such
+portion, including one crossing the cutoff, is rejected; this current-state
+workflow is not a retrospective report that can move future leave into an
+earlier period. Equal-cutoff and later assessments preserve the original final
+use evidence and amounts. Correct the source through its supported workflow
+instead of changing dates merely to bypass the refusal.
+
+Review every returned owner measurement, the complete original/common
+comparison and any terminal residual. Verify statutory and contractual-extra
+amounts separately from their actual owning payments. A preview records a
+calculation without changing payable balances, actual use claims or cash.
+Post the reviewed calculation with its live `post-valuation` operation and a
+`request_id`, using the same authenticated connection. The product rechecks
+sources, versions, actual use, payment history and fiscal locks in the posting
+transaction. Retry the identical operation with the same ID only for its
+original receipt. If a source changes or the preview becomes stale, read the
+current facts and prepare a new preview; do not force the old calculation to
+post.
+
+A posted reassessment records only the provision difference. A null journal
+ID can be correct when the net difference is zero but individual owners need
+opposite adjustments. Neither a reassessment nor an `advance_payment`
+assessment records a new cash payment, creates a payroll run or proves that a
+planned vacation was taken. Use the separately supported owning payroll and
+payment workflows for actual settlement. To undo a posted reassessment, use
+its authorized calculation `reverse` operation with the required reason,
+date and approval. It preserves outside payments and historical source
+records. Changed downstream owners, actual use or payment history can block
+reversal even when the displayed balance has returned to its earlier value;
+resolve those dependencies rather than deleting or rewriting the history.
+
 For Alberta monthly opening calculations exposed by the connected API, obtain
 the current request contract through discovery. Each historical payment in
 `monthly_sources.actual_payments` needs its original `payment_id`, `paid_on`,

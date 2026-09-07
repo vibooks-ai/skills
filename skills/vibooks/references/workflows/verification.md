@@ -526,6 +526,33 @@ request. Read-only access must not write facts, and a claimed author in a
 request header must not override the authenticated author. Source intake is
 not proof that an obligation was posted or that any cash was paid.
 
+For a current monthly vacation reassessment, verify the full active owner
+version map and source IDs, then compare preview, post receipt, owning balances
+and actual GL. All original/common prefixes and a terminal residual must use
+the same assessment basis; an older owner's paid excess cannot discharge a
+different owner or payment category. For example, a sourced provision changing
+from 2,400.00 to 3,600.00 records a 1,200.00 difference, not another 3,600.00.
+A later assessment must retain already final actual-use amounts rather than
+reprice them solely because normal compensation changed.
+
+Check the cutoff against all retained and newly proposed actual portions.
+July 6–10 actual use cannot enter a July 1 or July 9 assessment; July 10 and
+later cutoffs can include the complete retained episode. A refusal must leave
+calculation, owner, claim and journal state unchanged. Preview success alone
+adds no balance, time claim or payment. Posting must verify the current source
+and ledger state atomically, and both positive and zero-net adjustments must
+respect fiscal locks. A zero-net adjustment can still require separate owner
+changes and immutable evidence without a zero journal.
+
+Verify identical post and reversal retries against their original receipts,
+with no duplicate events, claims or cash. Reversal must preserve actual outside
+payment history and refuse changed downstream activity, including a payment
+followed by its reversal that restored the same numerical balance. Check that
+portable restore or clone preserves source and request identities while
+mapping internal owner and ledger IDs correctly. A posted provision adjustment
+or advance assessment is not evidence of payroll settlement, a bank movement
+or actual leave taken; verify those through their own supported sources.
+
 For monthly vacation openings, reconcile distinct actual payment sources and
 their current period allocations as well as the liability total. Allocations
 against one source must not exceed its complete gross amount. One 500.00 source
