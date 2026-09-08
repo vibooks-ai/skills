@@ -747,6 +747,11 @@ Subledger integrity rules:
   establish the total while statutory/contractual classification remains
   unresolved; a null classification is not zero. Read `current_target` and
   `measurement_issues` separately from the immutable recognized/paid balances
+- read the current `authenticated_writer_id` from the employee's `service-facts`
+  or `policies` response and use that identity as `approved_by` for NT corrections.
+  This does not grant write permission. If the authenticated connection or its
+  permissions change, reload and create a fresh preview; never reuse another
+  reviewer's preview or substitute a historical author or default identity
 - use `reference-periods:correctionPreview` with the retained period and proposed
   date, then `post-correction` for an unchanged preview. Vibooks traces prior
   credit to the original dated rights, retains over-recognized amounts without
