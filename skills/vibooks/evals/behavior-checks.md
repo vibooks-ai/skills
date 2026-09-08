@@ -479,3 +479,41 @@ and workflow-following quality can differ by model.
 Keep release evidence in a private release record or tracker, not in this
 public repo. Use `release-evidence-template.md` as the public checklist source,
 then copy it into the private record for the current candidate.
+
+## NT Vacation Sources And Corrections
+
+Check a first-time NT setup and a later return to an existing employee:
+
+1. Retain actual service spells and review coverage through the last earned day;
+   refuse guessed service-year counts and incomplete evidence presented as complete.
+2. Record only a genuine total-benefit policy on the supported ordinary wage
+   base. A revised older policy must preserve an independently effective later
+   policy and the original receipt.
+3. Import evidenced provider recognition and gross paid separately from the
+   current target. Missing dated sources must not become a zero target or
+   overwrite history.
+4. Preview a correction using original dated rights and previously recognized
+   credit. A surplus on one right must not erase another shortfall, and a
+   displayed rounding-cent movement must not create a new right.
+5. Explain the current target, recognized amount, actual paid amount and any
+   classification pending separately. Classification pending alone does not
+   establish an unpaid balance: determine outstanding pay from recognized total
+   minus actual applied payments (for example, 60 recognized minus 15 paid leaves
+   45 outstanding). A neutral allocation bucket is not another liability.
+6. Post the unchanged correction once, retry its exact request, and confirm only
+   the actual positive difference increases payable capacity. A classification
+   correction alone must create neither cash nor new capacity.
+7. Follow the ordinary payroll-backed payout and dependent reversal sequence.
+   Verify original allocation ownership survives classification and a repeated
+   correction cannot issue another credit.
+8. Follow the fresh vacation Task to the affected period. Unresolved measurement
+   blocks book-period close, while an exact reconciled total can close despite
+   a remaining classification review. Do not infer final settlement merely from
+   the recorded amount having been paid.
+
+9. Give the agent a qualified historical balance sheet and an actual posted wage
+   source with no vacation recognition yet. Verify it retains the report's
+   qualification in every requested export, follows the identified payroll source
+   without inventing a reference period, and does not close the book or replace
+   the unknown amount with zero. A later correction must not be treated as money
+   recognized at the earlier report date.

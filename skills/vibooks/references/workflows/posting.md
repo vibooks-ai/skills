@@ -714,8 +714,11 @@ Subledger integrity rules:
   employee vacation detail decomposed into vacationable wages, statutory earned,
   contractual extra, statutory paid, contractual-extra paid, and owed by
   reference period; do not provide `rule_release_ids` because Vibooks selects the
-  release and recalculates statutory earned from the certified jurisdiction,
-  service dates, wages, and cutover date; split a row when a service-rate boundary
+  release. For NT, preserve evidenced provider-recorded earnings and payments;
+  dated `nt_sources` inventory and attributions establish a separate current
+  target, without replacing the imported balance. Other supported profiles
+  validate statutory earned against their certified jurisdiction, service dates,
+  wages, and cutover date. Split a row when a service-rate boundary
   requires dated detail; for a Québec protected-absence period, create the exact
   reviewed section-74 fact set first so the opening uses that official formula;
   positive employee openings must equal the source Vacation Pay Payable control
@@ -728,15 +731,54 @@ Subledger integrity rules:
 - after each retained accrual, true-up, payment, reversal, replacement, or
   control-account transfer, verify the employee vacation event balance equals
   the active Vacation Pay Payable balance and every reference period preserves
-  `owed = statutory earned + contractual extra - paid` with owed nonnegative;
-  target credit is reported separately and never creates a second bucket or GL
-  amount
+  `owed = recognized total - paid` with owed nonnegative. Recognized total is
+  known statutory plus known contractual extra plus any explicitly recognized
+  amount awaiting classification; that last amount is part of the total, not
+  another liability or payment. Target credit never creates a second bucket or
+  GL amount
+- for NT, retain actual same-employer service spells and the complete reviewed
+  interval through `service-facts`; do not supply a guessed count of service
+  years. Keep the stable vacation profile when revising service evidence. Retain
+  a genuine employer policy through `policies` only when it establishes a total
+  vacation-benefit floor on the same ordinary wage base. Never invent a policy
+  to make an uncertain calculation proceed or silently raise an old numeric rate
+- NT earnings need actual amounts split at every applicable service, policy and
+  rule boundary. An unresolved total cannot be posted. A genuine policy may
+  establish the total while statutory/contractual classification remains
+  unresolved; a null classification is not zero. Read `current_target` and
+  `measurement_issues` separately from the immutable recognized/paid balances
+- use `reference-periods:correctionPreview` with the retained period and proposed
+  date, then `post-correction` for an unchanged preview. Vibooks traces prior
+  credit to the original dated rights, retains over-recognized amounts without
+  automatic recovery, and adds only the supported shortfall. Do not net an
+  excess on one dated right against another shortfall or treat rounded display
+  shares as separate entitlements. Missing historical credit attribution may
+  leave the current target known while blocking automatic correction
+- a zero-amount NT classification correction creates no payment or new capacity.
+  A positive correction creates only its additional payable capacity; a
+  `recognized_total` bucket means a confirmed amount available for allocation,
+  not an additional economic category or a statutory/contractual split of past
+  payments. Use the ordinary payroll-backed payment workflow for a later payout
+- financial reports and accountant exports preserve `measurement_status` and
+  `measurement_issues`. A `qualified_draft` retains recorded ledger amounts but
+  must not be presented as a fully measured vacation liability. This also applies
+  to actual posted wages whose vacation obligation has not yet been recognized.
+  For an explicit report date, later economic activity may prevent reconstruction;
+  do not substitute today's correction or payment into the historical balance.
+  Follow the identified employee and payroll source when no reference period exists.
+- unresolved NT measurement or an unapplied required correction blocks the
+  affected book-period close; an exact reconciled total with classification
+  pending can still close. Review the current vacation Task and report rather
+  than treating an already paid recorded amount as proof of final settlement
 - vacation-payment allocation children are server-owned and use the documented
   oldest-due order; never submit caller-calculated children or account overrides
 - every vacation post and reversal needs a new `request_id` plus the reviewed
   `approved_by` identity. Retry only the exact same request. After a reversal,
-  create a fresh preview with `replaces_calculation_id` so the report retains
-  the original, reversal, approver, and replacement chain
+  create a fresh supported replacement preview with `replaces_calculation_id`
+  so the report retains the original, reversal, approver, and replacement chain.
+  For an NT target correction, instead reassess the current reference period
+  through its correction preview; the retained source and correction history
+  determines whether any additional amount remains
 - if posting returns `VACATION_STRICT_APPROVAL_UNSUPPORTED`, stop and explain
   that vacation posting is unavailable while the book requires separate strict
   approvals. Do not change `approved_by`, retry, or recreate the result through
