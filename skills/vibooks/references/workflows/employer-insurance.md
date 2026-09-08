@@ -40,6 +40,47 @@ submit a declaration, or confirm receipt by CNESST or Revenu Québec.
    returned discrepancies through their owning correction workflow before
    describing the file as reconciled.
 
+## Tasks And Current Review
+
+Use the returned task's review target to open the exact book, authority account
+and employer insurance context. Refresh the target and its current generation
+before acting; a task is a review prompt, not a payment instruction or proof of
+completion. If it changed or resolved, refresh Tasks and the employer file.
+
+The seven task reasons identify different work:
+
+- `source_review`: coverage or calculation is missing, or its source changed.
+- `declaration`: a calculated period has no retained declaration; review and
+  retain the actual declaration rather than implying it was submitted.
+- `payable`: recognized premium or charges remain payable; review their actual
+  allocations before recording any further cash.
+- `unapplied_cash`: an existing payment has clearing capacity to allocate.
+- `estimate`: a current cumulative calculation needs provisional recognition,
+  subject to the returned readiness and existing assessment.
+- `assessment`: a disputed assessment needs review and actual successor evidence.
+- `reconciliation`: ledger or counterpart evidence is unresolved; resolve it
+  before further settlement.
+
+## Public RQ Preparation
+
+When live discovery exposes the RQ owner preparation response, use the existing
+insurance context. Bind the request to its `insurance_context_id`,
+`expected_current_generation`, current `calculation_event_id`, authority account
+and exact `period_start` / `period_end`. A calculation for another period, a
+changed generation or an inactive authority account cannot substitute.
+
+Handle `kind: rq_insurance_owner_preparation` as its own response. Review its
+`preparation` and follow the returned `owner.context_url` and `owner.events_url`.
+Use the existing owner's declaration, actual-payment and explicit RQ/insurance
+allocation commands. This response does not create a legacy remittance record:
+do not request a legacy preview fingerprint or create a second payment owner.
+Reuse already recorded cash only through its current allocation readiness.
+
+The installed Québec rules must be certified for the requested period. If the
+API returns `PAYROLL_RQ_CNESST_NOT_CERTIFIED`, stop native RQ preparation and
+retain only actual evidence through operations the connected API permits.
+A complete context, a task or this guidance does not activate pending rules.
+
 ## Payments Between Books
 
 When one book pays another book's liability, use the discovered interbook
