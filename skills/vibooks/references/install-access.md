@@ -57,7 +57,9 @@ Preferred startup order:
    - run `vibooks-cli license status --json`
    - if the entitlement is inactive, run
      `vibooks-cli license check-trial-eligibility --json`
-   - if eligible, run `vibooks-cli license start-trial`
+   - if eligible, run `vibooks-cli license start-trial --book-country <ISO-COUNTRY>`
+   - use the actual two-letter legal country of the intended books; do not
+     infer it from the interface language or purchase market
    - if not eligible, run `vibooks-cli license activate --license-key ...` or
      stop and ask the owner to activate the desktop
    - on desktop onboarding, keep the free-trial option enabled when eligible
@@ -294,9 +296,12 @@ token and do not fall back to any default token.
    `vibooks-cli license status --json`
 2. if the desktop entitlement is inactive, run
    `vibooks-cli license check-trial-eligibility --json`
-3. if trial is eligible, run `vibooks-cli license start-trial`; otherwise run
+3. if trial is eligible, run
+   `vibooks-cli license start-trial --book-country <ISO-COUNTRY>`; otherwise run
    `vibooks-cli license activate --license-key ...` or stop and ask the owner
    to activate the desktop
+   Use the actual two-letter legal country of the intended books, independently
+   of interface language or purchase market.
 4. if a local desktop install already has a company or book, do not restart a
    trial blindly; inspect the current entitlement snapshot first
 5. never bypass an inactive entitlement by writing directly to storage or by
