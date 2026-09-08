@@ -487,6 +487,15 @@ same retained remittance PDF bytes and must not change lifecycle state.
 For T4, ROE, and RL-1 preparation, verify employee and province assignment,
 effective employer and employee legal identities, active payroll and opening
 YTD sources, box or field mappings, and every signed adjustment and reversal.
+For T4, reconcile boxes 24 and 26 to the employee's annual earnings limits
+across all provinces for the same employer. Verify QPIP employee premiums in
+box 55 and distinguish an omitted box 56 from zero eligible earnings. A signed
+box 56 correction uses retained eligible earnings, even when the unadjusted box
+was omitted under the reporting rule. Review adjustment and reversal evidence;
+never silently truncate an explicit correction to make it fit an annual limit.
+If incomplete original payment chronology affects a cross-province allocation,
+retain the preparation blocker instead of guessing the order from an opening
+balance's entry date. Unrelated income limits must not require that chronology.
 For T4, verify the on-screen preview facts and blockers and also verify that no
 artifact, content, render, download, or print operation is offered while the
 exact annual CRA form package is unavailable. For each retained ROE review PDF,

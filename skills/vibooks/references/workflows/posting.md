@@ -667,7 +667,11 @@ Subledger integrity rules:
   `/payroll-tax-forms/t4:preview` operation, using active immutable payroll,
   legal identity, opening YTD, and signed box-adjustment records. Correct boxes
   through `payroll-tax-form-adjustments` and its reversal action, not by editing
-  payroll history. While the exact annual CRA form package is unavailable,
+  payroll history. An omitted QPIP earnings box is not a zero correction basis:
+  reconcile any signed box 56 adjustment to the retained eligible earnings.
+  Resolve annual-limit and original-payment-order blockers using source records;
+  do not replace missing chronology with the date an opening balance was entered.
+  While the exact annual CRA form package is unavailable,
   there is no T4 artifact, PDF, download, print, or employee-copy workflow; do
   not call a removed preparation-artifact operation, construct a lookalike
   document, or reuse another tax year's form. A balanced preview is data review
