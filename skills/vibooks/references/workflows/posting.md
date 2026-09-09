@@ -899,9 +899,13 @@ the statement reconciliation workflow.
 
 ## Opening Balances
 
-- use `post-v1-books-book-id-opening-balances`
-- load only asset, liability, and equity balances at cutover
-- do not load revenue or expense accounts as opening balances unless the
-  cutover design explicitly requires it
+- use `post-v1-books-book-id-opening-balances`; obtain its current request
+  schema through live discovery and describe before submitting
+- load only asset, liability, and equity balances at cutover; this operation
+  does not accept revenue or expense accounts
 - the opening balance entry must tie to a verified prior balance sheet or
   opening trial balance
+- creation immediately posts the opening balance entry; do not attempt a
+  separate opening-balance post action
+- read back the returned entry and verify its posted status, cutover dates,
+  supporting evidence, and amounts against the source and ledger reports
