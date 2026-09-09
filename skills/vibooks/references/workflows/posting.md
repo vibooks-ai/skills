@@ -19,6 +19,15 @@
 - use recurring templates for predictable repeats instead of cloning prior-period
   invoices, bills, or journals by hand
 - post from evidence, not guesses
+- before editing an existing draft journal or recurring journal template, read
+  its full current detail and live update schema. Preserve original currencies,
+  exchange rates, source and functional amounts, tax and dimension facts, and
+  attachment and external-document links in the required replacement payload;
+  do not assume a description-only update preserves omitted fields. If the
+  desktop form cannot edit the record's currency or rate, use the supported
+  agent/API update with those original facts, then read back and compare the
+  result. Do not convert the record to the book currency merely to make the
+  simplified form accept it
 - never net receivables, payables, taxes, or clearing balances against revenue
   or expense
 - do not overwrite posted history; use reversal, cancellation, credit-note,
