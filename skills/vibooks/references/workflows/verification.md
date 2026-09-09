@@ -607,8 +607,27 @@ vibooks-cli verify \
   --date-to 2026-01-31
 ```
 
-Use `--expect-account-balance ACCOUNT_OR_CODE=AMOUNT` when the user has a
-statement ending balance that must tie exactly.
+`--expect-account-balance ACCOUNT_OR_CODE=AMOUNT` compares the trial-balance
+signed net: debits minus credits. Derive that expected value independently from
+the original statement and account type. A bank asset balance of 670 is `670.00`;
+a credit-card amount owed of 113 is `-113.00`, while a genuine card overpayment
+of 113 is `113.00`. Do not copy the ledger's reported value merely to make the
+check pass. Statement reconciliation separately uses the account's statement
+balance direction, so the same card amount owed remains positive there.
+
+Before closing a period, complete the source review, statement reconciliations,
+and report checks, then read the current period and live close request schema.
+Submit a non-empty checklist describing checks actually performed; do not invent
+review evidence or treat a balanced trial balance alone as complete review.
+When the effective policy requires approval, create the approval request for the
+exact period action and intended request payload, have a different authorized
+reviewer approve it, and submit that same payload with the resulting approval
+ID. Creating an approval request does not approve or close the period. Do not
+change policy, impersonate a reviewer, or grant access to bypass a refusal.
+Reopening also requires the supported approval and a meaningful reason; fetch
+its own live schema rather than reusing the close payload. After each action,
+read back the period and retained close or approval history. Report the period
+as open until the actual close succeeds.
 
 Useful report commands:
 
