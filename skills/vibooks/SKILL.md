@@ -100,6 +100,13 @@ blocked or unavailable in the current client.
 Treat `metadata.skill_version` as the installed skill version. The latest public
 version is published at `metadata.update_check`.
 
+When recommending an update in either distribution mode, tell the user the
+installed skill version and the latest version reported by the manifest. Explain
+the manifest's `changed_areas` relevant to the current task in plain language.
+If installed version metadata is missing, say the version is unknown. If the
+manifest is unavailable, say the latest version and changes could not be
+confirmed; do not invent them.
+
 In plugin mode, use `vibooks_update_status` when available and the current
 client's plugin manager to check or install a plugin update. Report an available
 update, but do not silently install it and do not use the standalone
