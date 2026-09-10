@@ -134,7 +134,12 @@ require an active base company and the official correction workflow. Do not
 backdate a new payroll run, add a new employee to an amendment, or change the
 original pay-date period to obtain historical access. If retained evidence or
 whole-plan validation is missing, stop before reversal; never manufacture proof
-or leave a partial correction. Current statutory readiness remains required.
+or leave a partial correction. For a retained-source native preview, resolve
+the live request schema and provide `correction_source_id` for the original
+posted record. This does not authorize a new posting: keep the same employee,
+economic event and pay-date period, and use the official correction operation.
+Older records without verified retained authorization require a current Payroll
+place. Current statutory readiness remains required.
 
 For supported Canadian payroll dates, treat statutory payroll and vacation pay
 as effective-dated, server-selected bookkeeping workflows. Never extend a prior
