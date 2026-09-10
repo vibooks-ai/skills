@@ -143,7 +143,11 @@ Reference:
 
 Run setup in this order:
 
-1. create the company
+1. inspect the active license; for a company subscription, reserve the owner's
+   chosen stable company UUID and country before creating that company, following
+   skill-root path `references/install-access.md`, section
+   “Company subscriptions and existing licenses”
+   (reuse an existing company's ID rather than creating a duplicate)
 2. set the company country, region, and commodity-tax registration status when
    known so new books inherit them by default
 3. create the book

@@ -67,6 +67,38 @@ Preferred startup order:
 8. only after `doctor` reports authenticated API readiness and the desktop
    entitlement or trial is active, start bookkeeping work
 
+### Company subscriptions and existing licenses
+
+Inspect `vibooks-cli license status --json` before creating or editing companies.
+When it reports `company_subscription_v1`, use
+`vibooks-cli license subscription-state` to inspect purchased company
+places and their assignments. A purchase or renewal does not create a new local
+company or a new set of books. Reuse the owner's existing stable company IDs.
+
+For a company the owner has authorized, reserve its place through
+`vibooks-cli license assign-company --company-id <UUID> --country-code <ISO-COUNTRY> --payroll-enabled false --request-id <UUID>`.
+Use the same company UUID for subsequent company creation and reuse the request
+UUID when retrying the same assignment. Inspect the live discovery schema before
+sending the company-create payload. A new company needs a new stable UUID; a
+rename or restore retains the existing one. Archiving or deleting a company does
+not release a purchased place during its paid term. Do not edit local license
+state or create duplicate company identities to bypass capacity.
+
+Only enable Payroll for a supported Canadian company when the owner has
+explicitly chosen to spend a purchased Payroll place on that company. Use the
+same assignment command with `--payroll-enabled true`; check both purchased
+capacity and statutory readiness. Native Payroll is optional and does not follow
+from the Small Business name. Standard bookkeeping of externally supplied
+payroll results does not grant native calculation or expand supported countries.
+
+If capacity, payment, compatibility or renewal action is needed, direct the owner
+to the app's License settings and subscription management. Show the actual server
+state; do not infer billing tasks from a failed network request. An existing
+license keeps its original meaning until an explicit migration. Do not replace
+its license key, restart a trial, purchase another subscription, or authorize a
+charge merely to repair an upgrade. Subscription changes require the owner's
+review of the server-provided quantities, price and effective date.
+
 Product install detection:
 
 1. if the discovered `LOCAL_API_BASE/api/health` responds, reuse that Vibooks

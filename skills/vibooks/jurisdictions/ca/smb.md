@@ -122,6 +122,20 @@ Canadian chart package unless the shipped product actually exposes one.
 
 ## Canadian Payroll And Vacation-Pay Bookkeeping
 
+For a company subscription, native Payroll also requires an active base-company
+assignment and a purchased Payroll place assigned to that Canadian company.
+Check license and assignment state before calculation or posting. A standard
+bookkeeping subscription alone does not authorize native payroll calculation.
+Never consume a Payroll place without the owner's explicit selection.
+
+Historical corrections without a current Payroll place are limited to the
+original posted source and its retained, verified authorization. They still
+require an active base company and the official correction workflow. Do not
+backdate a new payroll run, add a new employee to an amendment, or change the
+original pay-date period to obtain historical access. If retained evidence or
+whole-plan validation is missing, stop before reversal; never manufacture proof
+or leave a partial correction. Current statutory readiness remains required.
+
 For supported Canadian payroll dates, treat statutory payroll and vacation pay
 as effective-dated, server-selected bookkeeping workflows. Never extend a prior
 rule release because the next interval appears unchanged. If Vibooks reports a
