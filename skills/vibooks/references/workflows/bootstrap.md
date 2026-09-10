@@ -148,18 +148,27 @@ Run setup in this order:
    skill-root path `references/install-access.md`, section
    “Company subscriptions and existing licenses”
    (reuse an existing company's ID rather than creating a duplicate)
-2. set the company country, region, and commodity-tax registration status when
+2. list the Company's existing Books and continue in its primary Book when it
+   already represents the same legal entity and accounting history; do not
+   create a new Book for a later fiscal year
+3. use Dimensions for branches, departments, projects, locations, or other
+   reporting segments that belong in the same accounting history
+4. create another Book only for a named isolation need such as a setup sandbox,
+   migration validation, or a retained historical predecessor, after verifying
+   that the live entitlement has an available Book place; archived Books under
+   currently assigned Companies still count
+5. set the company country, region, and commodity-tax registration status when
    known so new books inherit them by default
-3. create the book
-4. apply or confirm the jurisdiction profile
-5. create the accounting policy
-6. create the fiscal year
-7. confirm the active period is open
-8. choose and apply an official Vibooks preset when it matches the business
-9. create or review the chart of accounts
-10. create customers and vendors when needed
-11. load opening balances if migrating from prior books
-11. start routine posting only after the opening balances tie out
+6. create the Book only when the preceding checks establish that one is needed
+7. apply or confirm the jurisdiction profile
+8. create the accounting policy
+9. create the fiscal year
+10. confirm the active period is open
+11. choose and apply an official Vibooks preset when it matches the business
+12. create or review the chart of accounts
+13. create customers and vendors when needed
+14. load opening balances if migrating from prior books
+15. start routine posting only after the opening balances tie out
 
 Bootstrap defaults:
 

@@ -207,6 +207,15 @@ direct mutation of Vibooks storage.
   untrusted until the same check is rerun with the installed `vibooks-cli` in
   the user's normal shell or an approved unsandboxed command
 - inspect discovery before mutating unfamiliar resources
+- before creating a Book, inspect the Company's existing Books and reuse its
+  primary Book when it already contains that Company's continuing accounting
+  history; a new fiscal year belongs in the same Book
+- use Dimensions for branches, departments, projects, locations, and other
+  reporting segments instead of creating another Book
+- create an additional Book only for a named isolation need such as a setup
+  sandbox, migration validation, or a retained predecessor, and confirm that
+  the live entitlement has an available Book place first; archived Books under
+  currently assigned Companies still use capacity
 - prefer first-class workflows over manual journals whenever Vibooks has a
   native workflow for the task
 - treat country or region defaults as a jurisdiction profile that is separate
