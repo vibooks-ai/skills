@@ -122,11 +122,22 @@ Canadian chart package unless the shipped product actually exposes one.
 
 ## Canadian Payroll And Vacation-Pay Bookkeeping
 
-For a company subscription, native Payroll also requires an active base-company
-assignment and a purchased Payroll place assigned to that Canadian company.
-Check license and assignment state before calculation or posting. A standard
-bookkeeping subscription alone does not authorize native payroll calculation.
-Never consume a Payroll place without the owner's explicit selection.
+Native Payroll requires the exact Canadian native module, an unused purchased
+Canadian Payroll place explicitly enabled for the local Canadian Company, and
+current statutory readiness. Check the live entitlement and allocation state
+before calculation or posting. A standard bookkeeping subscription authorizes
+recording results supplied by an accountant or external payroll provider; it
+does not authorize Vibooks payroll calculation or employee pay-statement
+generation. Never consume a Payroll place without the owner's explicit
+selection. Once enabled, that place is fixed for the paid period; Company
+archive or deletion does not release it.
+
+If restore reconciliation reports more current-period Canadian Payroll
+allocations than the signed limit, do not calculate a new payroll result or try
+to clear or move an allocation. Follow the discovered billing recovery action:
+increase the paid current-period quantity, resolve billing first when required,
+or wait for/reactivate into a new paid period. Retained source-bound native
+history may still use only the narrow correction rules below.
 
 Historical corrections without a current Payroll place are limited to the
 original posted source and its retained, verified authorization. They still

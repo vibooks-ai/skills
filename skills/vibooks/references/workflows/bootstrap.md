@@ -143,11 +143,12 @@ Reference:
 
 Run setup in this order:
 
-1. inspect the active license; for a company subscription, reserve the owner's
-   chosen stable company UUID and country before creating that company, following
-   skill-root path `references/install-access.md`, section
-   “Company subscriptions and existing licenses”
-   (reuse an existing company's ID rather than creating a duplicate)
+1. inspect the active License and live capacity before creating a Company; a
+   new quota subscription is enforced from retained local counts, while an
+   existing `company_subscription_v1` License still uses its shipped assignment
+   flow, as described in skill-root path `references/install-access.md`, section
+   “Company capacity, Payroll places, and existing licenses”; always reuse an
+   existing Company's identity rather than creating a duplicate
 2. list the Company's existing Books and continue in its primary Book when it
    already represents the same legal entity and accounting history; do not
    create a new Book for a later fiscal year
@@ -155,8 +156,8 @@ Run setup in this order:
    reporting segments that belong in the same accounting history
 4. create another Book only for a named isolation need such as a setup sandbox,
    migration validation, or a retained historical predecessor, after verifying
-   that the live entitlement has an available Book place; archived Books under
-   currently assigned Companies still count
+   that the live entitlement has an available Book place; all archived Books
+   and Companies still count
 5. set the company country, region, and commodity-tax registration status when
    known so new books inherit them by default
 6. create the Book only when the preceding checks establish that one is needed

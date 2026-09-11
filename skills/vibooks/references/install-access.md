@@ -67,29 +67,47 @@ Preferred startup order:
 8. only after `doctor` reports authenticated API readiness and the desktop
    entitlement or trial is active, start bookkeeping work
 
-### Company subscriptions and existing licenses
+### Company capacity, Payroll places, and existing licenses
 
-Inspect `vibooks-cli license status --json` before creating or editing companies.
-When it reports `company_subscription_v1`, use
-`vibooks-cli license subscription-state` to inspect purchased company
-places and their assignments. A purchase or renewal does not create a new local
-company or a new set of books. Reuse the owner's existing stable company IDs.
+Inspect `vibooks-cli license status --json` and the live `/api/entitlements`
+operation before creating or editing Companies. A new `quota_subscription_v1`
+License carries numeric Company and Book limits only; the licensing service does
+not choose or store local Company or Book IDs. Every retained Company and Book
+counts, including archived records. Permanent deletion through the guarded Core
+workflow is the only action that releases Company or Book capacity.
 
-For a company the owner has authorized, reserve its place through
-`vibooks-cli license assign-company --company-id <UUID> --country-code <ISO-COUNTRY> --payroll-enabled false --request-id <UUID>`.
-Use the same company UUID for subsequent company creation and reuse the request
-UUID when retrying the same assignment. Inspect the live discovery schema before
-sending the company-create payload. A new company needs a new stable UUID; a
-rename or restore retains the existing one. Archiving or deleting a company does
-not release a purchased place during its paid term. Do not edit local license
-state or create duplicate company identities to bypass capacity.
+Most Companies should keep all fiscal years in one primary Book. Use Dimensions
+for branches, departments and projects. Create an extra Book only for a named
+isolation need such as setup testing, migration validation or a retained
+predecessor, after discovery confirms shared Book capacity remains. If a restore
+or reduction leaves the workspace over capacity, ordinary writes remain blocked
+until the owner backs up as needed and permanently deletes enough archived
+resources. Never delete accounting history or alter local state merely to make a
+requested operation pass.
 
-Only enable Payroll for a supported Canadian company when the owner has
-explicitly chosen to spend a purchased Payroll place on that company. Use the
-same assignment command with `--payroll-enabled true`; check both purchased
-capacity and statutory readiness. Native Payroll is optional and does not follow
-from the Small Business name. Standard bookkeeping of externally supplied
-payroll results does not grant native calculation or expand supported countries.
+Only enable native Payroll for a supported Canadian Company after the owner
+explicitly chooses to spend a purchased Canadian Payroll place. Inspect the
+discovered allocation operation for
+`POST /v1/companies/{company_id}/payroll-allocations`, use a stable
+`Idempotency-Key`, and send the canonical `CA` jurisdiction. A successful enable
+is fixed for that paid period before any new calculation or pay statement can be
+returned. Archiving or deleting the Company does not release it. If a restored
+workspace has more current-period Payroll allocations than its License permits,
+follow the returned billing/support recovery actions; do not try to move or
+clear an allocation locally.
+
+Native Payroll is optional and requires the exact country module, current-period
+allocation, matching Company country and statutory readiness. Standard
+bookkeeping can still record payroll results supplied by an accountant or
+external payroll provider; that accounting workflow does not authorize Vibooks
+calculation, employee pay-statement generation or another country's native
+Payroll.
+
+An existing `company_subscription_v1` License keeps its shipped server-assigned
+Company semantics until its stated expiry or an explicitly confirmed successor.
+Use its legacy assignment operation only when the live entitlement reports that
+exact contract. Never send local Company IDs to new quota-subscription billing
+operations.
 
 If capacity, payment, compatibility or renewal action is needed, direct the owner
 to the app's License settings and subscription management. Show the actual server
@@ -98,6 +116,12 @@ license keeps its original meaning until an explicit migration. Do not replace
 its license key, restart a trial, purchase another subscription, or authorize a
 charge merely to repair an upgrade. Subscription changes require the owner's
 review of the server-provided quantities, price and effective date.
+
+New trials include bookkeeping and externally supplied Payroll-result
+accounting. They do not include native Payroll calculation or generated employee
+pay statements. If the service returns `trial_app_update_required`, preserve the
+current credential and update the client through the official product flow
+before retrying.
 
 Product install detection:
 

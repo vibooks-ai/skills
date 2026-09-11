@@ -16,7 +16,7 @@ description: >
   AI-assisted Vibooks bookkeeping against original source evidence in a clean
   review workspace without reusing prior extraction artifacts.
 metadata:
-  skill_version: 1.3.0
+  skill_version: 1.3.1
   source_repo: vibooks-ai/skills
   update_check: https://vibooks.ai/skills/manifest.json
   install_command: npx skills add vibooks-ai/skills --skill vibooks -g
@@ -214,8 +214,8 @@ direct mutation of Vibooks storage.
   reporting segments instead of creating another Book
 - create an additional Book only for a named isolation need such as a setup
   sandbox, migration validation, or a retained predecessor, and confirm that
-  the live entitlement has an available Book place first; archived Books under
-  currently assigned Companies still use capacity
+  the live entitlement has an available Book place first; every archived Book
+  and Company remains retained and still uses capacity
 - prefer first-class workflows over manual journals whenever Vibooks has a
   native workflow for the task
 - treat country or region defaults as a jurisdiction profile that is separate
