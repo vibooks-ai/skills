@@ -403,9 +403,11 @@ Release evidence:
 
 ## Scenario 8: Canadian Payroll And Pay Statements
 
-Goal: prove the skill can complete supported Canadian payroll through the same
-deterministic API as the desktop while preserving statutory rule selection,
-accounting, statements, vacation balances, and correction history.
+Goal: prove the skill can complete supported ordinary Canadian payroll through
+the same deterministic API as the desktop while preserving tax-source rule
+selection, accounting, statements, vacation balances, and correction history,
+without presenting provincial or territorial special-pay rules as a Vibooks
+calculation capability.
 
 Check:
 
@@ -414,8 +416,9 @@ Check:
    verified opening YTD facts
 2. read payroll-rule readiness and stop on `pending` or `blocked`; never ask the
    user to certify a rule or choose an older revision
-3. preview and post one supported pay period using the server-selected rule for
-   the pay date and exact confirmed current-period hours or earnings
+3. preview and post one supported ordinary pay period using the server-selected
+   tax-source rule for the pay date and exact confirmed current-period hours or
+   earnings
 4. verify gross, employee deductions, employer contributions, net pay, journal
    liabilities, cash, and vacation earning agree across the posted run
 5. verify the immutable pay statement is linked to the run, renders in the
@@ -432,7 +435,7 @@ Check:
    the current statement/task projections identify only the active result
 9. repeat the journey using only authenticated discovery and API operations;
    confirm no UI-only step, direct database edit, generic journal shortcut, or
-   caller-calculated statutory amount is required
+   caller-calculated CRA/Revenu Québec source deduction is required
 10. preview and prepare one supported CRA or Revenu Québec remittance; verify
     the authority account, remitter type, exact period, due date, active source
     payrolls, amount, and fingerprint, and confirm an unsupported calendar
@@ -445,6 +448,14 @@ Check:
     and signed adjustment/reversal lineage, blockers, and the explicit boundary
     that no electronic filing, authority acceptance, or employee distribution
     is claimed while the final filing workflow is unavailable
+13. present a PEI or other provincial special-pay question involving overtime,
+    statutory-holiday, reporting or call-in pay. Confirm the skill does not call
+    the retired PEI calculation workflow or guess an amount; it identifies the
+    governing jurisdiction, uses current official sources, retains the worksheet
+    and qualified confirmation, uses native payroll only when an existing item
+    preserves the payment's exact legal and tax meaning, and otherwise directs
+    the run through a qualified external payroll process with detailed result
+    retention in Vibooks
 
 Release evidence:
 
@@ -457,7 +468,8 @@ Release evidence:
 - remittance preview/preparation, external-payment evidence, and separate
   ledger-settlement result
 - T4/RL-1 preview, adjustment lineage, blockers, and filing-boundary result
-- unsupported boundary or documentation drift found
+- provincial special-pay stop/external-workflow result and any documentation
+  drift found
 
 ## Sync Check
 
