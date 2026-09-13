@@ -505,50 +505,17 @@ Subledger integrity rules:
   unchanged filters; a first page is not the full audit history. On success,
   reload `detail_url` rather than treating an idempotent receipt as current
   permission or readiness.
-- for certified PEI general-hourly payroll, first retain the external
-  applicability determination, one effective weekly work-week/payment-day
-  policy, all seven reviewed daily/occurrence facts, the PEI vacation profile
-  in retained-accrual mode, and the matching vacation accounts. Use the
-  employment-standard preview; its period end, pay date, rates, minimum-wage,
-  reporting-pay, overtime, holiday, tip-classification, protected totals,
-  source deductions and statement facts are server-owned. Post the unchanged
-  returned draft so payroll, vacation payable/subledger and the issued paystub
-  commit atomically. Never convert a missing PEI package or fact into zero or a
-  prior-period default
-- a PEI weekly schedule's first work-week policy fixes its start weekday and
-  payment lag. Later policies, including corrections, may reuse that schedule
-  only with identical timing. To change timing, create a new weekly schedule
-  and use it in the new dated policy and matching employee payroll profiles.
-  If `PEI_SCHEDULE_CADENCE_IMMUTABLE` is returned, do not alter older policies
-  or retry against historical records; use the new-schedule workflow
-- immediately before posting a certified PEI preview, let Vibooks revalidate
-  that every referenced determination, work-week policy, work-fact generation,
-  rate-profile version, tip arrangement/source, opening generation, holiday
-  component and vacation event is still the active retained source. If any
-  source changed after preview, create a new preview; never post the old signed
-  draft merely because its fingerprint is still internally valid
-- before reversing or replacing a certified employment-standard payroll run,
-  create `/payroll-statutory-corrections:plan` with the exact reversal or
-  replacement pay date, review the returned transitive graph and blockers, then
-  send the unchanged plan ID and graph fingerprint with an action using that
-  same date. A closed or unavailable accounting period, stale graph, finalized
-  remittance, dependent later run, consumed vacation bucket or missing retained
-  node blocks the whole correction transaction; do not manually edit one side
-  of the payroll/vacation/statement relationship
-- when correcting a weekly work-fact generation, prior-provider opening-earning
-  generation, or reviewed tip-collection event, plan from that source root with
-  one complete typed replacement. Review the replacement and transitive graph,
-  create every exact `entry.reverse` approval target returned for a standard or
-  strict book, then execute with the unchanged plan ID, graph fingerprint and
-  approval map. Vibooks must reverse dependents, append the protected source
-  successor and post all recalculated payroll successors atomically; a stale
-  graph, finalized remittance, closed period, missing approval or changed result
-  fails without partial source, ledger, vacation or statement changes
-- list durable payroll compliance issues after certified payroll post. A late
-  PEI employee-property payout remains payable and posted, but its blocking
-  issue must be reviewed. `acknowledge` records that review; `resolve` requires
-  the actual corrective-action note. Neither state transition certifies that
-  the original payout was timely
+- for any payroll that may include provincial or territorial overtime,
+  statutory-holiday pay, reporting or call-in pay, minimum-wage top-ups,
+  scheduling effects, exemptions, or similar special pay, follow the on-demand
+  official-source and professional-review workflow in
+  `jurisdictions/ca/smb.md`. Vibooks does not determine those rules. Use native
+  payroll only when an existing supported payroll item preserves the confirmed
+  payment's exact meaning. Otherwise complete payroll through a qualified
+  external process and retain its detailed result through the discovered
+  external-payroll workflow. Do not call retired PEI setup, work-fact,
+  tip/opening, special preview, or statutory-correction endpoints, relabel an
+  unsupported amount, or turn an unknown amount into zero
 - use `/v1/books/{book_id}/tasks` as the shared Overview, Tasks, UI and Agent
   projection for open Payroll work. Preserve the complete versioned task ID,
   re-read its detail immediately before acting, and follow only the returned
@@ -645,9 +612,6 @@ Subledger integrity rules:
   and one for the unchanged final reverse or replacement until the outcome is
   known; after an ambiguous response, retry those exact identifiers instead of
   creating a second correction
-- when a certified PEI payroll run has an active vacation earning, reverse the
-  linked vacation calculation first; the payroll reversal intentionally blocks
-  a one-sided correction that would leave Vacation Pay Payable unreconciled
 - after posting, use the statement list/detail/payroll-run-link/render and
   batch-export APIs. Viewing, downloading, printing or creating a ZIP does not
   prove delivery. Record `paper_in_person` only after the real handoff, with the
