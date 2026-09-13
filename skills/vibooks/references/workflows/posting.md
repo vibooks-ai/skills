@@ -447,6 +447,12 @@ Subledger integrity rules:
   payroll profile, schedule, statutory payroll items, jurisdiction, and verified
   YTD history before calculation; use the employee payroll-calculation preview
   instead of entering tax deductions as operator-calculated amounts
+- before any Canadian payroll calculation preview, show the live request
+  schema's unsupported special-tax-situation list to the operator. Send
+  `unsupported_tax_situations_confirmed_absent: true` only after the operator
+  confirms none applies; omission or `false` must stop the calculation. Review
+  the returned `calculation.limitations` with the preview instead of discarding
+  them
 - when pay, schedule, province, or tax setup changes on a later date, append a
   successor employee payroll profile through the payroll-profile API. The
   server atomically closes the unique predecessor on the prior calendar day and
