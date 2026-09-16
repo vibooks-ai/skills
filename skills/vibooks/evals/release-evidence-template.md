@@ -69,6 +69,15 @@ repository.
 - status: pass / fail / blocked
 - installed skill version used for the test:
 - manifest version used for the test:
+- downloads versions and plugin version facts used for the test:
+- cache path, schema, timestamps, and fresh/stale decision:
+- standalone or plugin mode:
+- `vibooks_update_status` call count and `includeNetwork` value:
+- public-catalog request count by exact URL:
+- invalid-catalog cases failed closed without advancing freshness:
+- partial-success, merge, concurrent-newer-entry, and future-schema result:
+- permission, sandbox, or read-only persistence failure result:
+- `vibooks-agent.env` remained unread and unchanged:
 - update recommendation shown:
 - task continued or paused correctly:
 

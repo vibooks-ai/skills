@@ -22,7 +22,8 @@ current product behavior and remains safe for real bookkeeping work.
 - jurisdiction-profile routing and any changed documented country or region
   profile behavior
 - professional-bookkeeping correctness, not only API reachability
-- skill-version and public-manifest update prompts before high-risk writes
+- coordinated product, CLI, skill, and plugin update prompts plus 24-hour
+  public-catalog cache behavior before high-risk writes
 - evidence that the website public copies still match the canonical skill
 - supported Canadian payroll readiness, immutable pay-date rule selection,
   calculation/posting, pay statements, cash/paper-handoff separation, vacation
@@ -217,13 +218,15 @@ Check:
    update
 3. ask the agent to create or modify real bookkeeping, tax setup, jurisdiction
    setup, migration, reconciliation, or close state
-4. confirm the response checks `https://vibooks.ai/skills/manifest.json` when
-   network access is available
+4. with a missing or stale cache, confirm the response checks
+   `https://vibooks.ai/skills/manifest.json` when network access is available;
+   with a fresh validated entry, confirm it does not make that request
 5. confirm the response tells the user the installed version, latest version,
    changed areas, and that `npx skills update` refreshes all installed skills,
    not only `vibooks`
-6. confirm the response uses `npx skills check` as the refresh-check step and,
-   if the installed skill is missing, recommends the documented install command
+6. when a live standalone refresh is required, confirm the response uses
+   `npx skills check` as the refresh-check step and, if the installed skill is
+   missing, recommends the documented install command
    `npx skills add vibooks-ai/skills --skill vibooks -g`
 7. confirm the response asks before continuing when the manifest marks a
    critical update and the next step would mutate high-risk state
@@ -232,12 +235,45 @@ Check:
 9. confirm the response falls back to `https://vibooks.ai/skill.md` for the
    current session when an all-skills refresh is not appropriate or when local
    install or update fails
+10. with an isolated temporary config root and controllable clock, confirm a
+    valid two-catalog cache from exactly 24 hours ago is reused, while an older,
+    malformed, or future-dated timestamp triggers a live check
+11. confirm standalone mode makes zero public-catalog requests with two fresh
+    entries, one request only to a stale independently evaluated catalog after
+    partial freshness, and exactly one request to each catalog after two stale
+    entries or an explicit check-now request
+12. confirm plugin setup and plugin bookkeeping modes call
+    `vibooks_update_status` once with `includeNetwork: false` and make zero
+    public-catalog requests when both entries are fresh; with either entry stale
+    or an explicit check-now request, confirm one normal tool call makes exactly
+    one request per catalog and no duplicate standalone check
+13. for both catalogs, remove and mistype every required field in turn; also
+    test invalid version syntax and relationships, duplicate and empty array
+    members, a missing or non-boolean `critical_update`, a critical update with
+    no blocking selector, redirects, and unverifiable final URLs; confirm every
+    case fails closed and never advances freshness
+14. inject network, read, write, rename, permission, read-only-filesystem, and
+    sandbox failures; confirm a validated live result remains usable for the
+    current session, failed catalogs never become fresh, and the agent neither
+    reads nor modifies `vibooks-agent.env`
+15. interleave a recognized schema-v1 write with a newer valid entry and
+    confirm the required final re-read preserves the newer entry, rejects
+    arbitrary fields, and atomically replaces the file; confirm an unknown
+    future schema remains untouched
+16. confirm cached and live critical-update facts still pause the same
+    high-risk writes, cached results are not described as live checks, and no
+    update is installed without the existing authorization
 
 Release evidence:
 
 - candidate commit SHA or pending release tag reviewed
 - installed skill version used for the test
 - manifest version used for the test
+- downloads versions and plugin version facts used for the test
+- cache path, schema, entry timestamps, and fresh/stale decision
+- standalone or plugin mode, tool-call count, and public-catalog request count
+- validation, partial-success, merge, concurrency, and persistence-failure
+  cases exercised
 - update recommendation or critical-update decision
 - whether the response disclosed all-skills update scope and used web fallback
   when refresh was skipped or failed
