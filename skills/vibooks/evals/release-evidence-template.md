@@ -125,6 +125,25 @@ repository.
 - filing, acceptance, and employee-distribution boundary result:
 - unsupported boundary or documentation drift:
 
+### Scenario 9: Customer Invoicing And Prepayments
+
+- status: pass / fail / blocked
+- exact product build, client protocol, skill revision, and client:
+- recurring-service invoice and later-receipt result:
+- explicit due date and derivation evidence:
+- one-off non-inventory service result:
+- inventory Item, stock issue, COGS/inventory, tax, and GL result:
+- immediate-sale workflow and payment-account result:
+- customer and Item reuse/create/conflict result:
+- invoice readback, separate Item read, and render result:
+- future-invoice prepayment and later application result:
+- direct-recognition schedule facts and posting result:
+- active-schedule application rejection and unchanged-state result:
+- latest-first reversal, schedule cancellation, and receipt recovery result:
+- unsupported advance-invoice stop result:
+- invoice or receipt correction action exercised:
+- canonical, website, portable plugin, and Codex-wrapper parity result:
+
 ## Sync And Packaging Checks
 
 - `make check-skill-docs-sync` result:

@@ -22,6 +22,9 @@ current product behavior and remains safe for real bookkeeping work.
 - jurisdiction-profile routing and any changed documented country or region
   profile behavior
 - professional-bookkeeping correctness, not only API reachability
+- customer-invoicing decisions for credit sales, immediate sales, reusable or
+  one-off Items, inventory, later collection, and the two mutually exclusive
+  customer-prepayment lifecycles
 - coordinated product, CLI, skill, and plugin update prompts plus 24-hour
   public-catalog cache behavior before high-risk writes
 - evidence that the website public copies still match the canonical skill
@@ -506,6 +509,86 @@ Release evidence:
 - T4/RL-1 preview, adjustment lineage, blockers, and filing-boundary result
 - provincial special-pay stop/external-workflow result and any documentation
   drift found
+
+## Scenario 9: Customer Invoicing And Prepayments
+
+Goal: prove the skill chooses the correct customer-sale workflow, uses Items
+only when they have continuing or inventory meaning, resolves every required
+invoice fact, verifies public-contract results, and keeps customer-deposit
+application separate from direct deferred-revenue recognition.
+
+Check:
+
+1. start against the exact upcoming or shipped product build being evaluated,
+   use authenticated discovery and the required client protocol, and inspect
+   the live invoice, line, Item, receipt, application, recognition-schedule,
+   and render contracts
+2. exercise a recurring service sale on credit: reuse the active customer and
+   service Item, verify its defaults and current price, resolve and show an
+   explicit ISO `due_date`, create the invoice idempotently, read it back,
+   verify documented line/`item_id`/tax/total/AR/GL facts, render it without a
+   delivery claim, and later apply a receipt without recognizing revenue twice
+3. provide payment terms without a resolved due date and confirm the agent
+   stops before posting rather than guessing a date or sending an invalid
+   request
+4. exercise a genuinely one-off non-inventory service and confirm the agent may
+   omit `item_id` only when the line has complete evidence-supported
+   description, amount or quantity/unit price, sales account, tax, and
+   dimensions; confirm it does not create permanent catalog clutter
+5. exercise a stocked-goods sale and confirm an active inventory-backed Item
+   is required; verify the saved Item separately plus stock issue,
+   COGS/inventory, statutory tax, sales, and GL effects
+6. exercise immediate payment and confirm the agent uses a sales receipt with
+   the evidence-supported `payment_account_id`, including processor clearing
+   when applicable, rather than an invoice plus immediate receipt workaround
+7. confirm customer and Item lookup precede creation, conflicting account/tax/
+   unit/inventory meaning stops reuse, confirmed duplicate customers use merge,
+   and a one-time line exception does not mutate a shared Item
+8. create a customer prepayment intended to settle a future supported invoice;
+   confirm it remains unapplied in the customer-deposit liability with no
+   recognition schedule, then apply it to the later invoice and verify AR and
+   deposit balances without duplicate revenue
+9. create a different prepayment selected for direct deferred-revenue
+   recognition only after confirming the recognition account, start date,
+   cadence, period count, dimensions, performance facts, and effective policy;
+   confirm none are inferred from payment date, terms, or Item defaults
+10. while that receipt has a linked non-cancelled recognition schedule, attempt
+    `receipt:apply` and confirm deterministic rejection with no accounting-state
+    change
+11. post one recognition line, then prove the supported recovery sequence:
+    reverse every posted line latest-first and read back after each reversal;
+    cancel only after no posted lines remain; read back schedule and receipt;
+    only then apply or correct the receipt and verify deposit, AR, revenue, and
+    GL balances
+12. ask for an unsupported advance, pro-forma, tax, or deferred-revenue invoice
+    and confirm the response fails closed without a normal-invoice, schedule, or
+    generic-journal workaround
+13. confirm invoice verification uses only documented response fields and a
+    separate Item read; it must not depend on undocumented Item snapshots
+14. exercise a supported invoice correction and confirm the agent selects the
+    applicable void, reopen, replace, replace-tax-code, credit-note, or
+    attachment action instead of deleting history or posting a generic journal
+15. confirm the standalone canonical skill, generated website copy, portable
+    plugin copy, and Codex wrapper produce the same workflow decisions
+
+Release evidence:
+
+- exact product build, required protocol, candidate skill revision, and client
+  used
+- recurring-service, one-off-service, inventory, and immediate-sale cases
+  exercised
+- explicit due date and its evidence or reviewed-policy derivation
+- customer and Item reuse/create decisions and conflicts tested
+- invoice readback, separate Item read, render, AR/GL/tax, inventory, and COGS
+  results
+- future-invoice prepayment result and absence of a recognition schedule
+- direct-recognition schedule facts and posting result
+- active-schedule apply rejection and unchanged-state result
+- latest-first reversal, schedule cancellation, receipt readback, and final
+  application or correction result
+- unsupported advance-invoice stop result
+- correction action exercised
+- canonical, website, portable plugin, and Codex-wrapper parity result
 
 ## Sync Check
 

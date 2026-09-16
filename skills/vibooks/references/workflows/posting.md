@@ -5,6 +5,7 @@
 - Hard accounting rules
 - Source-document extraction and visual confirmation
 - Resource-creation defaults
+- Customer invoicing
 - Recurring bookkeeping
 - Customer-facing document templates
 - Chart-of-accounts rules
@@ -157,6 +158,139 @@ Default priority:
 - if the source materials are incomplete but still sufficient for a normal
   business-document workflow, create the supported resource and leave only the
   unsupported fields unresolved
+
+## Customer Invoicing
+
+Use this workflow for customer sales, invoices, later collection, and customer
+prepayments. Inspect the live discovered schemas before acting; do not invent a
+field or lifecycle that the current contract does not expose.
+
+Choose the first-class sale before preparing lines:
+
+- use an `invoice` only for a sale on credit where accounts receivable should
+  remain open
+- use a `sales-receipt` for a sale paid immediately; do not create an invoice
+  and an immediate receipt merely to imitate a cash sale
+- when cash arrives after an invoice, create a `receipt` and use
+  `receipt:apply`; applying the receipt settles AR and does not recognize the
+  sale a second time
+- when cash arrives before an invoice or before revenue is earned, first record
+  it as unapplied customer cash in the customer-deposit liability, then choose
+  exactly one of the supported prepayment paths described below
+- if the user needs an unsupported advance, pro-forma, tax, or deferred-revenue
+  invoice, stop and explain the boundary; do not post premature revenue or
+  invent a normal invoice, recognition schedule, or generic-journal workaround
+
+Reuse or create the customer deliberately:
+
+- search the current book before creating a customer and reuse a trusted,
+  active match; do not create casing, spelling, or alias duplicates
+- create a customer only when source evidence or confirmed user instruction
+  establishes a new party
+- use the supported customer merge workflow for confirmed duplicate masters;
+  never rewrite invoice or receipt history manually
+
+Decide whether the line needs an Item:
+
+- **Inventory goods:** require an active inventory-backed Item. Verify its
+  inventory, COGS, sales, statutory tax, unit, quantity, and cost meaning.
+  Never omit `item_id` from a real inventory sale, because that would omit the
+  deterministic stock issue and COGS/inventory support posting.
+- **Repeated products and standardized services:** normally reuse or create an
+  active `inventory`, `non_inventory`, or `service` Item when a stable name,
+  unit, sales account, tax code, default price, or reporting identity will be
+  used again.
+- **One-off non-inventory work:** an Item is optional when permanent catalog
+  master data would have no continuing value. The explicit line must still
+  contain an evidence-supported description, amount or quantity and unit
+  price, sales account or supported default, statutory tax treatment, and
+  required dimensions.
+
+Before creating an Item, search active Items by stable ID, code, SKU, exact
+name, and relevant aliases. Do not create one Item per invoice merely to retain
+free-form wording; keep transaction-specific detail in the line description.
+Stop instead of reusing an Item whose tax, account, inventory, or unit meaning
+conflicts with the sale. Treat all Item defaults as proposals: confirm that the
+current evidence still supports the account, tax code, price, unit, and
+dimensions, and use supported line overrides for a one-time exception instead
+of changing the shared Item.
+
+For every invoice proposal, review at least:
+
+- intended company, book, and customer
+- credit-sale status rather than immediate payment
+- `issue_date`, `posting_date` when different, required explicit ISO
+  `due_date`, currency, and exchange rate when required. Payment terms may
+  explain or support the proposed due date, but they are not a substitute API
+  field; show the derivation and stop when the actual date is unresolved
+- each line's Item decision, description, quantity, unit price or amount,
+  sales account or supported default, statutory tax code, tax-rounding
+  evidence, and dimensions
+- separate non-tax fees, levies, tips, rebates, and similar components in
+  `adjustments[]` rather than disguising them as tax
+- supporting attachment IDs and source provenance where available
+- an AR control-account override only when the book uses a supported
+  non-default control account
+- whether the goods or services reached the recognition point supported by the
+  book's policy; invoice date, cash receipt, and Item defaults are not proof by
+  themselves
+
+Visually confirmed source facts, saved master data, prior confirmed patterns,
+and user statements remain distinct evidence sources. Never invent customer
+identity, delivery or performance completion, taxability, payment state, price,
+terms, due date, or recognition timing.
+
+After the user authorizes the proposal:
+
+1. create the invoice through the live first-class endpoint with an idempotency
+   key; never post normal AR through a generic journal
+2. read it back and verify the documented customer, issue/posting/due dates,
+   currency, line facts including stored `item_id`, tax, adjustments, total,
+   amount due, attachments, and status
+3. when an Item is used, read the current Item separately and verify its
+   documented type, accounts, tax, unit, and inventory meaning; do not depend
+   on undocumented Item-snapshot fields
+4. verify AR and GL results; for inventory sales also verify the stock issue and
+   COGS/inventory support posting
+5. render the customer-facing document when the user needs a preview or
+   handoff. Say that Vibooks rendered it; do not claim it was emailed,
+   delivered, acknowledged, accepted, filed, or fiscally submitted without
+   separate evidence
+
+Choose one prepayment lifecycle and do not mix them:
+
+- **Future-invoice settlement:** if a supported future invoice will create AR
+  and the cash must settle it, keep the receipt unapplied in the
+  customer-deposit liability and do not create a receipt recognition schedule.
+  Create the invoice only when its supported recognition point is reached,
+  then use `receipt:apply`.
+- **Direct deferred-revenue recognition:** use
+  `receipt:create-recognition-schedule` only when evidence and the effective
+  accounting policy support releasing the deposit liability directly without
+  later applying this receipt to an invoice. Confirm the recognition account,
+  start date, cadence, period count, dimensions, and performance facts; never
+  infer them from payment date, invoice terms, or Item defaults.
+
+An active or paused non-cancelled receipt-linked recognition schedule and
+receipt application are mutually exclusive. Before applying, unapplying,
+replacing, cancelling, or reopening a receipt, read it and inspect
+`linked_recognition_schedules`. Do not retry or work around the protected
+conflict. To return the receipt to its ordinary lifecycle:
+
+1. reverse every posted recognition line latest-first with `:reverseLatest`,
+   reading the schedule after each reversal
+2. cancel the schedule only after no posted lines remain
+3. read back both the schedule and receipt
+4. then apply or correct the receipt through the supported action and verify
+   the resulting deposit, AR, revenue, and GL balances
+
+Obtain the normal authorization for every mutation. For invoice corrections,
+use void only before allocations, reopen a valid void when supported, replace
+a structurally wrong posted invoice through `:replace`, use
+`:replace-tax-code` for a tax-code-only correction, issue a credit note for a
+valid reduction of the remaining receivable, and use attachment actions when
+only evidence links changed. Never hard-delete, silently rewrite posted
+history, or use a generic journal as the primary invoice correction.
 
 ## Recurring Bookkeeping
 
