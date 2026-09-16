@@ -8,6 +8,24 @@ Scope: ordinary Canadian private-enterprise and small-business bookkeeping on
 the current shipped Vibooks product. This profile is not a full handbook or tax
 advice substitute.
 
+## Contents
+
+- Use this profile when
+- Authority order
+- Reporting-basis default
+- Evidence sufficiency and statement rules
+- Current-product routing
+- Canadian payroll and vacation-pay bookkeeping
+- Chart-of-accounts rules
+- Tax control accounts and tax codes
+- Accountant handoff package
+- Suggested optional accounts
+- Account numbering guidance
+- Units of measure
+- Do not do
+- Future product mapping
+- Reference points
+
 ## Use This Profile When
 
 - the book or company `country` is Canada

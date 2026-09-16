@@ -5,6 +5,8 @@
 - Tax rounding rules
 - Tax rule design
 - Posted tax-code corrections
+- Tax summary review
+- Tax returns
 - Evidence and attachments
 - Reconciliation
 - Month-end validation
@@ -642,7 +644,7 @@ vibooks-cli invoke get-v1-books-book-id-reports-trial-balance --path bookId=BOOK
 ```
 
 When a user needs a PDF, use the live-discovered
-`POST /v1/books/{bookId}/report-artifacts:render` contract. It returns the
+`POST /v1/books/{book_id}/report-artifacts:render` contract. It returns the
 canonical report PDF used by both API consumers and the desktop preview,
 download, and print flow. Send a fresh `Idempotency-Key` for a new artifact;
 retry the same key only with the same token, book, and normalized request.

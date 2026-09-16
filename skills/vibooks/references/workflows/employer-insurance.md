@@ -9,6 +9,14 @@ blocked operation or authorize an estimated manual substitute.
 These operations retain bookkeeping and evidence. They do not send money,
 submit a declaration, or confirm receipt by CNESST or Revenu Québec.
 
+## Contents
+
+- First use
+- Tasks and current review
+- Public RQ preparation
+- Payments between books
+- Repeat use and corrections
+
 ## First Use
 
 1. Select the actual employer, book, authority account, financial file and

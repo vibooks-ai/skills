@@ -124,7 +124,7 @@ instructions until the plugin has been refreshed.
 
 Before a public catalog check, look for the metadata-only cache at:
 
-- Windows: `%APPDATA%\vibooks\update-check.json`
+- Windows: `%APPDATA%/vibooks/update-check.json`
 - other systems: `${XDG_CONFIG_HOME:-~/.config}/vibooks/update-check.json`
 
 This file is only a best-effort optimization. The official HTTPS catalogs
@@ -417,6 +417,9 @@ Open only the references needed for the current task:
 - posting rules, chart-of-accounts choices, dates, Canadian payroll
   remittances/year-end preparation, and first-class workflows:
   [references/workflows/posting.md](references/workflows/posting.md)
+- employer insurance, combined remittance evidence, retained declarations, and
+  allocation review:
+  [references/workflows/employer-insurance.md](references/workflows/employer-insurance.md)
 - tax corrections, evidence attachments, reconciliation, month-end validation,
   and completion checks:
   [references/workflows/verification.md](references/workflows/verification.md)
