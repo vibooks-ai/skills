@@ -145,8 +145,9 @@ period. Leave all workpapers selected for the default accountant package, or
 clear the reports the accountant did not request. The normal report export menu
 is only a shortcut into this workflow.
 
-Accountant packages follow report access, including Personal paid and trial
-access; they do not require the `export_import` module. Keep the export
+Accountant packages use the same module-based report access for paid and Trial
+grants, including historical grants; they do not require the `export_import`
+module. Keep the export
 operation's admin scope and each selected report's module requirements from
 live discovery. Tax workpapers (`tax_summary`, `invoice_tax_detail`) require
 `taxes`; omitting `sections` or sending an empty array selects the full package,
