@@ -640,6 +640,26 @@ vibooks-cli invoke get-v1-books-book-id-reports-income-statement --path bookId=B
 vibooks-cli invoke get-v1-books-book-id-reports-trial-balance --path bookId=BOOK_ID --query as_of=2026-01-31 --query dimension_filter=DIMENSION_ID:DIMENSION_VALUE_ID
 ```
 
+When a user needs a PDF, use the live-discovered
+`POST /v1/books/{bookId}/report-artifacts:render` contract. It returns the
+canonical report PDF used by both API consumers and the desktop preview,
+download, and print flow. Send a fresh `Idempotency-Key` for a new artifact;
+retry the same key only with the same token, book, and normalized request.
+Request JSON for a base64 artifact or `Accept: application/pdf` for the exact
+same raw bytes.
+
+The PDF contract supports Trial Balance, Profit and Loss, Balance Sheet, Cash
+Flow, Changes in Equity, A/R and A/P Aging, Payroll Detail, Employee Payroll
+Ledger, Payroll Liability Summary, and Employer Burden Summary. General Ledger
+remains a paged JSON/CSV/XLSX workflow because it can be high volume. Profit
+and Loss accepts one to 24 explicit date-range columns; Trial Balance, Balance
+Sheet, and Aging accept one `as_of` column; the remaining reports accept one
+date range. Only Profit and Loss and Balance Sheet accept `basis`. Only Profit
+and Loss, Balance Sheet, and Trial Balance accept `presentation_mode` with
+`clean` or `full`. Use live discovery for the exact request schema, filters,
+module requirements, response representation, and size errors rather than
+copying a stale payload.
+
 Treat any imbalance or statement mismatch as blocking.
 
 ## Completion Standard
