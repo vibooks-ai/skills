@@ -780,7 +780,14 @@ Subledger integrity rules:
   `/payroll-tax-forms/t4:preview` operation, using active immutable payroll,
   legal identity, opening YTD, and signed box-adjustment records. Correct boxes
   through `payroll-tax-form-adjustments` and its reversal action, not by editing
-  payroll history. An omitted QPIP earnings box is not a zero correction basis:
+  payroll history. Use only monetary codes accepted for the installed tax year;
+  box 52 pension adjustments use whole dollars. Never encode box 45 dental
+  eligibility or box 50 plan registration as money. Missing dental eligibility
+  and required plan registration block preparation until supported typed facts
+  are available. Unsupported historical amounts remain evidence: review the
+  blocker and use the reversal action when appropriate, without deleting the
+  original or claiming it proves a nonmonetary fact.
+  An omitted QPIP earnings box is not a zero correction basis:
   reconcile any signed box 56 adjustment to the retained eligible earnings.
   Resolve annual-limit and original-payment-order blockers using source records;
   do not replace missing chronology with the date an opening balance was entered.
@@ -791,14 +798,31 @@ Subledger integrity rules:
   only and does not prove filing, acceptance, or distribution
 - prepare an ROE data-review report only after creating the employee interruption event,
   its employment-period boundary, each applicable typed statutory-payment fact,
-  and a complete statutory-input coverage review. Then create the discovered
+  and a complete statutory-input coverage review. Review Blocks 17A, 17B, 17C,
+  and 19 separately from source records: no recorded facts does not establish
+  `reviewed_none`. A `reviewed_with_facts` section must identify exactly its
+  active facts; Block 19 must explicitly be reviewed as not applicable.
+  Supply the interruption date as its own reviewed fact, not the day after the
+  final pay period. First day worked must not follow last day paid; last day paid
+  and the interruption date must not follow the last day paid. An earlier
+  interruption must be Sunday for an evidenced D00/F00/P00/Z00 earnings reduction. Correct
+  an invalid legacy event through its replacement action and renew the affected
+  reviews before new preparation. Retain prior events and artifacts unchanged.
+  Use the latest required consecutive payroll periods for the pay frequency;
+  long employment does not require every period since hire once the reporting
+  window is complete. Do not invent zero periods to fill gaps.
+  Then create the discovered
   ROE preparation artifact and use its retained render for handoff to the person
   completing and validating the official record in ROE Web. Before attempting
   any payroll-extract file, read `payroll_extract_export` from the discovered ROE
-  preparation options. If `customer_export_ready` is false, do not construct or
+  preparation options using Block 11 `last_day_paid` as `as_of` to select the
+  applicable definition. If `customer_export_ready` is false, do not construct or
   claim a `.BLK` file; retain the non-official review report and complete the
   record in ROE Web. Never put the full SIN or payroll account number in ordinary
-  API fields. If Block 19 special payments or another unsupported field applies,
+  API fields. A supplemental Block 17B holiday amount requires insurable hours
+  and departure treatment that the current fact model cannot capture; complete
+  that case externally rather than treating the amount as complete ROE evidence.
+  If Block 19 special payments or another unsupported field applies,
   stop instead of approximating it. Only Service Canada supplies the official
   ROE PDF after issue. Optional external-completion evidence records only what
   the user says happened outside Vibooks; it is not a Service Canada receipt

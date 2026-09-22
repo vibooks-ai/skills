@@ -499,6 +499,32 @@ never silently truncate an explicit correction to make it fit an annual limit.
 If incomplete original payment chronology affects a cross-province allocation,
 retain the preparation blocker instead of guessing the order from an opening
 balance's entry date. Unrelated income limits must not require that chronology.
+Check the installed tax year's exact monetary-code catalog and whole-dollar
+box 52 amounts. Dental eligibility and pension-plan registration require typed
+facts, not monetary box adjustments; missing required facts must remain explicit
+preparation blockers. Unsupported retained fields and fractional pension
+adjustments must remain visible for correction, without silent rounding or
+reinterpretation. Verify invalid nonmonetary fields do not enter monetary
+summary totals, and that reversal preserves the original evidence.
+For ROE, require a separate source-backed review for each of Blocks 17A, 17B,
+17C, and 19. Empty fact lists do not prove `reviewed_none`; each
+`reviewed_with_facts` section must match its exact active facts, and Block 19
+must be explicitly not applicable. Verify the interruption date independently
+of final pay-period end. First day worked must be on or before last day paid;
+last day paid must be on or before final pay-period end. Interruption must
+equal last day paid or be an earlier Sunday for an evidenced D00/F00/P00/Z00
+earnings reduction. Invalid historical events must block new preparation until replaced and
+reviewed again, while prior artifacts remain reproducible. Confirm that ROE
+preparation options use Block 11 `last_day_paid` as `as_of` when selecting the
+definition, rather than the interruption or preparation date.
+Verify the most recent required consecutive periods for the pay frequency,
+rather than demanding every period since hire for a long-serving employee.
+The source window is 53 weekly, 27 biweekly, 25 semimonthly, 13 monthly, or
+14 four-weekly periods, or the shorter employment history. Block 15B uses its
+own shorter earnings window; missing, duplicated, or overlapping required
+periods must remain blockers. Supplemental Block 17B holiday amounts must block
+preparation until insurable hours and departure treatment have a supported
+representation; an amount alone is insufficient.
 For T4, verify the on-screen preview facts and blockers and also verify that no
 artifact, content, render, download, or print operation is offered while the
 exact annual CRA form package is unavailable. For each retained ROE review PDF,
