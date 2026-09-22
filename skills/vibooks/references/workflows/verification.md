@@ -506,6 +506,24 @@ preparation blockers. Unsupported retained fields and fractional pension
 adjustments must remain visible for correction, without silent rounding or
 reinterpretation. Verify invalid nonmonetary fields do not enter monetary
 summary totals, and that reversal preserves the original evidence.
+For the discovered T4 annual-facts workflow, inspect every page of employee
+sources and their assignment history. Every retained payroll generation,
+history adjustment and tax-form adjustment needs evidenced ownership by an
+existing CRA authority account ID. Re-read after assignments: the collection
+fingerprint includes current assignments and covers the entire filtered
+collection. The annual review must use this fingerprint and its latest expected
+head, with a complete account/province allocation set. Verify December 31
+dental coverage, pension state, plan registration when required, whole-dollar
+PA totals allocated exactly once, and each reporting period's CPP/QPP, EI and
+PPIP review. An exemption needs entire-period evidence; unknown and unsupported
+review states stay blocked. Nonzero legacy monetary box 52 evidence must not
+be added to typed annual PA. A retained annual successor must preserve the old
+facts and must not change payroll amounts or create a journal. After a portable
+clone, internal source/account/head IDs may change, but old evidence and source
+fingerprints do not certify the new source collection: require renewed
+assignment and annual review before claiming readiness. Inspect the returned
+preview blockers after the latest review; these endpoints do not create an
+official employee copy or establish CRA filing or acceptance.
 For ROE, require a separate source-backed review for each of Blocks 17A, 17B,
 17C, and 19. Empty fact lists do not prove `reviewed_none`; each
 `reviewed_with_facts` section must match its exact active facts, and Block 19
@@ -522,9 +540,26 @@ rather than demanding every period since hire for a long-serving employee.
 The source window is 53 weekly, 27 biweekly, 25 semimonthly, 13 monthly, or
 14 four-weekly periods, or the shorter employment history. Block 15B uses its
 own shorter earnings window; missing, duplicated, or overlapping required
-periods must remain blockers. Supplemental Block 17B holiday amounts must block
-preparation until insurable hours and departure treatment have a supported
-representation; an amount alone is insufficient.
+periods must remain blockers. For each Block 17B fact, verify a holiday after
+Block 11, positive exact two-decimal `amount`, nonnegative `hours` with at most
+four decimal places, explicit `source_inclusion`, and a nonempty
+`source_evidence_reference`. Unknown inclusion or an amount alone is insufficient.
+For `already_in_payroll`, verify `source_generation_id` and
+`source_earning_code` identify an active final-period source belonging to the
+same employee and book, with matching date, full amount, paid hours and proven
+inclusion in aggregate payroll hours. Missing or contradictory source detail
+must block preparation; an inclusion flag is not evidence. Supplemental facts
+must not carry those ownership fields or duplicate a holiday already in the
+final payroll period. Current facts cannot report the same holiday date twice.
+Verify supplemental money enters 15B and final 15C once, with hours added only
+for an expected return. Already-in-payroll money and non-final hours are not
+added again; permanent-departure post-Block-11 hours are excluded. Unknown
+recall blocks preparation, and an expected return conflicts with E/G/M reasons,
+including their subcodes. Verify Block 15A rounds the final aggregate upward
+once: two 40.1-hour periods report 81 hours, not 82; retained period hours stay
+exact. Incomplete legacy facts require explicit replacement/retraction and
+renewed coverage before new output, while original facts and report bytes remain
+unchanged. Follow the connected version's discovered typed fact contract.
 For T4, verify the on-screen preview facts and blockers and also verify that no
 artifact, content, render, download, or print operation is offered while the
 exact annual CRA form package is unavailable. For each retained ROE review PDF,

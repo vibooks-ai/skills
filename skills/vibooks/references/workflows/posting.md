@@ -781,10 +781,33 @@ Subledger integrity rules:
   legal identity, opening YTD, and signed box-adjustment records. Correct boxes
   through `payroll-tax-form-adjustments` and its reversal action, not by editing
   payroll history. Use only monetary codes accepted for the installed tax year;
-  box 52 pension adjustments use whole dollars. Never encode box 45 dental
-  eligibility or box 50 plan registration as money. Missing dental eligibility
-  and required plan registration block preparation until supported typed facts
-  are available. Unsupported historical amounts remain evidence: review the
+  use the typed annual review for box 52 pension allocations in whole dollars.
+  Never encode box 45 dental eligibility or box 50 plan registration as money.
+  When discovered for the installed reporting year, read `/t4-reporting-sources`
+  with `tax_year` and the employee filter, following every page. Its
+  `source_fingerprint` covers the entire filtered collection, not one page.
+  Assign each source through `/t4-source-account-assignments` to the evidenced
+  existing CRA payroll authority account ID. Each assignment supplies its
+  source kind, ID and fingerprint, an explicit null or current `expected_head_id`,
+  and the batch's evidence reference and reason. Never infer account ownership
+  from an account label or send a full payroll account number.
+  Re-read the employee sources after assignments, then read
+  `/employees/{employeeId}/t4-reporting-facts?tax_year=2026` and append one
+  complete annual aggregate with the latest whole-employee source fingerprint
+  and explicit null or current annual `expected_head_id`. Review dental code
+  1–5 as of December 31, plan registration, pension state and whole-dollar
+  annual PA, and every account/province allocation. Allocation amounts must
+  sum exactly once to the annual amount; unable-to-apportion uses one positive
+  allocation. Record each reporting period and separate CPP/QPP, EI and PPIP
+  exemption evidence; exempt requires an entire-reporting-period basis.
+  Unknown pension/exemption review and unsupported eligibility remain blockers.
+  Missing dental eligibility and required plan registration block preparation.
+  An annual-facts correction replaces the complete aggregate through a new
+  successor; it does not patch one slip, alter wages or post a journal.
+  Re-read source assignments, annual head and preview after any correction or
+  import; retained fingerprints must never be treated as renewed review.
+  Nonzero legacy monetary box 52 evidence must be explicitly corrected rather
+  than added again to the typed annual allocation. Unsupported historical amounts remain evidence: review the
   blocker and use the reversal action when appropriate, without deleting the
   original or claiming it proves a nonmonetary fact.
   An omitted QPIP earnings box is not a zero correction basis:
@@ -804,7 +827,7 @@ Subledger integrity rules:
   active facts; Block 19 must explicitly be reviewed as not applicable.
   Supply the interruption date as its own reviewed fact, not the day after the
   final pay period. First day worked must not follow last day paid; last day paid
-  and the interruption date must not follow the last day paid. An earlier
+  must not follow final pay-period end, and interruption must not follow last day paid. An earlier
   interruption must be Sunday for an evidenced D00/F00/P00/Z00 earnings reduction. Correct
   an invalid legacy event through its replacement action and renew the affected
   reviews before new preparation. Retain prior events and artifacts unchanged.
@@ -819,9 +842,28 @@ Subledger integrity rules:
   applicable definition. If `customer_export_ready` is false, do not construct or
   claim a `.BLK` file; retain the non-official review report and complete the
   record in ROE Web. Never put the full SIN or payroll account number in ordinary
-  API fields. A supplemental Block 17B holiday amount requires insurable hours
-  and departure treatment that the current fact model cannot capture; complete
-  that case externally rather than treating the amount as complete ROE evidence.
+  API fields. For Block 17B, supply `holiday_date` after Block 11, a positive
+  `amount` string with exactly two decimal places, nonnegative `hours` with at
+  most four decimal places, `source_evidence_reference`, and explicit
+  `source_inclusion`: `supplemental` or `already_in_payroll`. Do not infer hours
+  from the amount. Supplemental facts must omit `source_generation_id` and
+  `source_earning_code`; already-in-payroll facts require both and must match
+  an active final-period earning for this employee, its holiday date, complete
+  amount, paid hours and their inclusion in payroll's total hours. If the source
+  cannot prove that correspondence, resolve the source or complete the case
+  externally; changing the inclusion choice does not establish evidence.
+  Review departure status explicitly: unknown blocks holiday preparation, and
+  expected return conflicts with quit, retirement or dismissal (E/G/M codes).
+  Supplemental pay adds once to Block 15B and final-period 15C; its hours count
+  only for a non-final departure. Already-in-payroll pay is not added again;
+  its proven post-Block-11 holiday hours are excluded for a permanent departure.
+  Keep one complete current fact per holiday date. Correct a duplicate,
+  incomplete legacy fact or changed amount through its existing replacement or
+  retraction action, then renew coverage and create a successor report. Retain
+  original facts and report bytes. Preserve exact source hours and round the
+  completed Block 15A total up to the next whole hour once, not per period or
+  payment. The live API contract determines which fields the connected version
+  supports; do not send newer fact shapes to a version that does not advertise them.
   If Block 19 special payments or another unsupported field applies,
   stop instead of approximating it. Only Service Canada supplies the official
   ROE PDF after issue. Optional external-completion evidence records only what
@@ -829,8 +871,9 @@ Subledger integrity rules:
 - an ROE review-report correction creates a successor preparation artifact
   through the discovered successor operation, using the expected active
   head/fingerprint and a factual correction reason. Never overwrite the
-  original report or its PDF. T4 data corrections instead use append-only box
-  adjustments and their reversal action; no T4 artifact exists to replace while
+  original report or its PDF. T4 monetary corrections use append-only box
+  adjustments and their reversal action; source ownership and annual typed
+  facts use their expected-head successor operations. No T4 artifact exists to replace while
   official PDF output is unavailable. A later verified form-definition revision
   or renderer release applies only to new output and remains independently
   identifiable from the payroll calculation release
