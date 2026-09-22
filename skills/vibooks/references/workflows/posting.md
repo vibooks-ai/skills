@@ -814,11 +814,26 @@ Subledger integrity rules:
   reconcile any signed box 56 adjustment to the retained eligible earnings.
   Resolve annual-limit and original-payment-order blockers using source records;
   do not replace missing chronology with the date an opening balance was entered.
-  While the exact annual CRA form package is unavailable,
-  there is no T4 artifact, PDF, download, print, or employee-copy workflow; do
-  not call a removed preparation-artifact operation, construct a lookalike
-  document, or reuse another tax year's form. A balanced preview is data review
-  only and does not prove filing, acceptance, or distribution
+  Read the live `/v1/statutory-export-packages` response before offering an
+  official output. If the requested 2026 T4 output has
+  `customer_export_ready=false`, remain in data review; do not construct a
+  lookalike PDF or XML, reuse another tax year's form, or claim an export is
+  available. When ready, use the discovered statutory export intent and
+  validation operations, then hand the retained intent to the official desktop
+  app for sensitive identifiers and native saving. Full SINs, RP accounts and
+  transmitter identifiers belong only in the desktop prompt, never an API,
+  agent message, log or ordinary evidence field. One CRA XML return has one
+  RP account and a reviewed slip selection; changes, cancellations and
+  additional originals retain their prior-filed lineage. Record CRA upload,
+  processing and employee distribution only as user-provided external evidence,
+  with correction or retraction history. Record T4 employee-copy delivery as
+  paper only until consent and portal eligibility can be reviewed explicitly;
+  a generic evidence reference is not enough to assert electronic delivery.
+  A CRA processing result marked `resolved` does not establish that any slip
+  was accepted; only `accepted` or `partially_accepted` evidence can establish
+  the prior-filed slips used for an amendment or cancellation.
+  A balanced preview or saved file does not prove filing, authority acceptance
+  or employee distribution
 - prepare an ROE data-review report only after creating the employee interruption event,
   its employment-period boundary, each applicable typed statutory-payment fact,
   and a complete statutory-input coverage review. Review Blocks 17A, 17B, 17C,
@@ -838,11 +853,22 @@ Subledger integrity rules:
   ROE preparation artifact and use its retained render for handoff to the person
   completing and validating the official record in ROE Web. Before attempting
   any payroll-extract file, read `payroll_extract_export` from the discovered ROE
-  preparation options using Block 11 `last_day_paid` as `as_of` to select the
-  applicable definition. If `customer_export_ready` is false, do not construct or
-  claim a `.BLK` file; retain the non-official review report and complete the
-  record in ROE Web. Never put the full SIN or payroll account number in ordinary
-  API fields. For Block 17B, supply `holiday_date` after Block 11, a positive
+  preparation options using Block 11 `last_day_paid` as `as_of`, and read
+  `/v1/statutory-export-packages` for the native ROE Web draft package. If
+  `customer_export_ready` is false, do not construct or claim a `.BLK` file;
+  retain the non-official review report and complete the record in ROE Web.
+  When ready, use a retained statutory export intent and hand it to the official
+  desktop app to enter the full SIN and RP account locally and save the draft.
+  For employment spanning pay-date years, review each year's retained payroll
+  generation sources and current RP account assignments before creating the
+  native intent. The T4 annual-facts review remains limited to 2026.
+  ROE Web upload, review and issue remain separate user actions; record any
+  external outcome as user-provided evidence with correction history. Only an
+  explicit `issued` result or active legacy external-completion record closes
+  the issue task; `resolved` alone does not mean issued. Correct or retract an
+  active record before recording a conflicting result for the same worksheet.
+  Never put the full SIN or payroll account number in ordinary API fields. For Block 17B,
+  supply `holiday_date` after Block 11, a positive
   `amount` string with exactly two decimal places, nonnegative `hours` with at
   most four decimal places, `source_evidence_reference`, and explicit
   `source_inclusion`: `supplemental` or `already_in_payroll`. Do not infer hours
