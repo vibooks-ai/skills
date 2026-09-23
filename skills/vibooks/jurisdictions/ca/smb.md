@@ -416,9 +416,12 @@ draft can start a new original only if no save was reserved. A reservation
 means the file may exist even if the local outcome is unknown; after a
 substantive prefiling correction, use a linked `replacement_possible_save`
 with an operator confirmation, not another root original. An unchanged lost
-copy requires CRA's manual marked-duplicate process. A locally saved copy is
-not distributed or filed; record employee
-delivery separately. The ordinary 2026 CRA XML return remains unavailable
+copy requires CRA's manual marked-duplicate process. If an uncertain copy's
+only correction is a different SIN with the same last four digits, Vibooks
+cannot verify that secret-only change; use a reviewed manual correction
+process. A locally saved copy is not distributed or filed; record paper
+delivery separately, and never label email or portal delivery as paper. The
+ordinary 2026 CRA XML return remains unavailable
 until a final package for its intended 2027 processing window is separately
 verified. Do not describe a preview, saved PDF or XML as CRA accepted, or mark
 the year complete merely because totals balance. The verified RL-1 filing

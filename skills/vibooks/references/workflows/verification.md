@@ -574,6 +574,10 @@ confirmation before another ordinary copy is saved. A cancelled unreserved
 draft may start a fresh original; a reserved or distributed copy may not.
 Each employee PDF intent covers one complete employee/province slip group.
 An unchanged lost copy needs the manual marked-duplicate process.
+If only a full SIN changes while its last four digits stay the same after an
+uncertain save, use a reviewed manual correction process; Core cannot verify
+that secret-only change. Record paper delivery only, never email or portal as
+paper.
 Only a CRA-accepted slip can support a formal `amended` copy. For each
 retained ROE review PDF,
 require the response and re-read detail to pin the exact form-definition

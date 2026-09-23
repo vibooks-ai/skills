@@ -841,7 +841,10 @@ Subledger integrity rules:
   reason and explicit prefiling confirmation. The desktop app reserves each
   production PDF save in Core before writing the file. An unchanged lost copy
   needs CRA's properly marked manual duplicate process until a reviewed
-  duplicate output exists. After an accepted CRA slip, use the exact accepted lineage
+  duplicate output exists. If only the full SIN changed while its last four
+  digits stayed the same after an uncertain save, use a reviewed manual
+  correction process because Core cannot verify that change. After an accepted
+  CRA slip, use the exact accepted lineage
   for a formal amendment; an uploaded return with unknown processing status
   is not accepted evidence.
   A CRA processing result marked `resolved` does not establish that any slip
