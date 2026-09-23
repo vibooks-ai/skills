@@ -573,6 +573,9 @@ slip, the linked `replacement_possible_save` intent and explicit prefiling
 confirmation before another ordinary copy is saved. A cancelled unreserved
 draft may start a fresh original; a reserved or distributed copy may not.
 Each employee PDF intent covers one complete employee/province slip group.
+Only a matching, Core-authorized local attempt in the original desktop
+profile can support recovery or historical reproduction; an unapproved
+pending attempt on another device is not evidence that its file was saved.
 An unchanged lost copy needs the manual marked-duplicate process.
 If only a full SIN changes while its last four digits stay the same after an
 uncertain save, use a reviewed manual correction process; Core cannot verify

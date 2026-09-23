@@ -419,7 +419,11 @@ with an operator confirmation, not another root original. An unchanged lost
 copy requires CRA's manual marked-duplicate process. If an uncertain copy's
 only correction is a different SIN with the same last four digits, Vibooks
 cannot verify that secret-only change; use a reviewed manual correction
-process. A locally saved copy is not distributed or filed; record paper
+process. Only the original desktop profile with its matching authorized
+local attempt can retry or recover a reserved copy; a pending attempt before
+Core confirms the reservation is not save proof. If that profile is lost,
+do not create a fresh unmarked original from the uncertain reservation.
+A locally saved copy is not distributed or filed; record paper
 delivery separately, and never label email or portal delivery as paper. The
 ordinary 2026 CRA XML return remains unavailable
 until a final package for its intended 2027 processing window is separately

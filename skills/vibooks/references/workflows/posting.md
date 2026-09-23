@@ -839,7 +839,10 @@ Subledger integrity rules:
   draft. If its printed slip facts are substantively corrected before CRA
   filing, use `replacement_possible_save` with the current predecessor, a
   reason and explicit prefiling confirmation. The desktop app reserves each
-  production PDF save in Core before writing the file. An unchanged lost copy
+  production PDF save in Core before writing the file and records local
+  authorization for the matching attempt. A pending attempt without that
+  authorization cannot be recovered as a saved copy, and another device
+  cannot take over the original profile's reserved write. An unchanged lost copy
   needs CRA's properly marked manual duplicate process until a reviewed
   duplicate output exists. If only the full SIN changed while its last four
   digits stayed the same after an uncertain save, use a reviewed manual
