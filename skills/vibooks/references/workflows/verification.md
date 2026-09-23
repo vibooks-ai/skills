@@ -438,9 +438,11 @@ Before closing a period:
 13. at Canadian payroll year-end, require the T4 data preview and, for Québec
     employees, the RL-1 preview to agree with active immutable payroll YTD,
     effective legal identities, opening YTD facts, and signed
-    adjustment/reversal history; require zero blockers. While the exact annual
-    government form package is absent, require T4 PDF/download/print to remain
-    unavailable and keep filing and employee distribution explicitly incomplete
+    adjustment/reversal history; require zero preparation blockers. Check the
+    employee PDF and CRA XML package readiness separately. If the PDF package
+    is ready, use only its reviewed native employee-copy workflow; if it is
+    blocked, keep PDF/download/print unavailable. Keep filing and employee
+    distribution incomplete until their separate external evidence exists
 14. when an ROE is required, require the active interruption event, exact
     employment-history boundary, applicable typed statutory-payment facts, and
     complete field coverage to agree with posted payroll and effective legal
@@ -560,9 +562,20 @@ once: two 40.1-hour periods report 81 hours, not 82; retained period hours stay
 exact. Incomplete legacy facts require explicit replacement/retraction and
 renewed coverage before new output, while original facts and report bytes remain
 unchanged. Follow the connected version's discovered typed fact contract.
-For T4, verify the on-screen preview facts and blockers and also verify that no
-artifact, content, render, download, or print operation is offered while the
-exact annual CRA form package is unavailable. For each retained ROE review PDF,
+For T4, verify on-screen preview facts and blockers, then check the live
+readiness of `t4_employee_copies` and `t4_cra_return_xml` independently.
+Never offer a PDF render/download/print while the employee-copy package is
+blocked; a ready employee PDF does not enable XML or prove distribution.
+An unfiled corrected employee copy retains the prior file and delivery record,
+uses `replacement_unfiled` with a reason, and requires a new delivery record.
+For a reserved copy whose local save is uncertain, require a changed printed
+slip, the linked `replacement_possible_save` intent and explicit prefiling
+confirmation before another ordinary copy is saved. A cancelled unreserved
+draft may start a fresh original; a reserved or distributed copy may not.
+Each employee PDF intent covers one complete employee/province slip group.
+An unchanged lost copy needs the manual marked-duplicate process.
+Only a CRA-accepted slip can support a formal `amended` copy. For each
+retained ROE review PDF,
 require the response and re-read detail to pin the exact form-definition
 activation, schema revision, PDF-renderer release, source fingerprint, revision
 lineage, immutable content hash, and byte length; rendering or downloading it

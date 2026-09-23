@@ -815,7 +815,7 @@ Subledger integrity rules:
   Resolve annual-limit and original-payment-order blockers using source records;
   do not replace missing chronology with the date an opening balance was entered.
   Read the live `/v1/statutory-export-packages` response before offering an
-  official output. If the requested 2026 T4 output has
+  output. Check `t4_employee_copies` and `t4_cra_return_xml` separately. If the requested 2026 T4 output has
   `customer_export_ready=false`, remain in data review; do not construct a
   lookalike PDF or XML, reuse another tax year's form, or claim an export is
   available. When ready, use the discovered statutory export intent and
@@ -829,6 +829,21 @@ Subledger integrity rules:
   with correction or retraction history. Record T4 employee-copy delivery as
   paper only until consent and portal eligibility can be reviewed explicitly;
   a generic evidence reference is not enough to assert electronic delivery.
+  Before a CRA slip is filed, a corrected saved employee PDF is a
+  `replacement_unfiled` successor with the current predecessor and a reason,
+  not an `amended` CRA return. Preserve the prior PDF and its delivery
+  evidence; record delivery of the replacement separately. Prepare one complete
+  employee/province slip group per PDF intent. A cancelled draft may start a new
+  original only when no native save was reserved. A reserved copy may have been
+  saved even when the local outcome is unknown; never treat it as an unsaved
+  draft. If its printed slip facts are substantively corrected before CRA
+  filing, use `replacement_possible_save` with the current predecessor, a
+  reason and explicit prefiling confirmation. The desktop app reserves each
+  production PDF save in Core before writing the file. An unchanged lost copy
+  needs CRA's properly marked manual duplicate process until a reviewed
+  duplicate output exists. After an accepted CRA slip, use the exact accepted lineage
+  for a formal amendment; an uploaded return with unknown processing status
+  is not accepted evidence.
   A CRA processing result marked `resolved` does not establish that any slip
   was accepted; only `accepted` or `partially_accepted` evidence can establish
   the prior-filed slips used for an amendment or cancellation.
@@ -899,8 +914,10 @@ Subledger integrity rules:
   head/fingerprint and a factual correction reason. Never overwrite the
   original report or its PDF. T4 monetary corrections use append-only box
   adjustments and their reversal action; source ownership and annual typed
-  facts use their expected-head successor operations. No T4 artifact exists to replace while
-  official PDF output is unavailable. A later verified form-definition revision
+  facts use their expected-head successor operations. Where the employee PDF
+  package is enabled, correct a saved but unfiled PDF using its distinct
+  `replacement_unfiled` intent; otherwise remain in data review. A later
+  verified form-definition revision
   or renderer release applies only to new output and remains independently
   identifiable from the payroll calculation release
 - use RL-1 previews only for year-end preparation from active immutable payroll,
