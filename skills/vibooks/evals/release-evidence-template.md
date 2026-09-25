@@ -30,6 +30,34 @@ repository.
 
 ## Behavior Review Summary
 
+For scenarios 1–9, record applicability by check or workflow path (`affected`
+or `unchanged`), the exact changed source hashes and product/CLI evidence,
+prior exact PASS provenance if carried, and the current status. Use `PASS`,
+`FAIL`, `BLOCKED`, `CARRIED-PASS`, or `UNVERIFIED-DEFERRED` for each check;
+mark the whole scenario `PARTIAL` when statuses differ. A deferred check needs
+bounded evidence, a reason this diff cannot affect it, and an assigned
+follow-up; a partial scenario does not certify the complete workflow. Record
+the current core walkthrough separately even when a detailed scenario is
+unchanged.
+
+| Scenario and check/path | Applicability and reason | Check status / overall scenario status | Exact evidence or prior PASS hashes | Deferred follow-up |
+| --- | --- | --- | --- | --- |
+| 1 First-time install | | | | |
+| 2 Repeat use | | | | |
+| 3 Accounting workflow | | | | |
+| 4 Jurisdiction routing | | | | |
+| 5 Update prompt | | | | |
+| 6 Independent evidence review | | | | |
+| 7 Statement evidence | | | | |
+| 8 Canadian payroll | | | | |
+| 9 Customer invoicing | | | | |
+
+- current-product first authenticated write:
+- current-product return to trusted book:
+- current-product source-backed correction, reconciliation, or verification:
+- actual-consultation trigger evaluation:
+- affected high-risk paths and disposition:
+
 ### Scenario 1: First-Time Install To First Book
 
 - status: pass / fail / blocked

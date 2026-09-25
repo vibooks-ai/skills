@@ -41,13 +41,33 @@ Before approving a `skills` train release candidate:
 1. copy `release-evidence-template.md` into a private release record or tracker
 2. record the candidate commit SHA, planned tag or version, model or client,
    and reviewer
-3. record pass, fail, or blocked status plus notes for every required scenario
+3. complete the nine-scenario applicability matrix at check/path level and
+   record `PASS`, `FAIL`, `BLOCKED`, `CARRIED-PASS`, or `UNVERIFIED-DEFERRED`
+   plus evidence for each affected or retained check; `CARRIED-PASS` requires
+   the prior exact PASS and source hashes. Mark a scenario `PARTIAL` when its
+   checks have mixed statuses; never call that scenario a full PASS
 4. record whether the walkthrough started from the web copy or installed-skill
    mode when that changes the expected path
 5. record whether the website public copies were resynced and rechecked
 
-Do not call the `skills` train release-ready until that private record exists
-for the current candidate commit and the required scenarios below are covered.
+For every release, run actual-consultation trigger evaluations, public-content,
+sync, and version checks. Complete a current-product core walkthrough covering
+first authenticated use through one write, returning to an existing trusted
+book, and one source-backed official correction, reconciliation, or verification.
+Re-run each affected check or workflow path, plus its necessary prerequisites,
+when its Skill instructions, product contract, public manifest/update policy,
+or a known defect changes. A changed high-risk check is not eligible for
+deferral. Carry forward a prior exact PASS for an unchanged check only with its
+source hashes and compatible product/CLI evidence. An unchanged check with no
+prior full PASS may be `UNVERIFIED-DEFERRED` only when the record identifies
+bounded evidence, explains why the current diff cannot affect it, and assigns
+a follow-up. A partially covered scenario is not a full PASS and cannot certify
+its complete workflow. Candidate-local install and manifest checks may prove
+pre-publication behavior; separately record public tag, catalog, and live
+trial checks that can occur only after publication. Any observed failure or
+unknown safety boundary in an affected path blocks release. Do not call the
+`skills` train release-ready until the private record exists for the current
+candidate and these gates are satisfied.
 
 ## Scenario 1: First-Time Install To First Book
 
