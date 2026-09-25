@@ -39,8 +39,12 @@ For release review, also run behavior checks that cover:
    complete reversal/replacement path
 10. supported Canadian payroll remittance preparation that keeps authority
     payment evidence separate from the cash-to-liability ledger settlement
-11. T4/RL-1 year-end preparation and signed adjustment lineage without
-    claiming unsupported filing, acceptance, or employee distribution
+11. T4/RL-1 year-end preparation, signed adjustment lineage, and live
+    employee-PDF versus CRA-XML package readiness; native-only T4 PDF handoff,
+    saved-copy recovery, and separate paper-delivery evidence
+12. ROE review and package readiness, native draft `.BLK` handoff, and
+    separate ROE Web upload, issue, and authority-supplied PDF outcomes,
+    without putting full statutory identifiers in agent or API fields
 
 For manual walkthroughs, use:
 

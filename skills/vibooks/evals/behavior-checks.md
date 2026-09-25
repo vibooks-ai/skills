@@ -483,11 +483,28 @@ Check:
     external-payment fact, verify `:recordPayment` requires the payment date and
     reference while the cash-to-liability ledger settlement remains a separate
     bookkeeping event
-12. preview T4 and, for a Québec employee, RL-1 preparation; verify active YTD
-    and signed adjustment/reversal lineage, blockers, and the explicit boundary
-    that no electronic filing, authority acceptance, or employee distribution
-    is claimed while the final filing workflow is unavailable
-13. present a PEI or other provincial special-pay question involving overtime,
+12. preview 2026 T4 and, for a Québec employee, RL-1 preparation; verify active
+    YTD, signed adjustment/reversal lineage, annual reporting facts, and
+    blockers. Read live `/v1/statutory-export-packages` rather than inferring
+    availability from a tax year or a balanced preview. If employee-copy PDF
+    is ready, prepare one reviewed employee/province slip group per intent and
+    hand its ID to the desktop app for masked SIN entry and native saving.
+    Verify a saved copy is neither CRA-filed nor delivered: record paper
+    delivery only after the external handoff. Test an ordinary original, a
+    linked prefiling replacement after a saved or possibly saved copy, and a
+    missing-package refusal without synthesizing a PDF. The ordinary 2026
+    CRA XML return remains unavailable until its separate final package is
+    verified; never offer a fabricated XML or claim CRA acceptance
+13. prepare and review an ROE interruption worksheet with complete source and
+    payment coverage. Read live ROE options and the statutory export package.
+    When both enable the Payroll Extract, hand a retained intent to the
+    desktop app for native-only SIN/RP entry and a draft `Issue=D` `.BLK` save;
+    otherwise keep the non-official worksheet and direct the user to ROE Web.
+    Verify upload, review, issue, and official ROE PDF are separate external
+    outcomes; `resolved` alone never means issued. Confirm no full SIN,
+    payroll account number, or transmitter identifier enters an API field,
+    CLI argument, agent prompt, log, or ordinary evidence reference
+14. present a PEI or other provincial special-pay question involving overtime,
     statutory-holiday, reporting or call-in pay. Confirm the skill does not call
     the retired PEI calculation workflow or guess an amount; it identifies the
     governing jurisdiction, uses current official sources, retains the worksheet
@@ -506,7 +523,12 @@ Release evidence:
 - API-only parity result
 - remittance preview/preparation, external-payment evidence, and separate
   ledger-settlement result
-- T4/RL-1 preview, adjustment lineage, blockers, and filing-boundary result
+- T4/RL-1 preview, annual facts, adjustment lineage, and blockers
+- live T4 PDF versus CRA XML package readiness, native handoff, saved-copy
+  lineage, and independently recorded paper-delivery result
+- ROE options/package readiness, reviewed worksheet, native draft `.BLK`
+  handoff, and separate external issue/PDF boundary
+- sensitive-identifier transport check and missing-package refusal
 - provincial special-pay stop/external-workflow result and any documentation
   drift found
 

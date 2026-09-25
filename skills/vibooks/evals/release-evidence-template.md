@@ -121,8 +121,12 @@ repository.
 - API-only parity result:
 - remittance preview/preparation result:
 - external-payment evidence and ledger-settlement separation result:
-- T4/RL-1 preview and adjustment-lineage result:
-- filing, acceptance, and employee-distribution boundary result:
+- T4/RL-1 preview, annual-facts, and adjustment-lineage result:
+- live T4 employee-PDF and CRA-XML package readiness, including unavailable-path result:
+- employee/province PDF intent, native-only sensitive entry/save, reserved-copy replacement, and paper-delivery result:
+- ROE reviewed worksheet, live package/options readiness, native draft `.BLK` handoff, and external issue/PDF boundary:
+- API/CLI/prompt/log sensitive-identifier exclusion result:
+- filing, authority acceptance, and employee-distribution boundary result:
 - unsupported boundary or documentation drift:
 
 ### Scenario 9: Customer Invoicing And Prepayments
