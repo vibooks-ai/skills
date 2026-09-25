@@ -151,11 +151,15 @@ function runOne(command, query, timeoutMs, matcher) {
     }
 
     const checkMatch = (chunk) => {
-      matchBuffer = appendBounded(matchBuffer, chunk, MATCH_BUFFER_CHARS)
-      if (!rateLimited && RATE_LIMIT_PATTERNS.some((pattern) => pattern.test(matchBuffer))) {
+      // Inspect the complete incoming chunk before retaining only its suffix.
+      // A client can emit a command event and a long tool result in one write;
+      // trimming first would discard the command event and miss the trigger.
+      const candidate = matchBuffer + chunk
+      matchBuffer = appendBounded('', candidate, MATCH_BUFFER_CHARS)
+      if (!rateLimited && RATE_LIMIT_PATTERNS.some((pattern) => pattern.test(candidate))) {
         rateLimited = true
       }
-      if (triggered || !matcher.test(matchBuffer)) {
+      if (triggered || !matcher.test(candidate)) {
         matcher.lastIndex = 0
         return
       }

@@ -36,6 +36,7 @@
 
 - Review changes in this order: professional bookkeeping correctness, parity with mainstream professional bookkeeping UX for small-business workflows, then fit with Vibooks' small-business and AI-agent-first scope.
 - Treat trigger evals as necessary but not sufficient. They validate discovery quality for the skill description, not full workflow correctness.
+- Trigger evidence must show that the candidate skill was actually consulted, not just that a model named it. Match complete streaming tool events before truncating diagnostic excerpts so long tool results cannot hide an earlier skill read.
 - Before release, review behavior checks that cover:
   - first-time install to first authenticated bookkeeping use
   - repeat use on an existing trusted local install and existing book
