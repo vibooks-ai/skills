@@ -661,7 +661,10 @@ Subledger integrity rules:
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and
-  posting defaults, create one draft batch, approve it, and post it atomically;
+  posting defaults, and create one draft batch. Then stop: the person reviews
+  and approves the batch (in the app, or on headless with `--as-person`); you
+  never approve a payroll batch. After the person approves it, post it
+  atomically;
   keep the individual-run workflow for genuine one-employee exceptions rather
   than preparing a normal multi-employee period one run at a time
 - send an explicit employee `calculation_mode`: use `profile_regular` for
@@ -739,9 +742,9 @@ Subledger integrity rules:
   employee/profile identity, calculation release/snapshot/fingerprint,
   pay-statement facts, detailed component arrays, cash account, date, and
   correction reason required by the typed request. For standard or strict
-  approval, request `entry.reverse` approval for the exact request body and
-  consume only an approved record whose `target_id` and `payload_hash` still
-  match. If any date, fact, amount, account, or reason changes, request a new
+  approval, request `entry.reverse` approval for the exact request body, ask the
+  person to approve it (you never approve), and consume only an approved record
+  whose `target_id` and `payload_hash` still match. If any date, fact, amount, account, or reason changes, request a new
   approval. Keep one stable idempotency key for the unchanged approval request
   and one for the unchanged final reverse or replacement until the outcome is
   known; after an ambiguous response, retry those exact identifiers instead of
@@ -982,6 +985,9 @@ Subledger integrity rules:
   `measurement_issues` separately from the immutable recognized/paid balances
 - read the current `authenticated_writer_id` from the employee's `service-facts`
   or `policies` response and use that identity as `approved_by` for NT corrections.
+  `approved_by` records a review done outside Vibooks; write it only after the
+  person confirmed the review, and never write the person's name for work they
+  did not review.
   This does not grant write permission. If the authenticated connection or its
   permissions change, reload and create a fresh preview; never reuse another
   reviewer's preview or substitute a historical author or default identity

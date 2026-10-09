@@ -704,9 +704,10 @@ and report checks, then read the current period and live close request schema.
 Submit a non-empty checklist describing checks actually performed; do not invent
 review evidence or treat a balanced trial balance alone as complete review.
 When the effective policy requires approval, create the approval request for the
-exact period action and intended request payload, have a different authorized
-reviewer approve it, and submit that same payload with the resulting approval
-ID. Creating an approval request does not approve or close the period. Do not
+exact period action and intended request payload, ask the person (or another
+authorized reviewer) to approve it — you never approve — and submit that same
+payload with the resulting approval ID. On a `light` book the person may approve
+their own request; on `standard`/`strict` a different person must. Creating an approval request does not approve or close the period. Do not
 change policy, impersonate a reviewer, or grant access to bypass a refusal.
 Reopening also requires the supported approval and a meaningful reason; fetch
 its own live schema rather than reusing the close payload. After each action,

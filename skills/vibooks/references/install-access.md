@@ -348,6 +348,9 @@ token and do not fall back to any default token.
      and should point to the headless env path without containing the secret
    - immediately convert that bootstrap credential into a saved API token for
      the agent with `vibooks-cli auth enroll-agent`
+   - the headless service is the Core only (no app), so the person approves
+     from a terminal: tell the person to run `vibooks-cli auth enroll-person`
+     themselves once (see Approvals below); the agent never runs it
 3. human-driven desktop initialization:
    - the owner can create an API token from Vibooks `API Tokens` settings or
      from an already authorized local shell with
@@ -388,8 +391,44 @@ token and do not fall back to any default token.
 Use:
 
 ```bash
-$VCLI auth enroll-agent --label "Primary agent" --principal-id OWNER_PRINCIPAL_ID
+$VCLI auth enroll-agent --label "Primary agent"
 ```
+
+The agent always has its own principal (`desktop-local-agent` on a local
+desktop, the default) and the `agent` preset (default): it prepares work and
+requests approval, and never approves. Never enroll the agent under the
+person's principal (`desktop-owner`) or with the `owner` or `approver` preset;
+Vibooks refuses both.
+
+### Approvals: the person approves, the agent prepares
+
+- identity is the token's principal; Vibooks ignores an `X-Principal-Id`
+  header, and `vibooks-cli` no longer sends one
+- you (the agent) never approve: not approval requests, not payroll batches.
+  Prepare the work, create the approval request, and tell the person exactly
+  what is pending and where to approve it (the desktop app's Approvals page,
+  or on headless the `--as-person` command below)
+- a refused approve (`FORBIDDEN` "agents cannot approve", or
+  `DUAL_CONTROL_CONFLICT`) is expected; do not work around it by creating
+  tokens, switching principals or changing the book's approval level
+- never ask for, read or use the person's credential; never read
+  `vibooks-person.env`, never pass `--as-person` and never set
+  `VIBOOKS_PERSON_TOKEN`
+- lowering a book's approval level needs the person (approver); suggest it only
+  when the person says they work alone, and let them do it
+- headless Linux: the person runs `vibooks-cli auth enroll-person` once, then
+  approves with, for example:
+
+```bash
+vibooks-cli --as-person invoke --method POST \
+  --route /v1/books/{bookId}/approvals/{approvalId}:approve \
+  --path bookId=BOOK_ID --path approvalId=APPROVAL_ID \
+  --body '{"reason":"Reviewed"}'
+```
+
+  Give the person the exact command with the real ids (approvals, payroll
+  batch approve, period reopen or soft-close, book approval-level changes);
+  the person runs it.
 
 For repeated CLI work in the same macOS session:
 
@@ -445,7 +484,9 @@ Saved API-token storage model:
 - do not place saved API tokens in repo-local `.env` files, shell profiles,
   workspace files, screenshots, or chat transcripts
 
-Treat `vibooks-agent.env` and `vibooks-headless.env` as secret files.
+Treat `vibooks-agent.env`, `vibooks-headless.env` and the person's
+`vibooks-person.env` as secret files; the agent never opens
+`vibooks-person.env`.
 `credentials.json` remains metadata-only for headless discovery.
 
 ## License And Updates

@@ -389,7 +389,8 @@ For a supported remittance period:
    error without changing the journal; use `:withdrawPayment` to append the
    payment and journal reversal; use `:replacePayment` to reverse the old payment
    and atomically record its corrected successor. Carry the current snapshot
-   fingerprint and any required exact reversal approval. After an ambiguous
+   fingerprint and any required exact reversal approval (the person approves it;
+   the agent never does). After an ambiguous
    response, re-read the record before retrying and reuse identifiers only for
    the exact unchanged action
 8. cancel only a mistaken prepared record that has no payment. Never delete or
