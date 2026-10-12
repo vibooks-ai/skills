@@ -8,6 +8,7 @@
 - Confirm local desktop startup
 - Install `vibooks-cli`
 - Connection and secret handling
+- Backup, restore and person-only operations
 - License and updates
 
 ## Discover Current Local Endpoint Values
@@ -396,9 +397,9 @@ $VCLI auth enroll-agent --label "Primary agent"
 
 The agent always has its own principal (`desktop-local-agent` on a local
 desktop, the default) and the `agent` preset (default): it prepares work and
-requests approval, and never approves. Never enroll the agent under the
-person's principal (`desktop-owner`) or with the `owner` or `approver` preset;
-Vibooks refuses both.
+requests approval, and never approves. An agent creates only `agent` tokens
+for an agent principal; the person's principal (`desktop-owner`) and the
+`owner`, `bookkeeper` and `approver` presets are refused with `403 FORBIDDEN`.
 
 ### Approvals: the person approves, the agent prepares
 
@@ -488,6 +489,33 @@ Treat `vibooks-agent.env`, `vibooks-headless.env` and the person's
 `vibooks-person.env` as secret files; the agent never opens
 `vibooks-person.env`.
 `credentials.json` remains metadata-only for headless discovery.
+
+## Backup, Restore And Person-Only Operations
+
+Only the person runs these; the agent prepares, previews and hands off:
+
+- restore (`403 RESTORE_PERSON_REQUIRED`)
+- deleting backups, cleanup and file cleanup, backup and cloud-sync settings,
+  and permanently deleting a Book or Company (`403 PERSON_REQUIRED`)
+- confirming records of a Book imported by an older version (see
+  `references/workflows/verification.md`)
+
+Previews (`/api/admin/restore:preview`, `/api/admin/cleanup:preview`) stay
+open to agents: run them and show the person the result. In the desktop app
+the person confirms in Vibooks; on headless the person runs the exact
+`vibooks-cli --as-person invoke ...` command you give them. A refusal is the
+expected hand-off point, not an obstacle to route around with new tokens.
+
+To recover on a new or reinstalled computer, install Vibooks, then restore the
+latest full backup: Backup page, Restore from another computer or folder, or
+`/api/admin/restore:preview` then `/api/admin/restore` with `backup_path`.
+Show the person the preview first: the Books it replaces, the Books on this
+computer that are not in the backup, and the license outcome. A refused
+restore (`409 RESTORE_INCOMPATIBLE`) names its reason in the first detail:
+`backup_newer_than_app` means update Vibooks first, and
+`backup_schema_unsupported` means a test or pre-release version made the
+backup. Portable book export and import move single Books; they are not a
+substitute for a full backup.
 
 ## License And Updates
 

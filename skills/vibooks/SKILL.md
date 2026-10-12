@@ -399,7 +399,8 @@ direct mutation of Vibooks storage.
 
 Open only the references needed for the current task:
 
-- install, startup, authentication, licensing, and secret handling:
+- install, startup, authentication, approvals, licensing, secret handling,
+  backup and restore, and person-only operations:
   [references/install-access.md](references/install-access.md)
 - jurisdiction routing, support status, selection order, and research boundary:
   [jurisdictions/index.md](jurisdictions/index.md)
@@ -416,13 +417,15 @@ Open only the references needed for the current task:
 - API discovery, jurisdiction selection, bootstrap, and book rebuilds:
   [references/workflows/bootstrap.md](references/workflows/bootstrap.md)
 - posting rules, chart-of-accounts choices, dates, Canadian payroll
-  remittances/year-end preparation, and first-class workflows:
+  remittances/year-end preparation, refunds of advances and deposits,
+  advances or deposits found in tax accounts, and first-class workflows:
   [references/workflows/posting.md](references/workflows/posting.md)
 - employer insurance, combined remittance evidence, retained declarations, and
   allocation review:
   [references/workflows/employer-insurance.md](references/workflows/employer-insurance.md)
-- tax corrections, evidence attachments, reconciliation, month-end validation,
-  and completion checks:
+- tax corrections, tax posting runs and returns, Books imported by an older
+  version, evidence attachments, reconciliation, month-end validation, and
+  completion checks:
   [references/workflows/verification.md](references/workflows/verification.md)
 - independent review of AI-assisted or posted bookkeeping against original
   evidence:

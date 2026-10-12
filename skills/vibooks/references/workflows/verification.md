@@ -7,6 +7,7 @@
 - Posted tax-code corrections
 - Tax summary review
 - Tax returns
+- Books imported by an older version
 - Evidence and attachments
 - Reconciliation
 - Month-end validation
@@ -171,20 +172,86 @@ the jurisdictional requirement.
 
 Rules:
 
-- prepare a draft return for the true filing period and review the summarized
-  payable and recoverable rows before filing
-- file the return only after the underlying period data is complete enough for
-  filing; the filing action generates the tax settlement reclass entry
-- use a dedicated clearing or settlement liability account as
-  `offset_account_id`; do not point the return at a bank statement account
+- documents (invoices, bills, expenses, receipts, credit notes) and entries
+  with their own tax leg post their tax at source. A tax posting run
+  (`tax-postings:preview`, then `tax-postings`) only recognises manual journal
+  lines tagged with a tax code but entered without a tax leg. Omit
+  `offset_account_id` so the tax is extracted from each line's own account. A
+  run never settles tax with the authority; file a return for that
+- a run recognises only tax that earlier runs have not; rows with
+  `correction: true` take back tax that earlier runs over-recognised. A return
+  reports its own period and never re-reports a filed one: late entries into a
+  filed period appear in the next return, late input tax credits in its rows
+  and late tax collected as an adjustment
+- work in date order. An `as_of` earlier than a standing run, or a re-filing
+  while a later return stands, is refused with `TAX_POSTING_OUT_OF_ORDER`;
+  reverse the later run or filing first
+- returns are continuous: each new return starts the day after the latest
+  filed `period_end`. `TAX_RETURN_PERIOD_GAP`, `TAX_RETURN_PERIOD_OVERLAP` and
+  `TAX_RETURN_PERIOD_BEFORE_FIRST` name the period to file or fix first.
+  Activity before the first Vibooks return is listed in
+  `earlier_activity_not_covered`; it is not part of the return and stays in
+  the tax accounts for the accountant
+- prepare a draft return for the true filing period and review its rows,
+  `adjustments`, `net_tax` and `settlement_amount` with the person before
+  filing (`tax-returns/{id}:file`), and file only once the period data is
+  complete
+- `net_tax` is exactly the net tax to enter on the form. `adjustments`
+  (`prior_report_correction`, `late_tax_collected`) correct earlier returns:
+  report them as corrections of those returns, outside the current form.
+  `settlement_amount` (`net_tax` plus `adjustments_total`) is what the filing
+  settles
+- filing moves the reported tax out of the payable and recoverable tax
+  accounts into the settlement account (`offset_account_id`), which then holds
+  the net owing to or refundable from the authority. Use a dedicated
+  balance-sheet clearing or settlement account: a tax account is refused
+  (`TAX_POSTING_OFFSET_INVALID`), an income-statement account is warned, and a
+  bank statement account is wrong. Record the payment or refund itself as a
+  separate entry against that account
+- on `TAX_RETURN_DRAFT_STALE`, compare the stored figures with `error.current`,
+  call `tax-returns/{id}:refresh`, review the new figures with the person, then
+  file
+- reversing a filing entry sets the return to `reversed`; file the same return
+  again with a `posting_date` in an open period (default today)
+- tax of a foreign-currency document is reported in the functional currency at
+  the document's exchange rate
 - keep statutory tax codes on source documents even when a purchase-side input
   tax is only partly claimable; express that by setting
   `tax_claimable_ratio` on the purchase line rather than inventing near-duplicate
   tax codes
-- once a return is filed, corrections should normally happen through the
-  underlying document correction flow plus a later amended return or later
-  period settlement decision, not through silent mutation of the original filed
-  result
+- once a return is filed, correct the underlying documents through their own
+  correction flows; the next return then carries the difference as figures or
+  `adjustments`, never a silent mutation of the filed result
+- jurisdiction profiles name the form lines and how the authority accepts
+  corrections of earlier returns; for Canada see the skill-root path
+  `jurisdictions/ca/smb.md`
+- a run or return refused with `TAX_REFERENCE_REVIEW_REQUIRED` needs the
+  tax-code review in Books Imported By An Older Version below
+
+## Books Imported By An Older Version
+
+A Book imported by a version before 1.5.0 can still name records of the
+original Book. Vibooks holds the steps those references could change until
+they are resolved:
+
+- tax codes: a tax posting run or return is refused with
+  `TAX_REFERENCE_REVIEW_REQUIRED`. Read the tax code's
+  `foreign_account_references` and `suggested_account_references`, then call
+  `tax-codes/{id}:resolve-account-references` with `dry_run: true`, mapping
+  each `foreign_account_id` to the matching tax account of this Book. Show the
+  person the dry-run counts. Once they agree, request approval (action
+  `tax_code.resolve_account_references`, target the tax code, payload
+  `{mappings}`) and let the person approve; then send the same mappings with
+  `approval_id`
+- payroll and statutory exports: payroll source corrections are refused with
+  `PAYROLL_REFERENCE_NEEDS_REVIEW` and new T4 or ROE export intents with
+  `STATUTORY_EXPORT_REFERENCE_NEEDS_REVIEW`. Show the person the
+  `imported-reference-findings`; only the person confirms a finding
+  (`imported-reference-findings/{id}:confirm`), after checking or correcting
+  the records involved. An agent is refused with
+  `IMPORTED_REFERENCE_CONFIRMATION_REQUIRES_PERSON`
+- approvals: approvals imported from another Book are expired; request new
+  ones in this Book
 
 ## Evidence And Attachments
 

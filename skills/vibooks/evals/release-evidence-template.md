@@ -30,7 +30,7 @@ repository.
 
 ## Behavior Review Summary
 
-For scenarios 1–9, record applicability by check or workflow path (`affected`
+For scenarios 1–14, record applicability by check or workflow path (`affected`
 or `unchanged`), the exact changed source hashes and product/CLI evidence,
 prior exact PASS provenance if carried, and the current status. Use `PASS`,
 `FAIL`, `BLOCKED`, `CARRIED-PASS`, or `UNVERIFIED-DEFERRED` for each check;
@@ -51,6 +51,11 @@ unchanged.
 | 7 Statement evidence | | | | |
 | 8 Canadian payroll | | | | |
 | 9 Customer invoicing | | | | |
+| 10 Person approves, agent prepares | | | | |
+| 11 Refunds of advances and deposits | | | | |
+| 12 Advances or deposits in a tax account | | | | |
+| 13 Person-only operations | | | | |
+| 14 Tax posting runs and returns | | | | |
 
 - current-product first authenticated write:
 - current-product return to trusted book:
@@ -175,6 +180,16 @@ unchanged.
 - unsupported advance-invoice stop result:
 - invoice or receipt correction action exercised:
 - canonical, website, portable plugin, and Codex-wrapper parity result:
+
+### Scenarios 11 To 14: Refunds, Control Accounts, Person-Only Operations And Tax Returns
+
+- status per scenario: pass / fail / blocked
+- exact product build, client protocol, skill revision, and client:
+- named and oldest-first refund matching, over-refund refusal, and `OPEN_ADVANCES_NOT_USED` stop result:
+- refund review task resolution by finding code:
+- control-account preview, approval request, approved run, readback, and reversal result:
+- restore preview hand-off and `PERSON_REQUIRED` / `RESTORE_PERSON_REQUIRED` results:
+- tax posting run, return continuity, `net_tax` versus adjustments, stale refresh, and imported tax-code review result:
 
 ## Sync And Packaging Checks
 

@@ -45,6 +45,9 @@ For release review, also run behavior checks that cover:
 12. ROE review and package readiness, native draft `.BLK` handoff, and
     separate ROE Web upload, issue, and authority-supplied PDF outcomes,
     without putting full statutory identifiers in agent or API fields
+13. refunds of advances and deposits, the control-account correction approval
+    flow, operations only the person runs, and tax posting runs and returns
+    (behavior-checks scenarios 11 to 14)
 
 For manual walkthroughs, use:
 

@@ -18,6 +18,7 @@ advice substitute.
 - Canadian payroll and vacation-pay bookkeeping
 - Chart-of-accounts rules
 - Tax control accounts and tax codes
+- GST/HST returns
 - Accountant handoff package
 - Suggested optional accounts
 - Account numbering guidance
@@ -736,6 +737,23 @@ Tax-code rules:
 Quebec, PST, and other province-specific commodity-tax setups can require extra
 jurisdiction detail. Stop and ask before creating them when the obligation is
 not explicit.
+
+## GST/HST Returns
+
+Follow the generic tax-return workflow in
+`references/workflows/verification.md`; these points are Canada-specific:
+
+- a return's payable and receivable rows are lines 103 and 106 of the GST/HST
+  return, and `net_tax` is the net tax to enter on the form
+- input tax credits of an already filed period that were entered late appear
+  in the next return's ITC row, as the CRA allows
+- `adjustments` correct earlier returns: the person files those corrections
+  with the CRA (My Business Account, Adjust a return), never on the current
+  form
+- a combined GST+QST code produces one Vibooks return; the person files the
+  QST part separately with Revenu Québec
+- whether a filed return was prepared from a tax-account balance that held
+  supplier advances or customer deposits is a question for the accountant
 
 ## Accountant Handoff Package
 

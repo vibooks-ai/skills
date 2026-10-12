@@ -11,6 +11,8 @@
 - Chart-of-accounts rules
 - Date rules
 - Prefer first-class workflows
+- Refunds of advances and deposits
+- Advances and deposits outside tax accounts
 - Common posting patterns
 - Opening balances
 
@@ -1041,14 +1043,9 @@ Subledger integrity rules:
   installation and remains blocked from automatic YTD and all statutory use
   until a complete append-only `legacy_run_attestation` links the posted run to
   retained source records and supplies every applicable employee and employer amount;
-  never overwrite either the retained snapshot or attestation for later changes
-- before the first full backup, the owner must deliberately display the backup
-  recovery code in the local desktop, save it outside the backup location, and
-  confirm that separate copy. A backup from another or replacement installation
-  must be previewed with that recovery code before restore. Agents must not call
-  the reveal endpoint or pass a recovery code into backup preview/restore unless
-  the user explicitly requests that local recovery operation. Never place a
-  recovery code in chat, logs, filenames, bookkeeping evidence, or portable bundles
+  never overwrite either the retained snapshot or attestation for later changes;
+  the person runs the restore itself (see Backup, restore and person-only
+  operations in `references/install-access.md`)
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
   and `1`; Vibooks will keep the non-claimable portion inside the business
@@ -1071,6 +1068,89 @@ Reimbursement and vendor-advance rule:
   account such as `Cash from owner` or `Shareholder Loan`
 - if the payment exceeds the open bill and should remain as a vendor advance or
   prepayment, route the excess through `unapplied_account_id`
+
+## Refunds Of Advances And Deposits
+
+A balance-mode vendor refund to the vendor advances account returns open
+advances (payments); a customer refund to the customer deposits account
+returns open deposits (receipts). Vibooks matches the refund oldest first, or
+to the documents named in `allocations: [{payment_id, amount}]`
+(`receipt_id` for customers). Name them when the evidence identifies the
+prepayment; the amounts add up to `refund_amount`, with at most 2 decimal
+places.
+
+- refund at most what the counterparty has open on that account, in that
+  currency, dated on or before `refund_date`.
+  `VENDOR_REFUND_EXCEEDS_OPEN_ADVANCE` or
+  `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT` means no open advance covers it: ask
+  the person what the money is, and keep the refund off any other account
+  until they answer
+- read back `balance_source`, `advance_allocations`, `unallocated_amount` and
+  `advance_warning`. On `advance_warning.code: OPEN_ADVANCES_NOT_USED`, stop and
+  confirm the account with the person
+- a payment (receipt) moved to a recognition schedule is fully used. Prefer
+  `payments/{id}:create-recognition-schedule` (`receipts/{id}:...` for
+  customers). A generic schedule that moves a payment needs a fully open
+  payment (`RECOGNITION_SCHEDULE_SOURCE_NOT_OPEN`) and `amount_total` equal to
+  its advance (`RECOGNITION_SCHEDULE_SOURCE_AMOUNT_MISMATCH`)
+
+The `refund_advance_review` task lists refunds and advances to review, by
+finding code:
+
+- F1, a refund not matched to an advance: unapply a wrongly applied advance,
+  then `:allocate` the refund; or replace or cancel the refund
+- F2, an account that could not be identified: ask the person which account it
+  is, then replace the refund, document or schedule with an account of this
+  Book
+- F3, F4, and F5 caused by stale links: call `refund-allocations:preview` and
+  show the person the plan (open amounts of documents in closed periods may
+  change; the ledger does not). Then call `refund-allocations:reconcile` with
+  its `plan_digest`; on `REFUND_RECONCILE_PLAN_CHANGED`, preview again
+- F5 the reconcile cannot explain, and F6: leave them listed for the
+  accountant
+
+Change open amounts only through these actions and the documents' own unapply,
+cancel or replace workflows.
+
+## Advances And Deposits Outside Tax Accounts
+
+GST/HST and sales-tax accounts (report category `tax_payable` or
+`tax_receivable`) hold tax only. Supplier advances belong in a vendor advances
+account and customer deposits in a customer deposits account. Vibooks refuses
+a tax account in a control field such as `default_ap_account_id`,
+`refund_account_id` or a schedule's source account
+(`CONTROL_ACCOUNT_IS_TAX_ACCOUNT`).
+
+Earlier versions could record advances or deposits in a tax account.
+Reopening, replacing or scheduling an affected payment, receipt or refund is
+then refused with `CONTROL_CORRECTION_REQUIRED` (task id in the error
+details). Correct them from the `control_account_findings` task:
+
+1. read `control-account-findings` and call
+   `control-account-corrections:preview`; show the person the plan, the manual
+   entries listed and any filed returns overlapping the dates
+2. send `acknowledged_manual_entry_ids` only for entries the person confirmed
+   are not corrections of the listed documents
+3. at `standard` or `strict` approval, request approval with action
+   `control_account.correct`, target the book id and payload the preview's
+   `approval.request_payload` exactly, and let the person approve. At `light`
+   the run is automatic, except a plan with acknowledged manual entries:
+   Vibooks refuses the agent with `CONTROL_CORRECTION_PERSON_DECISION_REQUIRED`,
+   so request approval the same way
+4. run `control-account-corrections` with the preview's `fingerprint`, a
+   reason and the `approval_id`; on `CONTROL_CORRECTION_STALE`, preview again
+5. verify that the tax accounts hold no supplier or customer document legs and
+   the findings list is empty
+
+The correction's reclassification entries carry no tax code and leave tax
+amounts, returns and tax posting runs unchanged; it is the only way to move
+these balances between a tax account and an advance or deposit account. Undo
+it only by reversing its run
+(`control-account-corrections/{runId}:reverse`, approval action
+`control_account.reverse_correction`, target the run id, payload
+`{"run_id": runId}`). Run reversal is refused with
+`CONTROL_CORRECTION_REVERSE_BLOCKED` once a corrected document has later
+activity or a later run covers it.
 
 ## Common Posting Patterns
 
@@ -1107,12 +1187,13 @@ Reimbursement and vendor-advance rule:
 - loan proceeds: debit bank, credit loan payable
 - loan repayment: prefer `expense`; debit loan principal, debit interest
   expense if any, and credit bank for the full payment
-- tax remittance: prefer `expense`; debit the tax liability being settled and
-  credit bank or cash
-- tax return preparation: prefer `tax-returns`; prepare a draft return for the
-  filing period, review the summarized payable and recoverable rows, then file
-  the return so Vibooks generates the settlement reclass entry through the
-  chosen tax-settlement clearing account
+- tax remittance: prefer `expense`; debit the tax settlement account or other
+  tax liability being settled and credit bank or cash. For a refund from the
+  authority, prefer `bank-deposits` with the settlement account as the source
+  line
+- tax return preparation: prefer `tax-returns`; filing moves the reported tax
+  out of the tax accounts into the chosen settlement account (see Tax Returns
+  in `references/workflows/verification.md`)
 - debit-card purchase: prefer `expense`; economically it debits expense,
   prepaid, inventory, fixed asset, liability settlement, or equity draw lines
   and credits bank
