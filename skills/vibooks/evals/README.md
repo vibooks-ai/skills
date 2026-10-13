@@ -46,8 +46,9 @@ For release review, also run behavior checks that cover:
     separate ROE Web upload, issue, and authority-supplied PDF outcomes,
     without putting full statutory identifiers in agent or API fields
 13. refunds of advances and deposits, the control-account correction approval
-    flow, operations only the person runs, and tax posting runs and returns
-    (behavior-checks scenarios 11 to 14)
+    flow, operations only the person runs, tax posting runs and returns, and
+    foreign-currency documents and inventory cost (behavior-checks scenarios
+    11 to 15)
 
 For manual walkthroughs, use:
 

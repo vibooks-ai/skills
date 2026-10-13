@@ -30,7 +30,7 @@ repository.
 
 ## Behavior Review Summary
 
-For scenarios 1–14, record applicability by check or workflow path (`affected`
+For scenarios 1–15, record applicability by check or workflow path (`affected`
 or `unchanged`), the exact changed source hashes and product/CLI evidence,
 prior exact PASS provenance if carried, and the current status. Use `PASS`,
 `FAIL`, `BLOCKED`, `CARRIED-PASS`, or `UNVERIFIED-DEFERRED` for each check;
@@ -56,6 +56,7 @@ unchanged.
 | 12 Advances or deposits in a tax account | | | | |
 | 13 Person-only operations | | | | |
 | 14 Tax posting runs and returns | | | | |
+| 15 Foreign-currency documents and inventory cost | | | | |
 
 - current-product first authenticated write:
 - current-product return to trusted book:
@@ -190,6 +191,13 @@ unchanged.
 - control-account preview, approval request, approved run, readback, and reversal result:
 - restore preview hand-off and `PERSON_REQUIRED` / `RESTORE_PERSON_REQUIRED` results:
 - tax posting run, return continuity, `net_tax` versus adjustments, stale refresh, and imported tax-code review result:
+
+### Scenario 15: Foreign-Currency Documents And Inventory Cost
+
+- status: pass / fail / blocked
+- foreign-currency rounding line and `7999` residual readback:
+- foreign-currency and CAD purchase return cost and difference accounts:
+- `inventory_valuation_review` hand-off, with no adjusting entry by the agent:
 
 ## Sync And Packaging Checks
 

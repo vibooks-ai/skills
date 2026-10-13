@@ -31,6 +31,14 @@
   agent/API update with those original facts, then read back and compare the
   result. Do not convert the record to the book currency merely to make the
   simplified form accept it
+- a foreign-currency document converts its receivable, payable, cash,
+  deposit, advance, or clearing leg once at the document total and each other
+  line on its own; Vibooks puts the rounding cent on one of the other lines
+  (never an inventory, cost of goods sold, tax, or settlement line), and a cent no line can absorb (for example a receipt split between
+  applied and unapplied, or a deposit applied to two invoices) on realized
+  exchange gain/loss `7999`. Source amounts stay as entered. Do not adjust
+  lines, rates, or add a journal to remove that cent. Inventory and cost of
+  goods sold are carried at functional cost, not at the document rate
 - never net receivables, payables, taxes, or clearing balances against revenue
   or expense
 - do not overwrite posted history; use reversal, cancellation, credit-note,
@@ -554,8 +562,15 @@ Subledger integrity rules:
 - vendor refunds either reverse purchase-side expense/asset and tax lines or
   return vendor advances or supplier cash back to the chosen funding account
   without creating new AP
-- inventory item lines on vendor refunds issue stock automatically using the
-  refund line value instead of requiring a separate inventory issue
+- inventory item lines on vendor credits and vendor refunds (purchase returns)
+  issue stock automatically at its carrying cost, the weighted average cost in
+  the functional currency (the whole value when the whole stock goes back), not
+  at the credited amount. The difference between the credit and that cost goes
+  to the item's cost of goods sold in a functional-currency return, and to
+  realized exchange gain/loss `7999` in a foreign-currency return; a
+  foreign-currency return can leave AP at zero in the document currency with a
+  small functional residual until the next FX revaluation or settlement. Do
+  not journal these differences by hand
 - bank deposits debit the destination bank statement account and use signed
   source lines: positive lines credit non-statement sources such as
   undeposited funds, cash on hand, revenue, equity, loan liabilities, or
@@ -1108,6 +1123,15 @@ finding code:
   its `plan_digest`; on `REFUND_RECONCILE_PLAN_CHANGED`, preview again
 - F5 the reconcile cannot explain, and F6: leave them listed for the
   accountant
+- F7, a recognition schedule an earlier version linked to a payment (receipt)
+  with an amount other than its advance (deposit); it holds the smaller of the
+  two. Show the person both amounts. With their agreement, reverse any posted
+  lines with `recognition-schedules/{id}:reverseLatest`, then `PATCH` the
+  schedule with `amount_total` equal to the advance (a new plan such as
+  `period_count` may go in the same request). Any other edit that keeps the
+  wrong amount is refused with `RECOGNITION_SCHEDULE_SOURCE_AMOUNT_MISMATCH`.
+  If the person does not want the full advance recognised, cancel the schedule
+  and ask what the rest of the advance is
 
 Change open amounts only through these actions and the documents' own unapply,
 cancel or replace workflows.

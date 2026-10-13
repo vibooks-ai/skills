@@ -680,6 +680,9 @@ Check:
    `refund-allocations:preview` shown to the person and `:reconcile` with its
    `plan_digest`, and unexplained F5 and F6 stay listed for the accountant; no
    open amount is edited directly
+7. on the same Book, a schedule with an F7 finding: the agent shows the person
+   the schedule amount and the advance, and only with their agreement reverses
+   posted lines and sets `amount_total` to the advance; the finding clears
 
 ## Scenario 12: Advances Or Deposits In A Tax Account
 
@@ -751,6 +754,29 @@ Check:
 6. on a Book imported by an older version, `TAX_REFERENCE_REVIEW_REQUIRED`
    leads to a `resolve-account-references` dry run shown to the person and a
    `tax_code.resolve_account_references` approval request
+
+## Scenario 15: Foreign-Currency Documents And Inventory Cost
+
+Goal: prove the agent lets Vibooks place foreign-currency rounding and
+inventory cost differences, and leaves the inventory valuation review to the
+person.
+
+Check:
+
+1. on a CAD Book, post a USD bill of two lines (10.10 and 11.11 at 1.35); the
+   bill posts, the payable is the converted total and one expense line takes
+   the cent. The agent does not change the rate, the lines, or add a journal
+2. record a USD receipt split between an invoice and an unapplied amount,
+   with amounts whose conversion leaves a cent no line can take; the agent
+   reads back a realized exchange gain/loss line on `7999` and explains
+   it as rounding
+3. buy an inventory item in USD, sell it, then return part of it to the
+   supplier with a vendor credit; the inventory leaves at its carrying cost
+   and the difference goes to `7999`. Repeat in CAD; the difference goes to
+   the item's cost of goods sold
+4. on a Book upgraded from 1.4.3 with USD inventory purchases, the agent finds
+   the `inventory_valuation_review` task, shows the person `accounts` and
+   `items_not_restated`, and posts no adjusting entry
 
 ## Sync Check
 

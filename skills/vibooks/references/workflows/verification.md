@@ -478,6 +478,14 @@ Before closing a period:
 7. tie every credit card to its statement
 8. confirm no unexplained unapplied receipts, unapplied payments, or orphan
    balances remain
+   When inventory is tracked, compare each inventory account with the
+   inventory value. An `inventory_valuation_review` task in
+   `GET /v1/books/{bookId}/tasks` lists `accounts` (`ledger_balance`,
+   `layer_value`, `difference`) and `items_not_restated`: after the 1.5.0
+   upgrade, inventory bought in another currency or with tax that is not
+   recoverable is valued at its functional cost, and older entries may leave a
+   difference. Show it to the person; the person or their accountant decides
+   any adjusting entry. Never post it yourself; Vibooks does not post it either
 9. when dimensions are used for departments, projects, branches, or locations,
    run grouped management reports with `group_by_dimension_id` and targeted
    slices with `dimension_filter`
