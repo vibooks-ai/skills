@@ -39,6 +39,19 @@
   exchange gain/loss `7999`. Source amounts stay as entered. Do not adjust
   lines, rates, or add a journal to remove that cent. Inventory and cost of
   goods sold are carried at functional cost, not at the document rate
+- using a foreign-currency advance or deposit (`payments/{id}:apply`,
+  `receipts/{id}:apply`, a balance-mode refund, or a recognition schedule)
+  relieves it at what it still carries in the functional currency; Vibooks
+  books the difference to realized exchange gain/loss `7999`, so a fully used
+  advance or deposit is zero in both currencies. Omit `exchange_rate` on
+  `:apply` so each invoice or bill is settled at its own posted rate; an
+  explicit rate is honoured, and any receivable or payable difference it
+  leaves is cleared by the next FX remeasurement. `:unapply` restores exactly
+  what the application posted (its `exchange_rate` is display only). On
+  `FX_RATE_REQUIRED` for an invoice or bill, pass `exchange_rate`; if the
+  payment's or receipt's own posting cannot be read, stop and report it to the
+  person instead of retrying with another rate. Never post a manual journal to
+  clear an advance or deposit exchange difference
 - never net receivables, payables, taxes, or clearing balances against revenue
   or expense
 - do not overwrite posted history; use reversal, cancellation, credit-note,
@@ -277,7 +290,8 @@ Choose one prepayment lifecycle and do not mix them:
 - **Direct deferred-revenue recognition:** use
   `receipt:create-recognition-schedule` only when evidence and the effective
   accounting policy support releasing the deposit liability directly without
-  later applying this receipt to an invoice. Confirm the recognition account,
+  later applying this receipt to an invoice. A foreign-currency deposit
+  recognises revenue at the deposit's own rate. Confirm the recognition account,
   start date, cadence, period count, dimensions, and performance facts; never
   infer them from payment date, invoice terms, or Item defaults.
 

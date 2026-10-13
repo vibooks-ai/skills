@@ -757,8 +757,9 @@ Check:
 
 ## Scenario 15: Foreign-Currency Documents And Inventory Cost
 
-Goal: prove the agent lets Vibooks place foreign-currency rounding and
-inventory cost differences, and leaves the inventory valuation review to the
+Goal: prove the agent lets Vibooks place foreign-currency rounding,
+advance and deposit exchange differences and inventory cost differences, and
+leaves the inventory valuation review to the
 person.
 
 Check:
@@ -774,7 +775,11 @@ Check:
    supplier with a vendor credit; the inventory leaves at its carrying cost
    and the difference goes to `7999`. Repeat in CAD; the difference goes to
    the item's cost of goods sold
-4. on a Book upgraded from 1.4.3 with USD inventory purchases, the agent finds
+4. apply a USD 100 deposit received at 1.30 to a USD 100 invoice posted at
+   1.40 without `exchange_rate`; the agent reads back a `7999` line and a
+   Customer Deposits balance of zero in both currencies, and does not post a
+   manual journal
+5. on a Book upgraded from 1.4.3 with USD inventory purchases, the agent finds
    the `inventory_valuation_review` task, shows the person `accounts` and
    `items_not_restated`, and posts no adjusting entry
 

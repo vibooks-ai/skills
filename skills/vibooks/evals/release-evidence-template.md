@@ -197,6 +197,7 @@ unchanged.
 - status: pass / fail / blocked
 - foreign-currency rounding line and `7999` residual readback:
 - foreign-currency and CAD purchase return cost and difference accounts:
+- foreign deposit applied at another rate: `7999` line and deposit account zero in both currencies:
 - `inventory_valuation_review` hand-off, with no adjusting entry by the agent:
 
 ## Sync And Packaging Checks
