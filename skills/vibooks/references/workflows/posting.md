@@ -52,10 +52,13 @@
   after any FX remeasurement, and Vibooks books the difference to `7999`; a
   fully settled document is zero in both currencies. A billed purchase receipt
   moves its clearing carrying amount to the payable without an exchange line.
-  `exchange_rate` on `:apply` and `:unapply` is accepted and validated but
-  never used for amounts, so omit it. Vendor credit `application_date` must be
-  in an open period. On `FX_RATE_REQUIRED`, the document's own posting cannot
-  be read: stop and report it to the person; do not retry with another rate.
+  `exchange_rate` on `:apply` is accepted and validated but never used for
+  amounts, and on `:unapply` it is ignored, so omit it on both. Vendor credit
+  `application_date` must be in an open period. Creating a foreign-currency
+  document still needs its `exchange_rate`. On `FX_RATE_REQUIRED` from an
+  `:apply`, a credit note or a vendor credit application, the document's own
+  posting cannot be read: stop and report it to the person; do not retry with
+  another rate.
   Never post a manual journal to clear an advance, deposit, receivable,
   payable or clearing exchange difference
 - never net receivables, payables, taxes, or clearing balances against revenue
