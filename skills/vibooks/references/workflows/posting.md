@@ -43,15 +43,21 @@
   `receipts/{id}:apply`, a balance-mode refund, or a recognition schedule)
   relieves it at what it still carries in the functional currency; Vibooks
   books the difference to realized exchange gain/loss `7999`, so a fully used
-  advance or deposit is zero in both currencies. Omit `exchange_rate` on
-  `:apply` so each invoice or bill is settled at its own posted rate; an
-  explicit rate is honoured, and any receivable or payable difference it
-  leaves is cleared by the next FX remeasurement. `:unapply` restores exactly
-  what the application posted (its `exchange_rate` is display only). On
-  `FX_RATE_REQUIRED` for an invoice or bill, pass `exchange_rate`; if the
-  payment's or receipt's own posting cannot be read, stop and report it to the
-  person instead of retrying with another rate. Never post a manual journal to
-  clear an advance or deposit exchange difference
+  advance or deposit is zero in both currencies. `:unapply` restores exactly
+  what the application posted
+- settling a foreign-currency invoice, bill, vendor credit or billed purchase
+  receipt (receipt or payment `:apply`, an invoice credit note, vendor credit
+  `:apply`, a bill that takes over purchase receipts) relieves it at its
+  carrying amount, the amount it still carries in the functional currency
+  after any FX remeasurement, and Vibooks books the difference to `7999`; a
+  fully settled document is zero in both currencies. A billed purchase receipt
+  moves its clearing carrying amount to the payable without an exchange line.
+  `exchange_rate` on `:apply` and `:unapply` is accepted and validated but
+  never used for amounts, so omit it. Vendor credit `application_date` must be
+  in an open period. On `FX_RATE_REQUIRED`, the document's own posting cannot
+  be read: stop and report it to the person; do not retry with another rate.
+  Never post a manual journal to clear an advance, deposit, receivable,
+  payable or clearing exchange difference
 - never net receivables, payables, taxes, or clearing balances against revenue
   or expense
 - do not overwrite posted history; use reversal, cancellation, credit-note,

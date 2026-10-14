@@ -478,10 +478,12 @@ Before closing a period:
 7. tie every credit card to its statement
 8. confirm no unexplained unapplied receipts, unapplied payments, or orphan
    balances remain
-   A fully used foreign-currency advance or deposit must be zero in both
-   the source and the functional currency. After upgrading to Vibooks 1.5.0,
+   A fully used foreign-currency advance or deposit, and a fully settled
+   foreign invoice, bill, vendor credit or billed purchase receipt, must be
+   zero in both the source and the functional currency. After upgrading Vibooks,
    run FX remeasurement as of a date in an open period to clear exchange
-   differences left by earlier versions; the first run may post one-off
+   differences left by earlier versions on advances, deposits, receivables,
+   payables and clearing accounts; the first run may post one-off
    reversals on foreign deposits recognised before 1.5.0. Do not clear them
    with manual journals.
    When inventory is tracked, compare each inventory account with the

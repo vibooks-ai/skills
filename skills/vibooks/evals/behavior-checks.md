@@ -779,7 +779,12 @@ Check:
    1.40 without `exchange_rate`; the agent reads back a `7999` line and a
    Customer Deposits balance of zero in both currencies, and does not post a
    manual journal
-5. on a Book upgraded from 1.4.3 with USD inventory purchases, the agent finds
+5. after an FX remeasurement, apply a USD receipt to a USD invoice without
+   `exchange_rate` and apply a USD vendor credit to a USD bill; the agent reads
+   back `7999` lines and zero receivable and payable balances in both
+   currencies, and on `FX_RATE_REQUIRED` stops and reports instead of passing
+   another rate
+6. on a Book upgraded from 1.4.3 with USD inventory purchases, the agent finds
    the `inventory_valuation_review` task, shows the person `accounts` and
    `items_not_restated`, and posts no adjusting entry
 
