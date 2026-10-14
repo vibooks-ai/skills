@@ -702,7 +702,10 @@ Subledger integrity rules:
   payments) are in `amount_currency`, the Book's currency, at what the
   documents carry; for a customer's or vendor's balance read `open_balance`
   (vendor credits netted, deposits and advances shown separately), never a sum
-  of `amount_due` across documents
+  of `amount_due` across documents. When `amount_qualified` or
+  `unapplied_qualified` is true, one document's amount could not be measured
+  at its carrying amount; tell the person which figure is qualified instead of
+  presenting it as exact
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and
