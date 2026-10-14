@@ -698,6 +698,11 @@ Subledger integrity rules:
   review the replacement; on `TASK_VERIFICATION_REQUIRED`, complete the
   retained rule-impact check; when the task is no longer found, treat it as
   resolved. Count-only Payroll tasks are not dollar exposure
+- task amounts (overdue receivables, bills due soon, unapplied receipts and
+  payments) are in `amount_currency`, the Book's currency, at what the
+  documents carry; for a customer's or vendor's balance read `open_balance`
+  (vendor credits netted, deposits and advances shown separately), never a sum
+  of `amount_due` across documents
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and

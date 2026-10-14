@@ -484,7 +484,11 @@ Before closing a period:
    control balance: explain any non-zero `reconciliation.ar.unattributed` or
    `reconciliation.ap.unattributed` to the person (for example an opening
    balance or a manual journal on a control account) and never journal it
-   away; surface every document in `qualifications`
+   away; surface every document in `qualifications`. The Overview
+   `accounts_receivable` and `accounts_payable` equal the aging total on the
+   dashboard's `as_of`; read `open_items` for overdue, per-currency figures
+   and the reconciliation, and when `open_items_unavailable` is present, say
+   the open-item figures are not available instead of estimating them
 6. reconcile every bank and debit account
 7. tie every credit card to its statement
 8. confirm no unexplained unapplied receipts, unapplied payments, or orphan
