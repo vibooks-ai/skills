@@ -118,6 +118,10 @@ true review date range. It returns financial statements, trial balance, general
 ledger, journal entries, A/R and A/P aging and open items, bank reconciliation
 summary, tax summary, evidence exceptions, attachment manifest, and
 jurisdiction notes as review workpapers; it does not file a tax return.
+Its open receivables and payables are the amounts open on `date_to`
+(`open_amount` in the document currency, `functional_open_amount` in the
+Book's currency); `total_due` is the functional total, in
+`total_due_currency`, with `totals_by_currency` beside it.
 Omit `sections` for the full package. When the accountant asks for a narrower
 package, pass repeated `sections` values for only the needed workpapers so the
 JSON payload and workbook tabs match the selected report pack.
@@ -473,7 +477,14 @@ Before closing a period:
 2. run balance sheet
 3. run income statement
 4. run general ledger for review
-5. review AR and AP aging when those modules are used
+5. review AR and AP aging when those modules are used. Aging amounts are in
+   the Book's currency at what each document carries, reconstructed as of
+   `as_of`; read document-currency amounts from `currencies`, never by adding
+   `amount_due` across documents. The aging total must tie to the AR or AP
+   control balance: explain any non-zero `reconciliation.ar.unattributed` or
+   `reconciliation.ap.unattributed` to the person (for example an opening
+   balance or a manual journal on a control account) and never journal it
+   away; surface every document in `qualifications`
 6. reconcile every bank and debit account
 7. tie every credit card to its statement
 8. confirm no unexplained unapplied receipts, unapplied payments, or orphan
