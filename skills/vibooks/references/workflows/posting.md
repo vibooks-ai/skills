@@ -1139,6 +1139,19 @@ places.
   `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT` means no open advance covers it: ask
   the person what the money is, and keep the refund off any other account
   until they answer
+- customer credit from invoice credit notes: the part of a credit note above
+  what the invoice still owed sits on the customer deposits account. A
+  customer balance refund without `allocations` returns that credit first and
+  uses open receipts only for the rest; `credit_note_credit_amount` states the
+  credit part (derived: it can change if a credit note dated on or before the
+  refund is later reversed, or after `:allocate`). Naming `allocations`
+  refunds exactly those receipts and never uses the credit.
+  `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT` then means the refund is larger than
+  open deposits plus that credit; the message states both
+- for a return on a paid sale, prefer a document-mode customer refund over a
+  credit note followed by a balance refund. In another currency the credit
+  leaves the deposits account at the refund's exchange rate; any difference
+  stays on the account until the next currency revaluation
 - read back `balance_source`, `advance_allocations`, `unallocated_amount` and
   `advance_warning`. On `advance_warning.code: OPEN_ADVANCES_NOT_USED`, stop and
   confirm the account with the person

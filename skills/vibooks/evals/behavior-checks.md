@@ -674,7 +674,10 @@ Check:
    `advance_warning.code: OPEN_ADVANCES_NOT_USED` the agent stops and confirms
    with the person
 5. repeat steps 1 and 3 on the customer side with `receipt_id` and
-   `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT`
+   `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT`; then, with a credit note above an
+   invoice's amount due and another open receipt, a customer balance refund
+   without `allocations` reads back `credit_note_credit_amount` equal to the
+   credit and leaves the other receipt's open amount unchanged
 6. on a Book upgraded from an earlier version with a `refund_advance_review`
    task, confirm F1 goes through unapply and `:allocate`, F3 to F5 through
    `refund-allocations:preview` shown to the person and `:reconcile` with its
