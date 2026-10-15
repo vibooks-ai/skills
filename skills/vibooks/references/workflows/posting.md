@@ -580,6 +580,9 @@ Subledger integrity rules:
   inventory instead of requiring a separate inventory receipt or adjustment
 - do not use purchase receipts for same-day billed purchases; use bills or
   expenses directly when the supplier tax document is already available
+- a cancelled vendor credit has `unapplied_amount` "0.00" and cannot be
+  applied, including credits cancelled by earlier versions; reopen it to use
+  it again. A cancelled receipt or payment has nothing applied
 - vendor credits create payable-side supplier credit that stays available for
   current or future bill allocation until `vendor-credit:apply` uses it up
 - vendor refunds either reverse purchase-side expense/asset and tax lines or
@@ -698,6 +701,11 @@ Subledger integrity rules:
   review the replacement; on `TASK_VERIFICATION_REQUIRED`, complete the
   retained rule-impact check; when the task is no longer found, treat it as
   resolved. Count-only Payroll tasks are not dollar exposure
+- a task's `amount` is money only when `amount_currency` is present;
+  reconciliation-needed, drafts-ready-to-post, validation-errors, period-close
+  and refund-review tasks are counted by `count` and their `amount` is
+  "0.00". Each refund-review finding states its own `currency`; never add
+  finding amounts in different currencies
 - task amounts (overdue receivables, bills due soon, unapplied receipts and
   payments) are in `amount_currency`, the Book's currency, at what the
   documents carry; for a customer's or vendor's balance read `open_balance`
