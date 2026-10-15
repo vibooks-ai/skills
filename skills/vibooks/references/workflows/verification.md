@@ -488,7 +488,23 @@ Before closing a period:
    `accounts_receivable` and `accounts_payable` equal the aging total on the
    dashboard's `as_of`; read `open_items` for overdue, per-currency figures
    and the reconciliation, and when `open_items_unavailable` is present, say
-   the open-item figures are not available instead of estimating them
+   the open-item figures are not available instead of estimating them.
+   Read the ages from `age_rows` (`not_due`, `past_due_1_30`,
+   `past_due_31_60`, `past_due_61_90`, `past_due_over_90`, then TOTAL) and
+   per-currency ages from `currencies[].age_rows`; `rows` is the older
+   three-bucket view whose Current also holds items up to 30 days past due,
+   so never call those items current. Overdue is the report's
+   `overdue.ar` and `overdue.ap`: invoices and bills past their due date
+   only, never vendor credits, and equal to the Overview's `open_items`
+   overdue when its aging date equals the report's `as_of`. Accountant
+   package open items carry `age_bucket` and `days_past_due` (a vendor
+   credit counts from its credit date). For the Overview's top customers
+   and vendors by cash, read `cash_rankings` (`inflows` and `outflows` of
+   `counterparty_id`, `label`, `amount`, `count`, in the functional
+   currency): the sum of each counterparty's posted cash movements. When
+   `cash_rankings_unavailable` is present, say the ranking is not available;
+   never rank customers or vendors yourself from document totals, which may
+   be in different currencies
 6. reconcile every bank and debit account
 7. tie every credit card to its statement
 8. confirm no unexplained unapplied receipts, unapplied payments, or orphan

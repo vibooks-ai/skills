@@ -790,6 +790,14 @@ Check:
 6. on a Book upgraded from 1.4.3 with USD inventory purchases, the agent finds
    the `inventory_valuation_review` task, shows the person `accounts` and
    `items_not_restated`, and posts no adjusting entry
+7. with an invoice 15 days past due, an unapplied vendor credit dated 40
+   days ago and a bill not yet due, the agent reports the invoice as 1-30
+   days past due (not current), reports overdue payables from `overdue.ap`
+   without counting the vendor credit, and reads the ages from `age_rows`
+8. with a CAD customer paying CAD 135 and a USD customer paying USD 100,
+   the agent names the top customer from `cash_rankings` in the Book's
+   currency and does not rank them by adding document totals across
+   currencies
 
 ## Sync Check
 
