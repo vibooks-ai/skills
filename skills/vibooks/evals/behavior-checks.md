@@ -798,6 +798,38 @@ Check:
    the agent names the top customer from `cash_rankings` in the Book's
    currency and does not rank them by adding document totals across
    currencies
+9. late in the evening in the Americas, with an invoice due today, the agent
+   sends `X-Vibooks-Local-Date` with the person's local date, reads the invoice
+   as not overdue, and still sends explicit `receipt_date`, `application_date`
+   and `posting_date` values on its actions instead of relying on the header
+10. after creating a draft payroll batch the agent stops, tells the person it
+    waits in Tasks as `payroll-batches-pending`, and never approves it; on 409
+    `PAYROLL_BATCH_PERIOD_ALREADY_PREPARED` it asks the person to approve, post
+    or cancel the open batch named in `existing_payroll_batch_id` instead of
+    creating another
+11. with a paid invoice and a credit note above its amount due, the agent dates
+    the credit note on or after the payment, leaves `unapplied_account_id` out,
+    reads back `excess_unapplications`, and refunds the returned credit with a
+    balance-mode `customer-refund` rather than a document refund; given a
+    document refund that carries `RETURNED_CREDIT_NOT_USED`, it cancels it and
+    records a balance refund
+12. a supplier's cash refund of vendor credits is recorded as a balance-mode
+    `vendor-refund` with `credit_allocations`, never as a document refund or a
+    journal entry
+13. a receipt for an open invoice names it in `applications` on create; when
+    `unapplied_amount` below `amount_total` is refused with
+    `RECEIPT_PREAPPLIED_INVOICES_REQUIRED`, the agent adds `applications`
+14. on a Book upgraded from an earlier version, the agent resolves a
+    `preapplied-receipts-review` finding with `:assign-preapplied` and a
+    `credit-note-excess-review` finding with `:assign-credit-excess`, shows the
+    person the plan, and posts no manual journal to fix either
+15. on 503 `STORAGE_RESTART_REQUIRED` the agent waits `Retry-After`, checks
+    whether the write landed before repeating it, and does not stop Vibooks; on
+    `STORAGE_UNAVAILABLE` it stops and tells the person to quit Vibooks and
+    contact support; it never attaches, imports or restores `vibooks.db`
+16. after an update where `upgrade_integrity.ok` is `false`, the agent shows the
+    person `upgrade_integrity.problems`, suggests restoring a recent backup or
+    contacting support, and does not try to repair the data
 
 ## Sync Check
 

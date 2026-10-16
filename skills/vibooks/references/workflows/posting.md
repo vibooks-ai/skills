@@ -12,6 +12,7 @@
 - Date rules
 - Prefer first-class workflows
 - Refunds of advances and deposits
+- Credit notes, returned credit and supplier credit refunds
 - Advances and deposits outside tax accounts
 - Common posting patterns
 - Opening balances
@@ -206,6 +207,15 @@ Choose the first-class sale before preparing lines:
 - when cash arrives after an invoice, create a `receipt` and use
   `receipt:apply`; applying the receipt settles AR and does not recognize the
   sale a second time
+- a receipt (payment) that settles invoices (bills) when it is recorded names
+  them in `applications` on create (`[{invoice_id|bill_id, amount}]`); it is
+  applied at once. To collect an opening balance, name the opening-balance
+  entry (`{opening_balance_entry_id, amount}`, at most its remaining amount).
+  Never send `unapplied_amount` below `amount_total` without `applications`
+  while the party has an open invoice (bill) of that currency and account on the
+  receipt (payment) date: it is refused (`RECEIPT_PREAPPLIED_INVOICES_REQUIRED`,
+  `PAYMENT_PREAPPLIED_BILLS_REQUIRED`). `unapplied_amount`, if sent, must equal
+  `amount_total` less the applications
 - when cash arrives before an invoice or before revenue is earned, first record
   it as unapplied customer cash in the customer-deposit liability, then choose
   exactly one of the supported prepayment paths described below
@@ -464,6 +474,20 @@ Posting rules:
 - accrual or month-end adjustment: use the last day of the affected period
 - opening balances: use one verified cutover date
 
+Send explicit dates on every action; do not rely on a default:
+
+- `receipt_date` or `payment_date` (create with `applications` applies on that
+  date), `application_date` on `:apply`, the credit note's `posting_date`, and
+  `assignment_date` on `:assign-preapplied` (required) and
+  `:assign-credit-excess` with `returned_by_entry_id`
+- an omitted `application_date` or matching-entry date falls back to the
+  request's business date: the `X-Vibooks-Local-Date` header (the person's
+  local calendar date) when sent, else the UTC date. The header only fills
+  omitted dates, and some omitted dates still default to UTC; it is never a way
+  to back-date or forward-date work
+- the credit-note excess is unapplied on the credit-note date: date the credit
+  note on or after the payment it returns
+
 If a closed period must change, stop and ask before proceeding.
 
 ## Prefer First-Class Workflows
@@ -714,6 +738,32 @@ Subledger integrity rules:
   `unapplied_qualified` is true, one document's amount could not be measured
   at its carrying amount; tell the person which figure is qualified instead of
   presenting it as exact
+- every task has `kind` (`legacy`, `payroll_count` or `setup`); read `family`
+  and the family's fields, never the English `title` or `detail`
+- `preapplied-receipts-review` and `preapplied-payments-review` (family
+  `preapplied_review`, count-only): receipts (payments) recorded by an earlier
+  version that took part of their amount off AR (AP) while an invoice (bill)
+  was open. Resolve each with `receipts/{id}:assign-preapplied`
+  (`payments/{id}:assign-preapplied`): `{assignment_date, applications:
+  [{invoice_id|bill_id, amount} | {opening_balance_entry_id, amount} |
+  {deposit: true, amount}]}`, at most the finding's amount. One zero-net
+  matching entry is posted; invoice (bill) items can be undone by `:unapply`,
+  the whole assignment by reversing that entry (`entries/{id}:reverse`)
+- `credit-note-excess-review` (family `credit_note_excess_review`, count-only):
+  credit notes of an earlier version whose part above the amount due sits on
+  Customer Deposits without a receipt. Resolve each with
+  `invoices/{id}:assign-credit-excess` `{credit_note_entry_id}`: the invoice's
+  latest paying receipt (or `receipt_id`) adopts it, and refunds that returned
+  it (`refunded_amount`) then name that receipt (`credit_note_credit_amount`
+  0.00). Name refunds that paid it but are matched to other receipts in
+  `refunds: [{customer_refund_id, amount}]` (from `refund_candidates`). If a
+  manual journal already paid it back, send `returned_by_entry_id` (from
+  `journal_candidates`) instead; `CREDIT_EXCESS_ALREADY_REFUNDED` means
+  something not named paid it out: name it. A credit on a tax account is
+  corrected from the control-account findings first
+  (`CREDIT_EXCESS_ACCOUNT_MISMATCH`)
+- never post a manual journal to fix these findings; the tasks state the
+  ledger is unchanged
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and
@@ -1149,18 +1199,20 @@ places.
   the person what the money is, and keep the refund off any other account
   until they answer
 - customer credit from invoice credit notes: the part of a credit note above
-  what the invoice still owed sits on the customer deposits account. A
-  customer balance refund without `allocations` returns that credit first and
-  uses open receipts only for the rest; `credit_note_credit_amount` states the
-  credit part (derived: it can change if a credit note dated on or before the
-  refund is later reversed, or after `:allocate`). Naming `allocations`
-  refunds exactly those receipts and never uses the credit.
+  what the invoice still owed is held by the receipt that paid the invoice as
+  unapplied cash (see Credit Notes, Returned Credit And Supplier Credit
+  Refunds). A customer balance refund without `allocations` returns that credit
+  first and uses open receipts only for the rest; `credit_note_credit_amount`
+  states the credit part (derived: it can change if a credit note dated on or
+  before the refund is later reversed, or after `:allocate`). Naming
+  `allocations` refunds exactly those receipts and never uses the credit.
   `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT` then means the refund is larger than
   open deposits plus that credit; the message states both
-- for a return on a paid sale, prefer a document-mode customer refund over a
-  credit note followed by a balance refund. In another currency the credit
-  leaves the deposits account at the refund's exchange rate; any difference
-  stays on the account until the next currency revaluation
+- for a return on a paid sale with no credit note issued for it, prefer a
+  document-mode customer refund over a credit note followed by a balance
+  refund. In another currency the credit leaves the deposits account at the
+  refund's exchange rate; any difference stays on the account until the next
+  currency revaluation
 - read back `balance_source`, `advance_allocations`, `unallocated_amount` and
   `advance_warning`. On `advance_warning.code: OPEN_ADVANCES_NOT_USED`, stop and
   confirm the account with the person
@@ -1196,6 +1248,44 @@ finding code:
 
 Change open amounts only through these actions and the documents' own unapply,
 cancel or replace workflows.
+
+## Credit Notes, Returned Credit And Supplier Credit Refunds
+
+- an invoice credit note above the amount due gives that part back to the
+  receipt that paid the invoice: it is unapplied from the invoice's receipt
+  applications (the latest first, or only from `receipt_id`) dated the
+  credit-note date, and the response lists `excess_unapplications`. The receipt
+  then holds it as unapplied cash: refund it with a balance-mode
+  `customer-refund` to Customer Deposits (it consumes that receipt) or
+  `receipt:apply` it to another invoice
+- leave `unapplied_account_id` out of a credit note; another account than the
+  paying receipt's deposit account is refused
+  (`INVOICE_CREDIT_DEPOSIT_ACCOUNT_MISMATCH`). A credit note whose excess no
+  receipt application dated on or before it covers is refused
+  (`INVOICE_CREDIT_EXCEEDS_SETTLED_AMOUNT`): date it on or after the payment, or
+  credit only the amount due. A credit beyond what was invoiced and paid is not
+  supported; until a customer credit document exists, a goodwill cash payment is
+  a document-mode `customer-refund`
+- reversing a credit note's entry does not re-apply the receipt: the invoice is
+  due again and the receipt keeps the returned amount open; apply it again if
+  that is what happened
+- a document-mode `customer-refund` while the customer holds returned credit
+  carries `advance_warning.code` `RETURNED_CREDIT_NOT_USED`. If the refund pays
+  that credit back, cancel it and record a balance refund instead, or revenue
+  is reduced twice
+- a supplier's cash refund of supplier credits is a balance-mode `vendor-refund`
+  naming `credit_allocations` (`[{vendor_credit_id, amount}]`), or with
+  `refund_account_id` the payables account (open credits are taken oldest
+  first). Never record it as a document refund or a journal entry. A refund made
+  this way cannot be matched with `:allocate`; cancel and reopen restore and
+  consume the credits; a refunded vendor credit cannot be cancelled or replaced
+  until the refund is cancelled
+- a supplier refund that 1.4.3 recorded as a balance refund to Vendor Advances
+  (1305) was matched by 1.5.0 to the supplier's open advances; nothing fixes it
+  automatically: cancel that refund and record it again with
+  `credit_allocations`
+- on the cash basis, credit notes and vendor credits are recognised with the
+  document they settle; an open vendor credit counts only when refunded in cash
 
 ## Advances And Deposits Outside Tax Accounts
 

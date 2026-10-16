@@ -476,7 +476,10 @@ Before closing a period:
 1. run trial balance
 2. run balance sheet
 3. run income statement
-4. run general ledger for review
+4. run general ledger for review; `reports/general-ledger` accepts `search`
+   (account code or name, description, document number, entry, date, amount)
+   and `account_id`, applied before paging: use them instead of paging through
+   every row to find a line
 5. review AR and AP aging when those modules are used. Aging amounts are in
    the Book's currency at what each document carries, reconstructed as of
    `as_of`; read document-currency amounts from `currencies`, never by adding
@@ -504,7 +507,9 @@ Before closing a period:
    currency): the sum of each counterparty's posted cash movements. When
    `cash_rankings_unavailable` is present, say the ranking is not available;
    never rank customers or vendors yourself from document totals, which may
-   be in different currencies
+   be in different currencies. In Tasks, `overdue-payables` lists bills past
+   their due date and `bills-due-soon` lists only bills due today or within 30
+   days; both carry `amount_currency`
 6. reconcile every bank and debit account
 7. tie every credit card to its statement
 8. confirm no unexplained unapplied receipts, unapplied payments, or orphan
