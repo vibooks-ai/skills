@@ -723,6 +723,15 @@ Subledger integrity rules:
   atomically;
   keep the individual-run workflow for genuine one-employee exceptions rather
   than preparing a normal multi-employee period one run at a time
+- after creating a draft payroll batch, tell the person it is waiting for them:
+  it appears in Tasks as "Approve and post prepared payroll"
+  (`payroll-batches-pending`) and under Payroll → Tax & Compliance → Payroll
+  batches, marked as prepared by an AI agent. Never approve it
+- one employee and pay period has at most one open (draft or approved) batch.
+  On 409 `PAYROLL_BATCH_PERIOD_ALREADY_PREPARED` read the detail
+  `existing_payroll_batch_id` (the open batch) and ask the person to approve, post or cancel that batch; do
+  not create another. A retry with the same `client_operation_id` still returns
+  the original batch
 - send an explicit employee `calculation_mode`: use `profile_regular` for
   profile-derived salary or hourly pay with no item input,
   `itemized_regular` for a complete assigned regular earning set, and

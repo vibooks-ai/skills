@@ -288,7 +288,8 @@ direct mutation of Vibooks storage.
   matching public companion docs for the rest of the current session
 - use `vibooks-cli` and official Vibooks HTTP API endpoints for bookkeeping,
   verification, token enrollment, and self-description
-- do not open, query, or mutate the Vibooks database directly
+- do not open, query, or mutate the Vibooks database directly, and never attach,
+  import or restore its data file (`vibooks.db`, `-wal`, `-shm`) as a document
 - do not edit files under the runtime or data directories to bypass period
   controls, posting rules, reconciliation logic, or entitlements
 - use installation state files only for connection bootstrap or token lookup;

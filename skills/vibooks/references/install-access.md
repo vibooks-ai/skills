@@ -324,6 +324,20 @@ local Vibooks installs. Prefer that default behavior. If it cannot discover a
 usable token, stop and follow the first-token rules below. Do not invent a
 token and do not fall back to any default token.
 
+### The Person's Business Date
+
+Send `X-Vibooks-Local-Date: YYYY-MM-DD` with the person's local calendar date
+on every request. Vibooks measures overdue, due-soon, tasks and customer or
+vendor statuses on it, and uses it for a date you leave out
+(`application_date` when applying a receipt or payment, `adjustment_date`, and
+fixed-asset, recognition and recurring `as_of`). A date more than one day from
+the UTC date is ignored and the UTC date is used; a malformed value is refused
+(400 `VALIDATION_FAILED`). Without the header the date is UTC: late in the
+evening in the Americas an invoice due today would read as overdue. The header
+only fills dates you omit, and some omitted dates still default to UTC. Never
+use it to back-date or forward-date work: send explicit dates for every action
+(see Date Rules in `references/workflows/posting.md`).
+
 ### First-Token Rules
 
 1. silent desktop install:
@@ -489,6 +503,26 @@ Treat `vibooks-agent.env`, `vibooks-headless.env` and the person's
 `vibooks-person.env` as secret files; the agent never opens
 `vibooks-person.env`.
 `credentials.json` remains metadata-only for headless discovery.
+
+## Storage Errors And Upgrade Integrity
+
+- a request that answers 503 `STORAGE_RESTART_REQUIRED` means Vibooks is saving
+  every entry and restarting by itself to protect the data: wait the
+  `Retry-After` seconds, then continue. Do not repeat a write blindly: first
+  check whether it landed (resend it with the same idempotency key, or look it
+  up in the audit log). If `/api/health` shows `"storage": "restarting"`, do not
+  stop Vibooks
+- on 503 `STORAGE_UNAVAILABLE` (health `"storage": "unavailable"`), stop and tell
+  the person to quit Vibooks and contact support
+- never attach, import or restore the Vibooks data file (`vibooks.db`, `-wal`,
+  `-shm`) itself; Vibooks refuses it. Use a backup, a book export or the
+  original document instead
+- after an update, check `GET /api/admin/storage`: if `upgrade_integrity.ok` is
+  `false`, tell the person Vibooks found problems in its data file when it
+  upgraded. Vibooks kept running and kept the backup it made just before that
+  upgrade, which cleanup does not remove. Show them
+  `upgrade_integrity.problems` and suggest restoring a recent backup or
+  contacting support. Do not try to repair the data yourself
 
 ## Backup, Restore And Person-Only Operations
 

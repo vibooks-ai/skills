@@ -224,11 +224,18 @@ Bootstrap defaults:
 
 Before creating a book, ask the person the same question the desktop app asks:
 "Does anyone else review these books before changes are final?" and send the
-answer as `--approval-level`: no, they work alone → `light`; yes, someone reviews
-reversals and period closes → `standard`; an accountant approves every posting
-→ `strict`. Do not rely on the API default (`standard` for a small business).
-On `light` the person may approve their own requests; on `standard` and `strict`
-another person must. You (the agent) never approve on any level.
+answer as `--approval-level`:
+
+- no, they work alone → `light`: no second approver; the person may approve
+  their own requests, recorded as self-approved
+- yes → `standard`: a different approver approves reversals, period closes and
+  the person's own requests
+- an accountant approves every posting → `strict`: a different approver
+  approves every posting, reversal and close
+
+Do not rely on the API default (`standard` for a small business). You (the
+agent) never approve on any level. The person changes the level later in
+Books → Edit Book Policy.
 
 Preferred setup command:
 
