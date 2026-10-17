@@ -738,8 +738,12 @@ Subledger integrity rules:
   `unapplied_qualified` is true, one document's amount could not be measured
   at its carrying amount; tell the person which figure is qualified instead of
   presenting it as exact
-- every task has `kind` (`legacy`, `payroll_count` or `setup`); read `family`
-  and the family's fields, never the English `title` or `detail`
+- every task has `kind` (`legacy`, `payroll_count` or `setup`). Review tasks
+  carry `family` and that family's fields; the core tasks (`overdue-receivables`,
+  `overdue-payables`, `bills-due-soon`, `unapplied-receipts`,
+  `unapplied-payments`, `period-close-recommended`, `payroll-batches-pending`)
+  have no `family`: identify them by `id`. Never read the English `title` or
+  `detail`
 - `preapplied-receipts-review` and `preapplied-payments-review` (family
   `preapplied_review`, count-only): receipts (payments) recorded by an earlier
   version that took part of their amount off AR (AP) while an invoice (bill)
@@ -1256,8 +1260,12 @@ cancel or replace workflows.
   applications (the latest first, or only from `receipt_id`) dated the
   credit-note date, and the response lists `excess_unapplications`. The receipt
   then holds it as unapplied cash: refund it with a balance-mode
-  `customer-refund` to Customer Deposits (it consumes that receipt) or
-  `receipt:apply` it to another invoice
+  `customer-refund` to Customer Deposits or `receipt:apply` it to another
+  invoice. A balance refund without `allocations` uses the customer's returned
+  credit first, then the oldest open receipts; name the paying receipt in
+  `allocations` when the evidence says which money goes back
+- a credit note on an invoice in another currency needs `exchange_rate`
+  (`FX_RATE_REQUIRED` otherwise)
 - leave `unapplied_account_id` out of a credit note; another account than the
   paying receipt's deposit account is refused
   (`INVOICE_CREDIT_DEPOSIT_ACCOUNT_MISMATCH`). A credit note whose excess no
