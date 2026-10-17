@@ -1212,6 +1212,13 @@ places.
   `allocations` refunds exactly those receipts and never uses the credit.
   `CUSTOMER_REFUND_EXCEEDS_OPEN_DEPOSIT` then means the refund is larger than
   open deposits plus that credit; the message states both
+- returned credit: credit that a credit note gave back to one of the customer's
+  receipts (`excess_unapplications`) shows on that receipt as
+  `returned_credit_open_amount`. A balance refund without `allocations` takes
+  it first when it is dated on or before the refund, in the refund's currency
+  and deposits account, and not used by an earlier refund; then the other
+  deposits oldest first. `refund-allocations:reconcile` and upgrade repair
+  still match oldest first
 - for a return on a paid sale with no credit note issued for it, prefer a
   document-mode customer refund over a credit note followed by a balance
   refund. In another currency the credit leaves the deposits account at the
