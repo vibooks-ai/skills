@@ -1221,9 +1221,11 @@ places.
   still match oldest first
 - for a return on a paid sale with no credit note issued for it, prefer a
   document-mode customer refund over a credit note followed by a balance
-  refund. In another currency the credit leaves the deposits account at the
-  refund's exchange rate; any difference stays on the account until the next
-  currency revaluation
+  refund. In another currency, credit-note credit leaves the deposits account
+  at the credit notes' own amounts (first in, first out; at the refund's
+  exchange rate only when it cannot be traced to credit notes), and each
+  receipt's deposit, its returned credit included, at its carrying amount; any
+  difference posts to realised exchange gain/loss (7999)
 - read back `balance_source`, `advance_allocations`, `unallocated_amount` and
   `advance_warning`. On `advance_warning.code: OPEN_ADVANCES_NOT_USED`, stop and
   confirm the account with the person
