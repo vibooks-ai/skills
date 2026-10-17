@@ -324,19 +324,43 @@ local Vibooks installs. Prefer that default behavior. If it cannot discover a
 usable token, stop and follow the first-token rules below. Do not invent a
 token and do not fall back to any default token.
 
-### The Person's Business Date
+### The Book's Time Zone and Today
 
-Send `X-Vibooks-Local-Date: YYYY-MM-DD` with the person's local calendar date
-on every request. Vibooks measures overdue, due-soon, tasks and customer or
-vendor statuses on it, and uses it for a date you leave out
-(`application_date` when applying a receipt or payment, `adjustment_date`, and
-fixed-asset, recognition and recurring `as_of`). A date more than one day from
-the UTC date is ignored and the UTC date is used; a malformed value is refused
-(400 `VALIDATION_FAILED`). Without the header the date is UTC: late in the
-evening in the Americas an invoice due today would read as overdue. The header
-only fills dates you omit, and some omitted dates still default to UTC. Never
-use it to back-date or forward-date work: send explicit dates for every action
-(see Date Rules in `references/workflows/posting.md`).
+Every Book has a `time_zone` (an IANA name such as `America/Halifax`), and
+its `business_date` is today there. Vibooks uses it for every caller, with no
+header to send:
+
+- what it measures: overdue, due-soon, tasks, and customer and vendor status;
+- what it fills in when you leave a date out: `application_date` on `:apply`,
+  `adjustment_date`, fixed-asset, recognition and recurring `as_of`, action
+  dates, and control-correction and tax re-filing `posting_date`.
+
+Read `business_date` from `GET /v1/books/{id}` instead of assuming your
+machine's date.
+
+When you create a Book, confirm its time zone with the person every time:
+
+- it defaults to the Vibooks host's zone (`host_time_zone` and
+  `host_time_zone_source` in `GET /api/discovery`), and a server's zone is not
+  the business's;
+- name it with `time_zone` on `POST /v1/books`; `vibooks-cli` has no
+  `--time-zone` flag yet, so put it in the create body, for example
+  `vibooks-cli invoke --method POST --route /v1/books --body '{..., "time_zone": "America/Halifax"}'`,
+  or send it through the API, after the person confirms the zone;
+- if the host has none, the create is refused with 400 `TIME_ZONE_REQUIRED`;
+- change it later with `PATCH /v1/books/{id}/settings` and `{"time_zone": ...}`.
+  The change rewrites nothing.
+
+If a Book's `time_zone` is `null` or the task `book-time-zone-review` is open,
+ask where the business is and set it. Until then its today is the UTC date.
+
+Offsets, abbreviations (`EST`) and POSIX rules are refused (400
+`VALIDATION_FAILED`). For a headless or container install, set
+`VIBOOKS_TIME_ZONE` to the business's zone.
+
+Today only fills dates you leave out. Never rely on it to back-date or
+forward-date work: send explicit dates for every action (see Date Rules in
+`references/workflows/posting.md`).
 
 ### First-Token Rules
 

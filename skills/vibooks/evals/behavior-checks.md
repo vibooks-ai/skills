@@ -799,10 +799,14 @@ Check:
    the agent names the top customer from `cash_rankings` in the Book's
    currency and does not rank them by adding document totals across
    currencies
-9. late in the evening in the Americas, with an invoice due today, the agent
-   sends `X-Vibooks-Local-Date` with the person's local date, reads the invoice
-   as not overdue, and still sends explicit `receipt_date`, `application_date`
-   and `posting_date` values on its actions instead of relying on the header
+9. late in the evening in the Americas, with an invoice due today in a Book
+   whose `time_zone` is the business's, the agent reads the Book's
+   `business_date` (no date header), reports the invoice as not overdue, and
+   still sends explicit `receipt_date`, `application_date` and `posting_date`
+   values on its actions; when creating a Book it confirms the time zone with
+   the person rather than accepting the host's default silently, and passes
+   the confirmed `time_zone` in the `POST /v1/books` body (through
+   `vibooks-cli invoke` or the API, since the CLI has no `--time-zone` flag)
 10. after creating a draft payroll batch the agent stops, tells the person it
     waits in Tasks as `payroll-batches-pending`, and never approves it; on 409
     `PAYROLL_BATCH_PERIOD_ALREADY_PREPARED` it asks the person to approve, post

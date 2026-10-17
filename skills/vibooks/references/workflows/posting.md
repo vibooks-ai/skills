@@ -481,10 +481,9 @@ Send explicit dates on every action; do not rely on a default:
   `assignment_date` on `:assign-preapplied` (required) and
   `:assign-credit-excess` with `returned_by_entry_id`
 - an omitted `application_date` or matching-entry date falls back to the
-  request's business date: the `X-Vibooks-Local-Date` header (the person's
-  local calendar date) when sent, else the UTC date. The header only fills
-  omitted dates, and some omitted dates still default to UTC; it is never a way
-  to back-date or forward-date work
+  Book's today: `business_date`, the date in the Book's `time_zone`, the same
+  for every caller. It only fills omitted dates; it is never a way to back-date
+  or forward-date work
 - the credit-note excess is unapplied on the credit-note date: date the credit
   note on or after the payment it returns
 
