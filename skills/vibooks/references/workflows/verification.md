@@ -199,7 +199,7 @@ Rules:
 - prepare a draft return for the true filing period and review its rows,
   `adjustments`, `net_tax` and `settlement_amount` with the person before
   filing (`tax-returns/{id}:file`), and file only once the period data is
-  complete
+  complete and the person says to file it; send their words as `reason`
 - `net_tax` is exactly the net tax to enter on the form. `adjustments`
   (`prior_report_correction`, `late_tax_collected`) correct earlier returns:
   report them as corrections of those returns, outside the current form.
@@ -245,15 +245,17 @@ they are resolved:
   each `foreign_account_id` to the matching tax account of this Book. Show the
   person the dry-run counts. Once they agree, request approval (action
   `tax_code.resolve_account_references`, target the tax code, payload
-  `{mappings}`) and let the person approve; then send the same mappings with
-  `approval_id`
+  `{mappings}`); on `light` the owner's approval is recorded with their words,
+  on `standard`/`strict` another person approves; then send the same mappings
+  with `approval_id`
 - payroll and statutory exports: payroll source corrections are refused with
   `PAYROLL_REFERENCE_NEEDS_REVIEW` and new T4 or ROE export intents with
   `STATUTORY_EXPORT_REFERENCE_NEEDS_REVIEW`. Show the person the
-  `imported-reference-findings`; only the person confirms a finding
-  (`imported-reference-findings/{id}:confirm`), after checking or correcting
-  the records involved. An agent is refused with
-  `IMPORTED_REFERENCE_CONFIRMATION_REQUIRES_PERSON`
+  `imported-reference-findings`; confirm a finding
+  (`imported-reference-findings/{id}:confirm`) only after the person has
+  checked or corrected the records involved and says so in chat. A token
+  without approver authority is refused; then the person confirms it in
+  Vibooks
 - approvals: approvals imported from another Book are expired; request new
   ones in this Book
 
@@ -823,11 +825,13 @@ and report checks, then read the current period and live close request schema.
 Submit a non-empty checklist describing checks actually performed; do not invent
 review evidence or treat a balanced trial balance alone as complete review.
 When the effective policy requires approval, create the approval request for the
-exact period action and intended request payload, ask the person (or another
-authorized reviewer) to approve it — you never approve — and submit that same
-payload with the resulting approval ID. On a `light` book the person may approve
-their own request; on `standard`/`strict` a different person must. Creating an approval request does not approve or close the period. Do not
-change policy, impersonate a reviewer, or grant access to bypass a refusal.
+exact period action and intended request payload, and submit that same
+payload with the resulting approval ID once it is approved. On a `light` book
+ask the person first ("Shall I close <period>?") and approve with their words
+as `reason`; on `standard`/`strict` a different person approves. Close,
+soft-close and reopen always need the person's go-ahead and `reason`. Creating
+an approval request does not approve or close the period. Do not change
+policy, impersonate a reviewer, or grant access to bypass a refusal.
 Reopening also requires the supported approval and a meaningful reason; fetch
 its own live schema rather than reusing the close payload. After each action,
 read back the period and retained close or approval history. Report the period

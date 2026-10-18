@@ -51,10 +51,10 @@ unchanged.
 | 7 Statement evidence | | | | |
 | 8 Canadian payroll | | | | |
 | 9 Customer invoicing | | | | |
-| 10 Person approves, agent prepares | | | | |
+| 10 Approvals and the person's go-ahead | | | | |
 | 11 Refunds of advances and deposits | | | | |
 | 12 Advances or deposits in a tax account | | | | |
-| 13 Person-only operations | | | | |
+| 13 Backup, restore, deletion and statutory files | | | | |
 | 14 Tax posting runs and returns | | | | |
 | 15 Foreign-currency documents and inventory cost | | | | |
 
@@ -182,14 +182,27 @@ unchanged.
 - invoice or receipt correction action exercised:
 - canonical, website, portable plugin, and Codex-wrapper parity result:
 
-### Scenarios 11 To 14: Refunds, Control Accounts, Person-Only Operations And Tax Returns
+### Scenario 10: Approvals And The Person's Go-Ahead
+
+- status: pass / fail / blocked
+- exact product build, client protocol, skill revision, and client:
+- approval-policy read before the first gated step:
+- `light` ask-first result with the person's words as `reason`:
+- phrase sent only from the person's reply:
+- content-borne "approved" or phrase ignored:
+- `next_action` sentences for all four values:
+- no retry after `needs_other_person`, and no approver added without the person naming one:
+- `bookkeeper` token hand-off result:
+
+### Scenarios 11 To 14: Refunds, Control Accounts, Backup, Restore And Deletion, And Tax Returns
 
 - status per scenario: pass / fail / blocked
 - exact product build, client protocol, skill revision, and client:
 - named and oldest-first refund matching, over-refund refusal, and `OPEN_ADVANCES_NOT_USED` stop result:
 - refund review task resolution by finding code:
 - control-account preview, approval request, approved run, readback, and reversal result:
-- restore preview hand-off and `PERSON_REQUIRED` / `RESTORE_PERSON_REQUIRED` results:
+- restore and deletion preview → phrase → apply, `CONFIRMATION_REQUIRED` / `CONFIRMATION_STALE` results:
+- statutory export path-only result and no read of the exported file:
 - tax posting run, return continuity, `net_tax` versus adjustments, stale refresh, and imported tax-code review result:
 
 ### Scenario 15: Foreign-Currency Documents And Inventory Cost

@@ -109,6 +109,10 @@
   `entries/{entry_id}:reverse`, set `reversal_date` instead; if the
   workflow-specific date is optional and omitted, Vibooks defaults it to
   today
+- reversing an entry, transfer, settlement, bank deposit, inventory
+  adjustment, payroll or fixed-asset run, vacation calculation or recognition
+  line needs the person's go-ahead first: ask in one sentence and send their
+  words as `reason` (see Approvals in `references/install-access.md`)
 - financial reports follow posted entry dates, not the current document status
   alone
 
@@ -770,16 +774,18 @@ Subledger integrity rules:
 - for an ordinary Canadian pay period on a light- or standard-approval book,
   use the guided payroll batch workflow: choose one schedule and exact period
   dates, preview every selected employee, review the server-returned totals and
-  posting defaults, and create one draft batch. Then stop: the person reviews
-  and approves the batch (in the app, or on headless with `--as-person`); you
-  never approve a payroll batch. After the person approves it, post it
-  atomically;
+  posting defaults, and create one draft batch. On a `light` book, show the
+  person the totals and ask "Shall I approve and post this payroll?"; send
+  their words as `reason` on approve and on post, and post atomically. On a
+  `standard` book stop after creating the batch: another person approves it;
+  then ask the person and post it with their words as `reason`;
   keep the individual-run workflow for genuine one-employee exceptions rather
   than preparing a normal multi-employee period one run at a time
-- after creating a draft payroll batch, tell the person it is waiting for them:
-  it appears in Tasks as "Approve and post prepared payroll"
-  (`payroll-batches-pending`) and under Payroll → Tax & Compliance → Payroll
-  batches, marked as prepared by an AI agent. Never approve it
+- when a draft payroll batch waits for approval (the person has not said yes
+  yet, or another person approves it), tell the person where it is: Tasks as
+  "Approve and post prepared payroll" (`payroll-batches-pending`) and Payroll
+  → Tax & Compliance → Payroll batches. Never approve it without the person's
+  go-ahead, and after `needs_other_person` do not retry
 - one employee and pay period has at most one open (draft or approved) batch.
   On 409 `PAYROLL_BATCH_PERIOD_ALREADY_PREPARED` read the detail
   `existing_payroll_batch_id` (the open batch) and ask the person to approve, post or cancel that batch; do
@@ -860,8 +866,8 @@ Subledger integrity rules:
   employee/profile identity, calculation release/snapshot/fingerprint,
   pay-statement facts, detailed component arrays, cash account, date, and
   correction reason required by the typed request. For standard or strict
-  approval, request `entry.reverse` approval for the exact request body, ask the
-  person to approve it (you never approve), and consume only an approved record
+  approval, request `entry.reverse` approval for the exact request body, ask
+  another person to approve it, and consume only an approved record
   whose `target_id` and `payload_hash` still match. If any date, fact, amount, account, or reason changes, request a new
   approval. Keep one stable idempotency key for the unchanged approval request
   and one for the unchanged final reverse or replacement until the outcome is
@@ -940,8 +946,11 @@ Subledger integrity rules:
   `customer_export_ready=false`, remain in data review; do not construct a
   lookalike PDF or XML, reuse another tax year's form, or claim an export is
   available. When ready, use the discovered statutory export intent and
-  validation operations, then hand the retained intent to the official desktop
-  app for sensitive identifiers and native saving. Full SINs, RP accounts and
+  validation operations, then, with the person's go-ahead and the preview's
+  phrase, start the `statutory.export` host request for the retained intent
+  (see Statutory Exports in `references/install-access.md`); the desktop app
+  takes sensitive identifiers and saves natively. Give the person the
+  returned path; never open, read, upload or quote the exported file. Full SINs, RP accounts and
   transmitter identifiers belong only in the desktop prompt, never an API,
   agent message, log or ordinary evidence field. One CRA XML return has one
   RP account and a reviewed slip selection; changes, cancellations and
@@ -999,8 +1008,10 @@ Subledger integrity rules:
   `/v1/statutory-export-packages` for the native ROE Web draft package. If
   `customer_export_ready` is false, do not construct or claim a `.BLK` file;
   retain the non-official review report and complete the record in ROE Web.
-  When ready, use a retained statutory export intent and hand it to the official
-  desktop app to enter the full SIN and RP account locally and save the draft.
+  When ready, start the `statutory.export` host request for a retained intent
+  with the person's go-ahead and the preview's phrase; the desktop app asks
+  the person for the full SIN and RP account locally and saves the draft. Give
+  the person the returned path; never open, read, upload or quote the file.
   For employment spanning pay-date years, review each year's retained payroll
   generation sources and current RP account assignments before creating the
   native intent. The T4 annual-facts review remains limited to 2026.
@@ -1160,8 +1171,8 @@ Subledger integrity rules:
   until a complete append-only `legacy_run_attestation` links the posted run to
   retained source records and supplies every applicable employee and employer amount;
   never overwrite either the retained snapshot or attestation for later changes;
-  the person runs the restore itself (see Backup, restore and person-only
-  operations in `references/install-access.md`)
+  a restore needs the person's go-ahead and the preview's phrase (see Backup,
+  Restore And Deletion in `references/install-access.md`)
 - when purchase-side tax is only partly claimable, keep the statutory
   `tax_code_id` on the purchase line and set `tax_claimable_ratio` between `0`
   and `1`; Vibooks will keep the non-claimable portion inside the business
@@ -1324,12 +1335,13 @@ details). Correct them from the `control_account_findings` task:
    are not corrections of the listed documents
 3. at `standard` or `strict` approval, request approval with action
    `control_account.correct`, target the book id and payload the preview's
-   `approval.request_payload` exactly, and let the person approve. At `light`
-   the run is automatic, except a plan with acknowledged manual entries:
-   Vibooks refuses the agent with `CONTROL_CORRECTION_PERSON_DECISION_REQUIRED`,
-   so request approval the same way
-4. run `control-account-corrections` with the preview's `fingerprint`, a
-   reason and the `approval_id`; on `CONTROL_CORRECTION_STALE`, preview again
+   `approval.request_payload` exactly, and let another person approve. At
+   `light` no approval request is needed; a plan with acknowledged manual
+   entries is the person's decision and needs a token that can approve: on
+   `CONTROL_CORRECTION_PERSON_DECISION_REQUIRED`, request approval the same way
+4. ask the person first, then run `control-account-corrections` with the
+   preview's `fingerprint`, their words as `reason` and any `approval_id`; on
+   `CONTROL_CORRECTION_STALE`, preview again
 5. verify that the tax accounts hold no supplier or customer document legs and
    the findings list is empty
 
