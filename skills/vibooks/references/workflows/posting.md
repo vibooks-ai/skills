@@ -767,8 +767,9 @@ Subledger integrity rules:
 - task `priority` `Critical` and `High` need attention before routine posting
   or close work, `Due Soon` is the next follow-up and `Housekeeping` is
   routine; read the detail of any other value before ranking it. `High`
-  marks setup and review tasks such as the book time zone, API access the
-  person has not confirmed, stored amounts finer than their currency with an
+  marks setup and review tasks such as the book time zone, API access with
+  admin or approver rights or issued by someone else that the person has not
+  confirmed, stored amounts finer than their currency with an
   open balance, and an unconfirmed SIN recovery key. `summary.urgent` adds the
   `count` of every Critical and High task (App 1.5.0 counted only Critical);
   it mixes accounts, amounts, tokens and books, so it is neither dollar
@@ -944,15 +945,16 @@ Subledger integrity rules:
   does not assert payment, timeliness or legal qualification. Correct a mistake
   only through the append-only provision-event preview/commit correction APIs
 - `pay_statement_rate_display_notice` (task, Housekeeping): statements drawn up
-  before 1.5.1 printed an hourly or item rate with 3 or 4 decimals cut to two
-  (truncated: `$22.12` for an agreed `$22.125`); their amounts, deductions and
-  net pay were correct. Read
+  before 1.5.1 printed an hourly or item rate with 3 or 4 decimals shortened
+  to two decimals (the extra decimals left off, not rounded: `$22.12` for an
+  agreed `$22.125`); their amounts, deductions and net pay were correct. Read
   `GET /v1/books/{book_id}/pay-statements/rate-display-notice` and tell the
   person which statements (`affected`: employee, pay date, earning) printed
   `printed_rate` instead of `agreed_rate`, and that the amounts were correct.
   Acknowledge (`POST …/pay-statements/rate-display-notice:acknowledge`
   `{set_digest, reason}`, `post` scope) only with the person's own reason;
-  `409 PAY_STATEMENT_NOTICE_STALE` means the list changed: read it again. A
+  `409 PAY_STATEMENT_NOTICE_STALE` means the list changed: read it again;
+  `409 PAY_STATEMENT_NOTICE_NOT_OPEN` means nothing is left to acknowledge. A
   new statement in an affected lineage brings the task back. Never reissue or
   edit a statement
 - Québec statement language is French unless an effective employee English

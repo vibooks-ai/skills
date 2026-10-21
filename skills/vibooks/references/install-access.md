@@ -64,14 +64,13 @@ Preferred startup order:
      `verify_entitlement_with_owner` rather than reenrolling the token or
      treating the License as inactive.
 7. inspect the entitlement and trial state before creating the first book:
-   - ask the owner to confirm the current License through
-     `vibooks-cli license status --json` or the desktop License page when a
-     bookkeeper token cannot inspect the admin-only entitlement API
    - `entitlement.active = null` means the status could not be read, not that
      the License is inactive. With `entitlement.verification = admin_required`
-     the token lacks owner access; read `entitlement.license_service_status`
-     and confirm through `vibooks-cli --as-person license status --json` or the
-     desktop License page instead of starting a trial
+     a bookkeeper token cannot read the owner-only License status: read
+     `entitlement.license_service_status` and ask the owner to confirm on the
+     desktop License page (or, if the person has saved their own credential,
+     read it with `vibooks-cli --as-person license status --json`; this is a
+     read, not a way past a refusal) instead of starting a trial
    - if the entitlement is verified inactive (`active = false`), run
      `vibooks-cli license check-trial-eligibility --json`; `action = resume`
      means a trial is already active on this device, so do not start another
@@ -484,7 +483,9 @@ Every active token the person has not confirmed (except the local setup
 credential and the person's own owner-preset `desktop-owner` tokens) has
 `needs_review: true` in `GET /api/settings/tokens` and is listed by the
 workspace-level `api_access_review` task (type Security, visible to admin
-callers). Creating a token never needs a confirmation.
+callers). A new token works at once; this review is a separate step. Adding
+approving access for another person still needs the person's go-ahead and
+phrase (see Approvals below).
 
 - show the person the listed tokens (label, principal, preset, who issued
   them, `client_label_at_creation`) and ask which they recognise
@@ -709,8 +710,8 @@ number, or recovery or transfer key; the last four digits are fine. Never
 open, read, copy or list an import file, a recovery or transfer key file, or
 an exported T4 or ROE file. Give the person paths only.
 
-Every step below except the coverage read and the T4 proprietor records is a
-host request: preview it with `/api/host/requests:preview`, show the person
+Every step below except the coverage read, the T4 proprietor records and
+removal (steps 1, 8 and 11) is a host request: preview it with `/api/host/requests:preview`, show the person
 the summary, and create it with `POST /api/host/requests` (kind, `args`,
 their words as `reason`, and the `confirmation_phrase` only when their reply
 contains it), then follow `GET /api/host/requests/{id}`. Host requests need
@@ -721,8 +722,10 @@ computer (`409 HOST_UNAVAILABLE` otherwise; on Linux
 check, import and the book export with SINs each need a file or folder the
 person names (`STATUTORY_NEEDS_FILE_IN_CHAT` otherwise); without one, the
 person uses the Vibooks app on that computer. Requests expire after ten
-minutes; failures arrive as `result.error` or `result.outcome`, not as HTTP
-errors.
+minutes. Arguments are refused by the preview or create call (HTTP 400 or
+409, for example `STATUTORY_NEEDS_FILE_IN_CHAT` or `HOST_UNAVAILABLE`); once
+the desktop app runs the request, failures arrive as `result.error` or
+`result.outcome`.
 
 1. read `GET /v1/books/{book_id}/payroll/statutory-identifier-coverage`
    before a T4 or ROE export:
@@ -800,8 +803,8 @@ errors.
 9. export: after the person's go-ahead with the phrase, request
    `statutory.export` `{book_id, intent_id, folder}` with the folder they name
    (without one, the app's default `Documents/Vibooks/Statutory`)
-   (`vibooks-cli statutory export --intent <id> [--folder <dir>] --reason
-   "..." --confirm <phrase>`). The result is a path and a summary:
+   (`vibooks-cli statutory export --book-id <book_id> --intent-id <id>
+   [--folder <dir>] --reason "..." --confirm <phrase>`). The result is a path and a summary:
    - relay the warning `folder_readable_by_others` ("Other users of this
      computer may be able to open files in this folder")
    - `STATUTORY_IDENTIFIERS_MISSING`: nothing was written; name the missing
@@ -813,6 +816,8 @@ errors.
      others can change files there) or
      `STATUTORY_FOLDER_NOT_PRIVATE` (a FAT/exFAT stick or network share; the
      file was removed): ask for a private folder on this computer's own disk
+   - `STATUTORY_FOLDER_FULL`: every file name in the folder is taken; ask for
+     another folder
    - status `unknown` with a path: the file may be there; the person checks
      before exporting again
 10. a book export with SINs, only when the person asks:
