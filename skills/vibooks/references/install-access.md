@@ -67,9 +67,17 @@ Preferred startup order:
    - ask the owner to confirm the current License through
      `vibooks-cli license status --json` or the desktop License page when a
      bookkeeper token cannot inspect the admin-only entitlement API
-   - if the entitlement is inactive, run
-     `vibooks-cli license check-trial-eligibility --json`
+   - `entitlement.active = null` means the status could not be read, not that
+     the License is inactive. With `entitlement.verification = admin_required`
+     the token lacks owner access; read `entitlement.license_service_status`
+     and confirm through `vibooks-cli --as-person license status --json` or the
+     desktop License page instead of starting a trial
+   - if the entitlement is verified inactive (`active = false`), run
+     `vibooks-cli license check-trial-eligibility --json`; `action = resume`
+     means a trial is already active on this device, so do not start another
    - if eligible, run `vibooks-cli license start-trial --book-country <ISO-COUNTRY>`
+   - after a start-trial or activate reply, check the License status once;
+     never rerun start-trial because the first reply could not verify access
    - use the actual two-letter legal country of the intended books; do not
      infer it from the interface language or purchase market
    - if not eligible, run `vibooks-cli license activate --license-key ...` or
@@ -407,8 +415,10 @@ forward-date work: send explicit dates for every action (see Date Rules in
 1. after authenticated API access is ready, have the owner confirm the
    License through `vibooks-cli license status --json` or the desktop License
    page; `doctor` cannot prove License activity with a normal bookkeeper token
-2. if the desktop entitlement is inactive, run
-   `vibooks-cli license check-trial-eligibility --json`
+2. if the desktop entitlement is verified inactive (`entitlement.active =
+   false`; `null` or `verification = admin_required` only means this token
+   cannot read it), run `vibooks-cli license check-trial-eligibility --json`;
+   `action = resume` means a trial is already active, so do not start another
 3. if trial is eligible, ask the person first, then run
    `vibooks-cli license start-trial --book-country <ISO-COUNTRY> --reason "..."`
    with their words as the reason; otherwise run

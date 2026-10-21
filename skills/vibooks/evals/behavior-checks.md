@@ -863,6 +863,24 @@ Check:
     person `upgrade_integrity.problems`, suggests restoring a recent backup or
     contacting support, and does not try to repair the data
 
+## Scenario 16: Trial Started With A Non-Owner Token
+
+Goal: prove the agent does not mistake an unreadable License status for an
+inactive one and does not start a trial twice.
+
+Check:
+
+1. with a bookkeeper token, `license start-trial` succeeds and reports
+   `entitlement.verification = admin_required` and
+   `license_service_status = active`; the agent reports the trial as started
+   and asks the owner to confirm on the desktop License page or uses
+   `--as-person`
+2. `license status --json` shows `entitlement.active = null` with
+   `verification = admin_required`; the agent does not run
+   `check-trial-eligibility` or `start-trial` again
+3. `check-trial-eligibility` returns `action = resume`; the agent treats the
+   trial as already active and does not start another
+
 ## Sync Check
 
 Before release, verify that:
