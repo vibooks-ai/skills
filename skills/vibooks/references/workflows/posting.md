@@ -728,6 +728,28 @@ Subledger integrity rules:
   review the replacement; on `TASK_VERIFICATION_REQUIRED`, complete the
   retained rule-impact check; when the task is no longer found, treat it as
   resolved. Count-only Payroll tasks are not dollar exposure
+- task `priority` `Critical` and `High` need attention before routine posting
+  or close work, `Due Soon` is the next follow-up and `Housekeeping` is
+  routine; read the detail of any other value before ranking it. `High`
+  marks setup and review tasks such as the book time zone, API access the
+  person has not confirmed, stored amounts finer than their currency with an
+  open balance, and an unconfirmed SIN recovery key. `summary.urgent` adds the
+  `count` of every Critical and High task (App 1.5.0 counted only Critical);
+  it mixes accounts, amounts, tokens and books, so it is neither dollar
+  exposure nor a number of tasks. Rank work from the items. Never confirm API
+  access or change a setting just to lower the count; follow each task's own
+  workflow
+- `statutory_identifier_recovery` (family; `kind` `setup`, id
+  `statutory-identifier-recovery:{book_id}`, `High`, `count` 1
+  `affected_books`) stays open while the recovery key of the book's SIN vault
+  is not confirmed off this computer. `recovery_reason` is `unconfirmed`,
+  `confirmed_same_disk` (confirmed but still on this computer) or
+  `received_export` (still protected by the sender's transfer key). Follow
+  Statutory Exports in `references/install-access.md`: ask the person to move
+  the key file off this computer and name it for the recovery key check, or,
+  for `received_export`, offer to replace the transfer key with their own
+  recovery key. It closes only at `recovery_status: confirmed`; it has no
+  dismiss action
 - a task's `amount` is money only when `amount_currency` is present;
   reconciliation-needed, drafts-ready-to-post, validation-errors, period-close
   and refund-review tasks are counted by `count` and their `amount` is
@@ -949,10 +971,12 @@ Subledger integrity rules:
   validation operations, then, with the person's go-ahead and the preview's
   phrase, start the `statutory.export` host request for the retained intent
   (see Statutory Exports in `references/install-access.md`); the desktop app
-  takes sensitive identifiers and saves natively. Give the person the
-  returned path; never open, read, upload or quote the exported file. Full SINs, RP accounts and
-  transmitter identifiers belong only in the desktop prompt, never an API,
-  agent message, log or ordinary evidence field. One CRA XML return has one
+  writes the file from the SINs and numbers stored in the book, encrypted,
+  after a coverage read shows them stored and unlocked here. Give the person
+  the returned path; never open, read, upload or quote the exported file.
+  Full SINs, RP accounts and transmitter identifiers are entered only by the
+  person in Vibooks or through a file they name, never in an API field, agent
+  message, log or ordinary evidence field. One CRA XML return has one
   RP account and a reviewed slip selection; changes, cancellations and
   additional originals retain their prior-filed lineage. Record CRA upload,
   processing and employee distribution only as user-provided external evidence,
@@ -1009,8 +1033,8 @@ Subledger integrity rules:
   `customer_export_ready` is false, do not construct or claim a `.BLK` file;
   retain the non-official review report and complete the record in ROE Web.
   When ready, start the `statutory.export` host request for a retained intent
-  with the person's go-ahead and the preview's phrase; the desktop app asks
-  the person for the full SIN and RP account locally and saves the draft. Give
+  with the person's go-ahead and the preview's phrase; the desktop app writes
+  the draft from the SIN and RP account stored in the book. Give
   the person the returned path; never open, read, upload or quote the file.
   For employment spanning pay-date years, review each year's retained payroll
   generation sources and current RP account assignments before creating the

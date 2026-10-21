@@ -645,28 +645,143 @@ substitute for a full backup.
 
 ## Statutory Exports
 
-T4 and ROE files that carry SINs are saved by the desktop app; Vibooks never
-stores SINs. This is the one step that is not fully API-driven in 1.5.0: you
-request and confirm the export through the API, and the person types the SINs
-in the desktop app.
+Employee SINs, CRA payroll account numbers and the transmitter number are
+entered once and stored in the book, encrypted. The keys stay in this
+computer's keychain, and a recovery key file the person keeps opens them
+anywhere else. T4 and ROE files are written by the desktop app (macOS or
+Windows) from those stored values, so an export never prompts for a SIN.
 
-1. read the export intent summary through the Core preparation routes
-2. preview with `/api/host/requests:preview`, show the person the summary and
-   ask
-3. after their go-ahead with the phrase, create the `statutory.export` host
-   request (`vibooks-cli statutory export --intent <id> [--folder <dir>]
-   --reason "..." --confirm <phrase>`) and follow it with
-   `GET /api/host/requests/{id}`
-4. the desktop app asks the person, at the computer, to type each SIN (and
-   the payroll account and transmitter numbers) in its own secure dialogs;
-   never ask for, type or relay a SIN. On Windows only the default folder
-   (Documents\\Vibooks\\Statutory) is used; `--folder` is refused there
-   (`STATUTORY_FOLDER_NAMED_UNSUPPORTED`)
-5. the result is only a path and a summary. Give the person the path; never
-   open, read, upload or quote the exported file
+Secrets rule: never ask for, repeat or accept in chat a SIN, payroll account
+number, or recovery or transfer key; the last four digits are fine. Never
+open, read, copy or list an import file, a recovery or transfer key file, or
+an exported T4 or ROE file. Give the person paths only.
 
-Without the desktop app the request answers `409 HOST_UNAVAILABLE`; on Linux
-statutory export is unavailable (`STATUTORY_NATIVE_PLATFORM_UNAVAILABLE`).
+Every step below except the coverage read and the T4 proprietor records is a
+host request: preview it with `/api/host/requests:preview`, show the person
+the summary, and create it with `POST /api/host/requests` (kind, `args`,
+their words as `reason`, and the `confirmation_phrase` only when their reply
+contains it), then follow `GET /api/host/requests/{id}`. Host requests need
+the admin scope and approver authority (the SIN kinds also the payroll
+module), and the desktop app running on this
+computer (`409 HOST_UNAVAILABLE` otherwise; on Linux
+`STATUTORY_EXPORT_PLATFORM_UNSUPPORTED`). From chat, setup, replace, unlock,
+check, import and the book export with SINs each need a file or folder the
+person names (`STATUTORY_NEEDS_FILE_IN_CHAT` otherwise); without one, the
+person uses the Vibooks app on that computer. Requests expire after ten
+minutes; failures arrive as `result.error` or `result.outcome`, not as HTTP
+errors.
+
+1. read `GET /v1/books/{book_id}/payroll/statutory-identifier-coverage`
+   before a T4 or ROE export:
+   - `vault.status` is `not_set_up`, `pending` or `active`, with `origin`
+     (`own`, or `received_export` for a book someone else exported with
+     SINs), `recovery_status` (`unconfirmed`, `confirmed_same_disk`,
+     `confirmed`), `recovery_key_created_at` and `fingerprint_ending`
+   - `unlocked_on_this_computer` is `true`, `false` or `unknown` (the desktop
+     app has not reported)
+   - each employee and T4 proprietor (`sin`) and CRA payroll account
+     (`number`) is `stored`, `missing` or `last_four_changed` (enter it
+     again); an employee with no SIN last four on file is `not_obtained`; the
+     transmitter (`status`) is `stored` or `missing`. `keep_until_year` is the
+     last year CRA still requires the record (six years after the last
+     payroll year, T4001)
+2. vault not set up: ask where to save the recovery key file (a USB key or a
+   folder away from the Vibooks backups) and request `statutory.vault_setup`
+   `{book_id, recovery_folder}`. Tell the person that without that file and
+   this computer the SINs cannot be opened. A folder inside Vibooks' own
+   folders is refused (`STATUTORY_RECOVERY_FOLDER_WITH_BACKUPS`). On
+   `confirmed_same_disk`, relay `result.advice`: move the file off this
+   computer, then check it (step 5). Relay `result.warning`
+   `key_on_medium_without_permissions` and its `file_advice` as well
+3. SINs `missing` or `last_four_changed`: ask the person to enter them in
+   Vibooks (Settings › Employee SINs, or Enter SIN on the employee), or to
+   name a file for `statutory.identifiers_import` `{book_id, path,
+   replace_existing, delete_file_after_import}`. Ask both questions (replace
+   stored values that differ? delete the file afterwards?) and send their
+   answers; all four arguments are required and bound in the phrase. The file
+   is a UTF-8 CSV with header `role,value` and rows `employee:{employee code}`,
+   `proprietor:{T4 proprietor display name}` or
+   `payroll_account:{authority_account_id}`; the person prepares it. The
+   result is counts only (`new`, `replaced`, `unchanged`, `refused` with role
+   and `reason_code`) and `file_deleted`; relay `advice`, any
+   `file_delete_skipped` (`rows_refused`, `other_links_exist`,
+   `file_changed`) and the warning `file_owned_by_administrators`. A row
+   refused with `different_value_saved` is replaced only by a new request with
+   `replace_existing: true` after the person confirms the new value is
+   correct. New SINs are refused with `STATUTORY_RECOVERY_KEY_UNCONFIRMED`
+   while the recovery key is unconfirmed or the book still uses a sender's
+   transfer key (steps 5 and 6). A different SIN with the same last four digits is likewise
+   replaced only by the person: in the desktop app, which asks first, or by
+   that import
+4. locked on this computer (`unlocked_on_this_computer: false` or
+   `STATUTORY_IDENTIFIERS_LOCKED`, as after a restore on a new computer): ask
+   the person to name their recovery key file (or, for a book received from
+   someone else, the transfer key file) for
+   `statutory.identifiers_unlock` `{book_id, path}`, or to type the key in the
+   app's Unlock window. Relay `STATUTORY_RECOVERY_KEY_MISMATCH` as given: it
+   names the key this copy needs by date and ending
+5. `recovery_status` not `confirmed`: ask the person to move the recovery file
+   off this computer and name it for `statutory.recovery_key_check`
+   `{book_id, path}` (reason only, no phrase). The result is `fits`,
+   `older_recovery_key`, `transfer_key` or `does_not_fit`, with
+   `status_changed`. A check confirms only where the vault is unlocked on
+   this computer; after a restore, unlock first
+6. replacing the recovery key: `statutory.recovery_key_replace` `{book_id,
+   recovery_folder, reencrypt_existing}`. Relay the summary: older copies
+   still open with the old key. Ask whether to re-encrypt the SINs already
+   stored. A book received with SINs (`origin: received_export`) takes no new
+   SINs until the person replaces the sender's transfer key with their own
+   recovery key this way
+7. locking (`statutory.identifiers_lock` `{book_id}`, before giving away or
+   retiring the computer): relay the warning in full. It is refused with
+   `STATUTORY_RECOVERY_KEY_UNCONFIRMED` while the recovery key is
+   unconfirmed
+8. T4 proprietors or principal owners: record each with
+   `POST /v1/books/{book_id}/payroll/t4-proprietors` `{display_name,
+   sin_last_four}` (the person gives the last four in chat), then their SIN
+   is entered as in step 3. A CRA T4 XML request names them in
+   `transmitter.proprietor_ids` (one or two for a Canadian-controlled private
+   corporation or an unincorporated employer, none for another corporation).
+   A record is never edited: retire it with a reason
+   (`…/t4-proprietors/{id}:retire`) and record the owner again
+9. export: after the person's go-ahead with the phrase, request
+   `statutory.export` `{book_id, intent_id, folder}` with the folder they name
+   (without one, the app's default `Documents/Vibooks/Statutory`)
+   (`vibooks-cli statutory export --intent <id> [--folder <dir>] --reason
+   "..." --confirm <phrase>`). The result is a path and a summary:
+   - relay the warning `folder_readable_by_others` ("Other users of this
+     computer may be able to open files in this folder")
+   - `STATUTORY_IDENTIFIERS_MISSING`: nothing was written; name the missing
+     records by `display_label` and `reason` (`not_stored`,
+     `last_four_changed`) and how to enter them (step 3);
+     `not_obtained_evidence_required` only the person can complete in the app
+   - `STATUTORY_IDENTIFIERS_LOCKED`: unlock first (step 4)
+   - `STATUTORY_FOLDER_UNSAFE` (not a plain folder of the person's own, or
+     others can change files there) or
+     `STATUTORY_FOLDER_NOT_PRIVATE` (a FAT/exFAT stick or network share; the
+     file was removed): ask for a private folder on this computer's own disk
+   - status `unknown` with a path: the file may be there; the person checks
+     before exporting again
+10. a book export with SINs, only when the person asks:
+    `book.export_with_identifiers` `{book_id, destination,
+    transfer_key_folder, include_replaced}`, with the transfer key folder
+    separate from the destination (`STATUTORY_TRANSFER_KEY_WITH_EXPORT`
+    otherwise). Tell the person to hand the transfer key file over
+    separately; never offer their own recovery key. A plain
+    `/api/admin/export-book` with `include_statutory_identifiers: true` is
+    refused (`STATUTORY_EXPORT_NEEDS_HOST_REQUEST`)
+11. removing a stored SIN or number
+    (`POST /v1/books/{book_id}/payroll/statutory-identifiers/subjects/{role_kind}/{subject_id}:remove`,
+    `role_kind` `employee_sin`, `proprietor_sin`, `payroll_account`, or
+    `transmitter` with subject `vault`) is permanent in this book, while copies
+    in earlier backups and book exports remain, encrypted. It needs approver
+    authority: relay the summary and, within the retention period, the CRA
+    six-year warning; send the reason and phrase only when the person gives
+    them
+
+The vault's state also appears as the `statutory_identifier_recovery` task
+until a fresh coverage or task read shows `recovery_status: confirmed` (see
+the `/v1/books/{book_id}/tasks` rules in `references/workflows/posting.md`).
 
 ## License And Updates
 
