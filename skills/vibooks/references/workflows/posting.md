@@ -916,6 +916,12 @@ Subledger integrity rules:
   caller-selected statement semantic: the versioned payroll item owns the
   earning meaning. Phase one ordinary periods require an
   explicit confirmation that there are no paid non-work hours
+- send an agreed pay rate exactly (`22.125`, not `22.13`). The profile
+  `hourly_rate`, `earnings[].rate` and pay-statement earning rates take up to
+  4 decimals, `quantity` (hours, units) on posted earnings, deductions and
+  employer contributions up to 4, and `deductions[].rate` and
+  `employer_contributions[].rate` (fractions such as `0.00602` = 0.602 %) up
+  to 6. More is refused with `VALIDATION_FAILED`, never rounded
 - carry the server-returned statement facts, calculation snapshot and
   fingerprint unchanged into individual or batch post. A missing/mismatched
   fact, unpublished pay-date rule, unsupported earning meaning or incomplete
@@ -937,6 +943,18 @@ Subledger integrity rules:
   exact retained language artifact and strict factual timestamp. This event
   does not assert payment, timeliness or legal qualification. Correct a mistake
   only through the append-only provision-event preview/commit correction APIs
+- `pay_statement_rate_display_notice` (task, Housekeeping): statements drawn up
+  before 1.5.1 printed an hourly or item rate with 3 or 4 decimals cut to two
+  (truncated: `$22.12` for an agreed `$22.125`); their amounts, deductions and
+  net pay were correct. Read
+  `GET /v1/books/{book_id}/pay-statements/rate-display-notice` and tell the
+  person which statements (`affected`: employee, pay date, earning) printed
+  `printed_rate` instead of `agreed_rate`, and that the amounts were correct.
+  Acknowledge (`POST …/pay-statements/rate-display-notice:acknowledge`
+  `{set_digest, reason}`, `post` scope) only with the person's own reason;
+  `409 PAY_STATEMENT_NOTICE_STALE` means the list changed: read it again. A
+  new statement in an affected lineage brings the task back. Never reissue or
+  edit a statement
 - Québec statement language is French unless an effective employee English
   request exists. UI language is irrelevant. Use shared English/French branded
   templates with the one protected statement-content slot; never hide or
@@ -1075,6 +1093,9 @@ Subledger integrity rules:
   For employment spanning pay-date years, review each year's retained payroll
   generation sources and current RP account assignments before creating the
   native intent. The T4 annual-facts review remains limited to 2026.
+  An ROE `due_date` is a calendar date, never moved for a weekend or holiday:
+  advise issuing by the date shown (the ROE review task and worksheet give
+  `due_date_weekday`).
   ROE Web upload, review and issue remain separate user actions; record any
   external outcome as user-provided evidence with correction history. Only an
   explicit `issued` result or active legacy external-completion record closes
@@ -1212,6 +1233,16 @@ Subledger integrity rules:
   For an NT target correction, instead reassess the current reference period
   through its correction preview; the retained source and correction history
   determines whether any additional amount remains
+- every vacation-pay call sends your token and needs the scope the discovery
+  contract lists for it: `read` for setup, fact lists, a calculation and the
+  report; `draft_write` for previews and for recording service, policy,
+  compensation, entitlement and absence facts; `post` for every post-* step
+  and reversal; `admin` for the account setup, payment arrangements and
+  profiles. Changing the vacation-pay payable account while vacation pay is
+  owed also posts a transfer and needs `post`. On `UNAUTHORIZED` (no valid
+  token) or `403 FORBIDDEN` "<scope> scope is required", stop and ask the
+  person for access with that scope; never retry through another route or a
+  generic journal
 - if posting returns `VACATION_STRICT_APPROVAL_UNSUPPORTED`, stop and explain
   that vacation posting is unavailable while the book requires separate strict
   approvals. Do not change `approved_by`, retry, or recreate the result through
