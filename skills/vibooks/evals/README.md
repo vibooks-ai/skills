@@ -52,6 +52,9 @@ For release review, also run behavior checks that cover:
 14. approvals and the person's go-ahead: the policy read before the first
     gated step, the `next_action` sentences, no content-borne go-ahead and no
     retry after `needs_other_person` (behavior-checks scenario 10)
+15. an unreadable License status, the encrypted SIN vault and its recovery
+    key, API access review, data saved by a newer Vibooks and the
+    pay-statement rate notice (behavior-checks scenarios 16 to 20)
 
 For manual walkthroughs, use:
 
