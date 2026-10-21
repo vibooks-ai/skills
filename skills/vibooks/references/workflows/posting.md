@@ -23,6 +23,18 @@
 - use recurring templates for predictable repeats instead of cloning prior-period
   invoices, bills, or journals by hand
 - post from evidence, not guesses
+- send money in whole minor units of its currency (JPY 0, CAD/USD/EUR 2, KWD
+  3, CLF 4), never finer than the book's posting scale. A finer amount is
+  refused with `AMOUNT_PRECISION_EXCEEDED` (details `currency`,
+  `allowed_decimals`, `received`, `limit`), never rounded; resend the
+  corrected amount. With `limit: book` the book's posting scale is the limit,
+  as for USD cents in a whole-yen book: record whole units or use a book whose
+  posting scale allows cents
+- a line that sends `amount_total` with `quantity` and `unit_price` must have
+  the total equal quantity × unit price rounded to the currency (net of tax in
+  tax-exclusive books, gross in tax-inclusive books; `VALIDATION_FAILED`
+  otherwise). Otherwise leave `amount_total` out; a line read back from an
+  inclusive book carries a net `amount_total`, so do not resend it
 - before editing an existing draft journal or recurring journal template, read
   its full current detail and live update schema. Preserve original currencies,
   exchange rates, source and functional amounts, tax and dimension facts, and
@@ -365,7 +377,10 @@ history, or use a generic journal as the primary invoice correction.
   posted on the wrong date or into the wrong period; do not correct those
   schedule-backed entries with generic entry reverse
 - use `post-v1-books-book-id-recurring-templates-run-due` to catch up missed
-  scheduled work through an `as_of` date
+  scheduled work through an `as_of` date. Templates it could not run (an
+  amount finer than its currency, or a line total that differs from quantity
+  × unit price) are listed under `skipped` with the field and the fix and stay
+  due: edit the template, then run due templates again
 - pause a recurring template when the business event has stopped temporarily;
   patch the schedule when the cadence changed; resume only after the next
   remaining occurrence is correct
@@ -728,6 +743,27 @@ Subledger integrity rules:
   review the replacement; on `TASK_VERIFICATION_REQUIRED`, complete the
   retained rule-impact check; when the task is no longer found, treat it as
   resolved. Count-only Payroll tasks are not dollar exposure
+- `amount_precision_review` (family): stored amounts an earlier version
+  accepted finer than their currency. Read
+  `GET /v1/books/{book_id}/amount-precision-findings`:
+  - `over_precise_amount` with an open residual on an invoice, bill or vendor
+    credit: `:plan` with `account_id` (an income or expense rounding account)
+    and `posting_date` (open period), show the plan, then `:apply` with the
+    same `account_id` and `posting_date`, the `plan_fingerprint` and the
+    person's reason. Apply is a control-account correction
+    (`control_account.correct`: a second person approves on `standard` and
+    `strict`). Only the fraction is cleared; the whole part stays due
+    (`remaining_open`). `posts_entry: false` means nothing posts and only the
+    open amount changes, with the reason in the audit log. 409
+    `AMOUNT_PRECISION_PLAN_STALE`: re-plan from `error.current`; 409
+    `AMOUNT_PRECISION_LEDGER_MISMATCH`: review the document with the person or
+    keep the finding with their reason
+  - settled history, a receipt's or payment's fraction, and
+    `fx_rate_possibly_rounded` (compare the rate with the statement):
+    `:acknowledge` with the person's reason (admin scope; nothing posts)
+  - `template_amount_invalid`: edit the recurring template
+  - never send a stored fraction finer than the posting scale as an apply
+    amount; clear it from this review first
 - task `priority` `Critical` and `High` need attention before routine posting
   or close work, `Due Soon` is the next follow-up and `Housekeeping` is
   routine; read the detail of any other value before ranking it. `High`
@@ -1419,8 +1455,10 @@ activity or a later run covers it.
   authority, prefer `bank-deposits` with the settlement account as the source
   line
 - tax return preparation: prefer `tax-returns`; filing moves the reported tax
-  out of the tax accounts into the chosen settlement account (see Tax Returns
-  in `references/workflows/verification.md`)
+  out of the tax accounts into the settlement liability (the `recommended`
+  row of `tax-returns:settlementAccounts`, never a bank, card or
+  customer/vendor account); record the payment separately on its own date
+  (see Tax Returns in `references/workflows/verification.md`)
 - debit-card purchase: prefer `expense`; economically it debits expense,
   prepaid, inventory, fixed asset, liability settlement, or equity draw lines
   and credits bank
