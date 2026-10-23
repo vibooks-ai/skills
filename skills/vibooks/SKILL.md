@@ -392,9 +392,36 @@ direct mutation of Vibooks storage.
 - later reuse: start by rerunning `vibooks-cli doctor --json`, confirm the
   discovered local install still belongs to the current Vibooks bundle, review
   entitlement state only when it matters, then continue with the existing book
-  using first-class workflows and verification checks
+  using first-class workflows and verification checks, after reading its open
+  tasks (below)
 - if the machine state, token source, entitlement state, or active book is
   ambiguous, stop and follow the install/access reference before mutating data
+
+## Open Tasks Each Session
+
+Vibooks lists the work each book needs as tasks. Read them yourself; the
+person may never open the Tasks page.
+
+1. at the start of every Vibooks session, and again before posting,
+   reconciling or closing in a book, read `GET /v1/books/{book_id}/tasks` for
+   each book you work in. Books are independent: read and report each one
+   separately, never merged
+2. tell the person, per book and in plain language, every `Critical` and
+   `High` task and any new `Due Soon` one: what it is, why it matters, and
+   what you propose; mention `Housekeeping` briefly. Read the task fields,
+   not the English `title`. `summary.urgent` is neither money nor a number of
+   tasks
+3. offer to review and fix. Before acting, re-read the task
+   (`GET /v1/books/{book_id}/tasks/{task_id}`) and follow its own `actions`
+   (or, for a `legacy` task, its review or fix page and the matching workflow
+   in this skill). Whatever needs the person's decision, reason,
+   confirmation phrase or a second person stays theirs: never confirm,
+   acknowledge or approve on their behalf, and never change a setting just
+   to clear a task
+4. after acting, read the tasks again and tell the person what changed
+
+Task kinds, families and their rules: the `/v1/books/{book_id}/tasks`
+bullets in [references/workflows/posting.md](references/workflows/posting.md).
 
 ## Workflow Map
 
