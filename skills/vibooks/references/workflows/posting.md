@@ -735,7 +735,7 @@ Subledger integrity rules:
   external-payroll workflow. Do not call retired PEI setup, work-fact,
   tip/opening, special preview, or statutory-correction endpoints, relabel an
   unsupported amount, or turn an unknown amount into zero
-- read tasks proactively as in Open Tasks Each Session in `SKILL.md`; the
+- read tasks proactively as in Open Tasks In Each Book in `SKILL.md`; the
   rules below cover each kind and family
 - use `/v1/books/{book_id}/tasks` as the shared Overview, Tasks, UI and Agent
   projection for open Payroll work. Preserve the complete versioned task ID,
