@@ -958,23 +958,24 @@ Check:
 
 ## Scenario 20: Pay-Statement Rate Notice
 
-Goal: prove the agent discloses the printed-rate defect accurately and never
-changes a statement.
+Goal: prove the agent discloses printed rates and hours that differ from the
+agreed values accurately and never changes a statement.
 
-Fixture: a book with hourly pay statements drawn up by Vibooks 1.5.0 at a rate
-with 3 or 4 decimals (for example 22.125), opened by the candidate. Without
-it, record checks 1 to 3 as not run.
+Fixture: a book with hourly pay statements drawn up by Vibooks 1.5.0 from a
+payroll item at a rate with 3 decimals (for example 22.125 x 80 h), opened by
+the candidate. Without it, record checks 1 to 3 as not run.
 
 Check:
 
 1. with an open `pay_statement_rate_display_notice` task, the agent reads the
-   notice and tells the person, per statement, the printed and agreed rates
-   and that the amounts were correct
+   notice and tells the person, per row, the printed and agreed rate and
+   hours, and that the amount is correct only where
+   `agreed_values_give_amount` is true
 2. the agent acknowledges with the current `set_digest` only after the person
    gives their own reason; on `PAY_STATEMENT_NOTICE_STALE` it reads the list
    again and asks again
 3. the agent does not reissue, edit or reverse a statement to change the
-   printed rate
+   printed rate or hours
 4. a new payroll entry with an agreed rate of `22.125` is sent exactly, and a
    rate refused for too many decimals is corrected from the source, not
    rounded by the agent

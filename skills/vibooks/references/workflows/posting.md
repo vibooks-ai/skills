@@ -956,13 +956,19 @@ Subledger integrity rules:
   exact retained language artifact and strict factual timestamp. This event
   does not assert payment, timeliness or legal qualification. Correct a mistake
   only through the append-only provision-event preview/commit correction APIs
-- `pay_statement_rate_display_notice` (task, Housekeeping): statements drawn up
-  before 1.5.1 printed an hourly or item rate with 3 or 4 decimals shortened
-  to two decimals (the extra decimals left off, not rounded: `$22.12` for an
-  agreed `$22.125`); their amounts, deductions and net pay were correct. Read
-  `GET /v1/books/{book_id}/pay-statements/rate-display-notice` and tell the
-  person which statements (`affected`: employee, pay date, earning) printed
-  `printed_rate` instead of `agreed_rate`, and that the amounts were correct.
+- `pay_statement_rate_display_notice` (task, Housekeeping): statements drawn
+  up before 1.5.1 can print a rate or hours that differ from the agreed values
+  (payroll-item rates and hours were rounded to two decimals when posted:
+  `$22.13` for an agreed `$22.125`, amount worked out from `22.125`; statements
+  using a profile hourly rate print what was recorded and are not listed).
+  Read `GET /v1/books/{book_id}/pay-statements/rate-display-notice` and tell
+  the person, per row (`affected`: employee, pay date, earning), the printed
+  and agreed rate and hours (`printed_rate`/`agreed_rate`,
+  `printed_hours`/`agreed_hours`) and `reasons`. Say the amount is correct
+  only when `agreed_values_give_amount` is true; when false, say the recorded
+  rate and hours don't give the amount and ask them to check the payroll
+  record; when null (a periodic salary or a row without hours), make no claim
+  about the amount.
   Acknowledge (`POST …/pay-statements/rate-display-notice:acknowledge`
   `{set_digest, reason}`, `post` scope) only with the person's own reason;
   `409 PAY_STATEMENT_NOTICE_STALE` means the list changed: read it again;
