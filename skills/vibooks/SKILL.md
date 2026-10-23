@@ -405,10 +405,11 @@ person may never open the Tasks page.
 1. the first time in a conversation that you work in a book (after the
    connection is ready), read `GET /v1/books/{book_id}/tasks` for that book.
    Read it again before posting, reconciling or closing in that book, when
-   you move to another book you have not read yet, and after you act on a
-   task. Not before every request, and do not repeat tasks you already
-   reported in this conversation unless they changed. Books are independent:
-   read and report each one separately, never merged
+   you move to another book you have not read yet, after you act on a task,
+   and once a day while a conversation continues. Not before every request,
+   and do not repeat tasks you already reported in this conversation unless
+   they changed. Books are independent: read and report each one
+   separately, never merged
 2. tell the person, per book and in plain language, every `Critical` and
    `High` task and any new `Due Soon` one: what it is, why it matters, and
    what you propose; mention `Housekeeping` briefly. Read the task fields,
