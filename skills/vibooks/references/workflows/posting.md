@@ -751,11 +751,21 @@ Subledger integrity rules:
     and `posting_date` (open period), show the plan, then `:apply` with the
     same `account_id` and `posting_date`, the `plan_fingerprint` and the
     person's reason. Apply is a control-account correction
-    (`control_account.correct`: a second person approves on `standard` and
-    `strict`). Only the fraction is cleared; the whole part stays due
+    (`control_account.correct`); on `light` the reason is enough. On a
+    `standard` or `strict` book, first send the plan's `approval_request`
+    unchanged (`action`, `target_id`, `request_payload`) to
+    `POST /v1/books/{book_id}/approvals` with the person's reason; another
+    person approves it (none of the requester's tokens can), then `:apply`
+    adds its `approval_id`. Never build the payload yourself or reuse a
+    control-account correction preview's payload; a changed `account_id` or
+    `posting_date` at apply is refused with `APPROVAL_PAYLOAD_MISMATCH`.
+    Only the fraction is cleared; the whole part stays due
     (`remaining_open`). `posts_entry: false` means nothing posts and only the
     open amount changes, with the reason in the audit log. 409
-    `AMOUNT_PRECISION_PLAN_STALE`: re-plan from `error.current`; 409
+    `AMOUNT_PRECISION_PLAN_STALE` (from the approval request or `:apply`)
+    means the open amount changed: show the person `error.current` and
+    request approval for its `approval_request`, since an approval of the
+    earlier plan no longer covers it; 409
     `AMOUNT_PRECISION_LEDGER_MISMATCH`: review the document with the person or
     keep the finding with their reason
   - settled history, a receipt's or payment's fraction, and
