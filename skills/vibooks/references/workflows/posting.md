@@ -782,7 +782,9 @@ Subledger integrity rules:
   marks setup and review tasks such as the book time zone, API access with
   admin or approver rights or issued by someone else that the person has not
   confirmed, stored amounts finer than their currency with an
-  open balance, and an unconfirmed SIN recovery key. `summary.urgent` adds the
+  open balance, an unconfirmed SIN recovery key, and tax returns an earlier
+  version filed straight to a payment or customer/vendor account (the tax
+  still owed may be understated). `summary.urgent` adds the
   `count` of every Critical and High task (App 1.5.0 counted only Critical);
   it mixes accounts, amounts, tokens and books, so it is neither dollar
   exposure nor a number of tasks. Rank work from the items. Never confirm API

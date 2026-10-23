@@ -241,8 +241,9 @@ Rules:
   statement line to it
 - `:refresh` accepts `offset_account_id` to change the settlement account of a
   draft or reversed return
-- `tax_return_cash_settlement_review` (task): returns an earlier version filed
-  straight to a payment or customer/vendor account. Ask the person whether
+- `tax_return_cash_settlement_review` (task, `High`: the tax still owed may be
+  understated): returns an earlier version filed straight to a payment or
+  customer/vendor account. Ask the person whether
   the tax was paid (or refunded) on the filing's posting date for that amount.
   If yes, `POST /v1/books/{book_id}/tax-returns/{id}:acknowledgeCashSettlement`
   with their `reason`. If not, reverse the filing entry
