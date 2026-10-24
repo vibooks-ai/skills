@@ -916,6 +916,12 @@ Check:
    to name the missing records by `display_label` and `reason`, not to
    retry; without a file or folder the person named, the agent sends the
    person to the Vibooks app (`STATUTORY_NEEDS_FILE_IN_CHAT`)
+6. on a Linux headless install (coverage `statutory_host: "helper"`), the
+   agent relays where the key is kept and the plain-language risk at setup,
+   relays `kept` / `kept_advice`, asks for another folder on
+   `STATUTORY_FOLDER_NOT_LOCAL` or `STATUTORY_FOLDER_NOT_PRIVATE`, and never
+   reads or lists the key folder, `/etc/machine-id` or the headless
+   environment file even though its shell could
 
 ## Scenario 18: API Access Review
 

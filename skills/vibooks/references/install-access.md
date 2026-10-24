@@ -718,7 +718,8 @@ Employee SINs, CRA payroll account numbers and the transmitter number are
 entered once and stored in the book, encrypted. The keys stay in this
 computer's keychain, and a recovery key file the person keeps opens them
 anywhere else. T4 and ROE files are written by the desktop app (macOS or
-Windows) from those stored values, so an export never prompts for a SIN.
+Windows), or on Linux by the Vibooks statutory helper (see Linux below), from
+those stored values, so an export never prompts for a SIN.
 
 Secrets rule: never ask for, repeat or accept in chat a SIN, payroll account
 number, or recovery or transfer key; the last four digits are fine. Never
@@ -732,11 +733,12 @@ their words as `reason`, and the `confirmation_phrase` only when their reply
 contains it), then follow `GET /api/host/requests/{id}`. Host requests need
 the admin scope and approver authority (the SIN kinds also the payroll
 module), and the desktop app running on this
-computer (`409 HOST_UNAVAILABLE` otherwise; on Linux
-`STATUTORY_EXPORT_PLATFORM_UNSUPPORTED`). From chat, setup, replace, unlock,
+computer, or on Linux the statutory helper (`409 HOST_UNAVAILABLE`
+otherwise). From chat, setup, replace, unlock,
 check, import and the book export with SINs each need a file or folder the
 person names (`STATUTORY_NEEDS_FILE_IN_CHAT` otherwise); without one, the
-person uses the Vibooks app on that computer. Requests expire after ten
+person uses the Vibooks app on that computer; on Linux there is no app
+window, so a file or folder is always needed. Requests expire after ten
 minutes. Arguments are refused by the preview or create call (HTTP 400 or
 409, for example `STATUTORY_NEEDS_FILE_IN_CHAT` or `HOST_UNAVAILABLE`); once
 the desktop app runs the request, failures arrive as `result.error` or
@@ -851,6 +853,47 @@ the desktop app runs the request, failures arrive as `result.error` or
     authority: relay the summary and, within the retention period, the CRA
     six-year warning; send the reason and phrase only when the person gives
     them
+
+### Linux (headless)
+
+On Linux, Vibooks runs headless and starts its own statutory helper, which
+carries out the same host requests; no keyring service is needed. Coverage
+shows `statutory_host: "helper"` and `key_store` (`computer` or `memory`).
+
+- `HOST_UNAVAILABLE`: relay `next_action_details` (the helper is starting,
+  not installed, the wrong version or keeps stopping) and its advice: retry,
+  run the Vibooks installer again, or `systemctl --user restart vibooks`, run
+  only when the person asks
+- before setup, unlock or replace, relay where the summary says the key will
+  be kept; afterwards relay `kept`: `on_this_computer`, or
+  `until_vibooks_restarts` with `kept_advice` (unlock again with the recovery
+  key file after Vibooks restarts)
+- at setup, say once in plain words: the key is kept in a private file in the
+  person's Vibooks settings folder so exports work without asking; programs
+  running under their account, including your own commands, can read it, as
+  on Windows; a copy of that folder alone cannot open the SINs, but a backup
+  or snapshot of the whole computer, a disk image or the disk itself can,
+  unless encrypted. Suggest disk encryption and encrypted backups, or locking
+  the SINs after exporting
+- never read, list, copy or open `~/.config/vibooks/statutory-keys`,
+  `/etc/machine-id`, `vibooks-headless.env`, an import, recovery or transfer
+  key file, or an exported file, even though your shell could
+- T4 and ROE files and book exports with SINs go to a folder on the
+  computer's own disk: on `STATUTORY_FOLDER_NOT_PRIVATE` (a USB key or drive
+  that keeps no permissions) or `STATUTORY_FOLDER_NOT_LOCAL` (a network,
+  shared or unsupported drive) ask for another folder. Recovery and transfer
+  key files may go on the person's own USB key (relay
+  `key_on_medium_without_permissions`)
+- a recovery key kept only on paper or in a password manager: ask the person
+  to save a text file with the line `Recovery key: XXXX-…` on a USB key, name
+  it for unlock or check, and delete it afterwards; never ask them to type it
+  into chat
+- `STATUTORY_KEY_STORE_UNSAFE`: other accounts can open the person's Vibooks
+  key folder; relay the `chmod 700` advice and change permissions only if the
+  person asks
+- `STATUTORY_HELPER_STOPPED` with `outcome_unknown: true`: Vibooks stopped
+  while writing; do not retry until the person has looked in the folder. A
+  retry never overwrites a file
 
 The vault's state also appears as the `statutory_identifier_recovery` task
 until a fresh coverage or task read shows `recovery_status: confirmed` (see
