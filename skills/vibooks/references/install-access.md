@@ -353,10 +353,12 @@ When you create a Book, confirm its time zone with the person every time:
 - it defaults to the Vibooks host's zone (`host_time_zone` and
   `host_time_zone_source` in `GET /api/discovery`), and a server's zone is not
   the business's;
-- name it with `time_zone` on `POST /v1/books`; `vibooks-cli` has no
-  `--time-zone` flag yet, so put it in the create body, for example
-  `vibooks-cli invoke --method POST --route /v1/books --body '{..., "time_zone": "America/Halifax"}'`,
-  or send it through the API, after the person confirms the zone;
+- name it, after the person confirms the zone, with
+  `vibooks-cli books bootstrap ... --time-zone America/Halifax` (vibooks-cli
+  1.4.0 or later; given for an existing book with another zone it changes the
+  setting and reports `Time zone: changed from X to Y`, `book.time_zone_change`
+  in `--json`), or with `time_zone` on `POST /v1/books` (older CLIs:
+  `vibooks-cli invoke --method POST --route /v1/books --body '{..., "time_zone": "America/Halifax"}'`);
 - if the host has none, the create is refused with 400 `TIME_ZONE_REQUIRED`;
 - change it later with `PATCH /v1/books/{id}/settings` and `{"time_zone": ...}`.
   The change rewrites nothing.
@@ -456,7 +458,11 @@ forward-date work: send explicit dates for every action (see Date Rules in
    held one (`POST /api/settings/tokens` with that `principal_id`, or
    `vibooks-cli auth enroll-agent --label "Primary agent" --principal-id
    <NEW_ID>`, which with the setup credential also needs `--preset
-   bookkeeper`). Never retry the old ID or ask the owner to work around it
+   bookkeeper`). Never retry the old ID or ask the owner to work around it.
+   From vibooks-cli 1.4.0, when the new token needs review, `enroll-agent`
+   prints the access confirmation summary, phrase and a `next_action`
+   (`access_confirmation` `pending`, `confirmed`, `not_needed` or
+   `not_supported` in `--json`); handle it as in API access review below
 
 Use:
 
@@ -496,7 +502,13 @@ phrase (see Approvals below).
 - keep the rest in one step: `POST /api/settings/tokens:confirm`
   `{token_ids}` (at most 50) first answers `CONFIRMATION_REQUIRED` with a
   summary and phrase; show both and resend with the phrase and the person's
-  words as `reason` only when they give the phrase. The task's `keep` action
+  words as `reason` only when they give the phrase. With vibooks-cli 1.4.0 or
+  later: `vibooks-cli auth confirm-access --token-id <id> [--token-id <id>]`
+  prints the summary and phrase, and the same command with `--confirm
+  "<phrase>" --reason "..."` confirms (exit `1` when the phrase did not
+  confirm). Re-running `auth enroll-agent` with the same label, principal and
+  preset plus `--confirm` and `--reason` confirms the token it saved instead
+  of creating another. The task's `keep` action
   names the ids this access may confirm, with `remaining` and
   `not_keepable_by_this_access`
 - access cannot confirm its own principal's tokens (`409
@@ -641,7 +653,10 @@ Treat `vibooks-agent.env`, `vibooks-headless.env` and the person's
 
 - if every request answers 503 `STORAGE_NEWER_THAN_APP` (`/api/health`
   answers `"ok": false, "storage": "refused"`), a newer Vibooks saved this
-  data. Nothing was changed. Tell the person to update Vibooks to at least the
+  data. vibooks-cli 1.4.0 or later prints the message and "Update Vibooks,
+  then try again.", exits with status `3`, and `doctor` reports `core:
+  refused` (`"core": "refused"`, `"next_action": "update_vibooks"` in
+  `--json`). Nothing was changed. Tell the person to update Vibooks to at least the
   version in the message (`written_by_app_version`, when recorded); do not
   try to repair or restore anything
 
