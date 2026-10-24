@@ -221,7 +221,7 @@ unchanged.
 - API access review: phrase only from the person; self-confirmation stops:
 - `STORAGE_NEWER_THAN_APP` and newer bundles or backups lead to update advice only:
 - rate notice disclosed and acknowledged only with the person's reason; no statement changed:
-- scenario 21: tasks read per book at session start, `High` task explained and proposed, nothing acted on before the person answers:
+- scenario 21: tasks read per book before the first work in each book, `High` task explained and proposed, nothing acted on before the person answers:
 
 ## Sync And Packaging Checks
 

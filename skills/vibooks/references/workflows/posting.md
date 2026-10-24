@@ -735,8 +735,16 @@ Subledger integrity rules:
   external-payroll workflow. Do not call retired PEI setup, work-fact,
   tip/opening, special preview, or statutory-correction endpoints, relabel an
   unsupported amount, or turn an unknown amount into zero
-- read tasks proactively as in Open Tasks In Each Book in `SKILL.md`; the
-  rules below cover each kind and family
+- read tasks proactively as in Open Tasks In Each Book in `SKILL.md`: the
+  first time in a conversation that you work in a book (after the connection
+  is ready), again before posting, reconciling or closing there, when you
+  move to a book you have not read yet, after you act on a task, and once a
+  day while a conversation continues. Not before every request, and do not
+  repeat tasks you already reported unless they changed. Read the task
+  fields, not the English `title`; before acting re-read the task
+  (`GET /v1/books/{book_id}/tasks/{task_id}`) and follow its `actions` (a
+  `legacy` task has none: use its review or fix page and the matching
+  workflow in this skill). The rules below cover each kind and family
 - use `/v1/books/{book_id}/tasks` as the shared Overview, Tasks, UI and Agent
   projection for open Payroll work. Preserve the complete versioned task ID,
   re-read its detail immediately before acting, and follow only the returned
@@ -959,10 +967,13 @@ Subledger integrity rules:
   does not assert payment, timeliness or legal qualification. Correct a mistake
   only through the append-only provision-event preview/commit correction APIs
 - `pay_statement_rate_display_notice` (task, Housekeeping): statements drawn
-  up before 1.5.1 can print a rate or hours that differ from the agreed values
-  (payroll-item rates and hours were rounded to two decimals when posted:
-  `$22.13` for an agreed `$22.125`, amount worked out from `22.125`; statements
-  using a profile hourly rate print what was recorded and are not listed).
+  up before 1.5.1 can print a rate or hours that differ from the agreed values:
+  payroll-item rates and hours were rounded to two decimals when posted
+  (`$22.13` for an agreed `$22.125`, amount worked out from `22.125`), and a
+  longer rate fact was truncated when printed (`$22.12` for `22.125`).
+  Statements using a profile hourly rate print what was recorded and are not
+  listed. Explain each row from its `reasons` and values; do not call every
+  difference rounding.
   Read `GET /v1/books/{book_id}/pay-statements/rate-display-notice` and tell
   the person, per row (`affected`: employee, pay date, earning), the printed
   and agreed rate and hours (`printed_rate`/`agreed_rate`,

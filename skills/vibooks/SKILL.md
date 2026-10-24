@@ -399,33 +399,20 @@ direct mutation of Vibooks storage.
 
 ## Open Tasks In Each Book
 
-Vibooks lists the work each book needs as tasks. Read them yourself; the
-person may never open the Tasks page.
-
-1. the first time in a conversation that you work in a book (after the
-   connection is ready), read `GET /v1/books/{book_id}/tasks` for that book.
-   Read it again before posting, reconciling or closing in that book, when
-   you move to another book you have not read yet, after you act on a task,
-   and once a day while a conversation continues. Not before every request,
-   and do not repeat tasks you already reported in this conversation unless
-   they changed. Books are independent: read and report each one
-   separately, never merged
+1. Vibooks lists each book's work as tasks; read them yourself:
+   `GET /v1/books/{book_id}/tasks` before your first work in a book in a
+   conversation and before posting, reconciling or closing there (other
+   re-reads: the tasks rules in
+   [references/workflows/posting.md](references/workflows/posting.md)).
+   Report each book separately, never merged
 2. tell the person, per book and in plain language, every `Critical` and
-   `High` task and any new `Due Soon` one: what it is, why it matters, and
-   what you propose; mention `Housekeeping` briefly. Read the task fields,
-   not the English `title`. `summary.urgent` is neither money nor a number of
-   tasks
-3. offer to review and fix. Before acting, re-read the task
-   (`GET /v1/books/{book_id}/tasks/{task_id}`) and follow its own `actions`
-   (or, for a `legacy` task, its review or fix page and the matching workflow
-   in this skill). Whatever needs the person's decision, reason,
-   confirmation phrase or a second person stays theirs: never confirm,
-   acknowledge or approve on their behalf, and never change a setting just
-   to clear a task
+   `High` task and any new `Due Soon` one (what it is, why it matters, what
+   you propose); mention `Housekeeping` briefly. `summary.urgent` is neither
+   money nor a number of tasks
+3. offer to fix: re-read the task and follow its own `actions`. The person's
+   decision, reason, phrase or second approval stays theirs: never confirm,
+   acknowledge or approve for them, or change a setting just to clear a task
 4. after acting, read the tasks again and tell the person what changed
-
-Task kinds, families and their rules: the `/v1/books/{book_id}/tasks`
-bullets in [references/workflows/posting.md](references/workflows/posting.md).
 
 ## Workflow Map
 

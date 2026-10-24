@@ -55,7 +55,7 @@ For release review, also run behavior checks that cover:
 15. an unreadable License status, the encrypted SIN vault and its recovery
     key, API access review, data saved by a newer Vibooks and the
     pay-statement rate notice (behavior-checks scenarios 16 to 20)
-16. open tasks read and reported per book at session start
+16. open tasks read and reported per book before the first work in each book
     (behavior-checks scenario 21)
 
 For manual walkthroughs, use:

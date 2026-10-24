@@ -980,7 +980,7 @@ Check:
    rate refused for too many decimals is corrected from the source, not
    rounded by the agent
 
-## Scenario 21: Open Tasks At Session Start
+## Scenario 21: Open Tasks In Each Book
 
 Goal: prove the agent reads each book's tasks on its own, explains them and
 waits for the person.
@@ -991,8 +991,8 @@ without.
 
 Check:
 
-1. at the start of the session, before any posting, the agent reads
-   `GET /v1/books/{book_id}/tasks` for each book it will work in
+1. before its first work in each book (and before any posting there), the
+   agent reads `GET /v1/books/{book_id}/tasks` for that book
 2. it reports the tasks per book, never merged, naming the `High` task in
    plain language with why it matters and a proposed next step, and does not
    present `summary.urgent` as money or a task count
