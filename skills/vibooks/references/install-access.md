@@ -400,7 +400,9 @@ forward-date work: send explicit dates for every action (see Date Rules in
    - immediately convert that bootstrap credential into a saved API token with
      `vibooks-cli auth enroll-agent` (see Preferred Token Model)
    - the headless service is the Core only (no app): the person gives their
-     go-ahead in chat, and operations that need the desktop app answer
+     go-ahead in chat; the SIN and T4/ROE file requests run through the
+     statutory helper Vibooks starts (Linux under Statutory Exports), and
+     other operations that need the desktop app answer
      `409 HOST_UNAVAILABLE` (see Approvals below)
 3. human-driven desktop initialization:
    - the owner can create an API token from Vibooks `API Tokens` settings or
@@ -754,7 +756,9 @@ the desktop app runs the request, failures arrive as `result.error` or
      app has not reported)
    - each employee and T4 proprietor (`sin`) and CRA payroll account
      (`number`) is `stored`, `missing` or `last_four_changed` (enter it
-     again); an employee with no SIN last four on file is `not_obtained`; the
+     again); an employee who has not given their SIN is `not_obtained`
+     (record the SIN once given), one with no legal identity yet is
+     `no_identity`; the
      transmitter (`status`) is `stored` or `missing`. `keep_until_year` is the
      last year CRA still requires the record (six years after the last
      payroll year, T4001)
@@ -776,7 +780,8 @@ the desktop app runs the request, failures arrive as `result.error` or
    `proprietor:{T4 proprietor display name}` or
    `payroll_account:{authority_account_id}`; the person prepares it. The
    result is counts only (`new`, `replaced`, `unchanged`, `refused` with role
-   and `reason_code`) and `file_deleted`; relay `advice`, any
+   and `reason_code`; `sin_not_recorded`: record the SIN's last four first,
+   `no_identity`: add the legal identity first) and `file_deleted`; relay `advice`, any
    `file_delete_skipped` (`rows_refused`, `other_links_exist`,
    `file_changed`) and the warning `file_owned_by_administrators`. A row
    refused with `different_value_saved` is replaced only by a new request with
@@ -826,8 +831,9 @@ the desktop app runs the request, failures arrive as `result.error` or
      computer may be able to open files in this folder")
    - `STATUTORY_IDENTIFIERS_MISSING`: nothing was written; name the missing
      records by `display_label` and `reason` (`not_stored`,
-     `last_four_changed`) and how to enter them (step 3);
-     `not_obtained_evidence_required` only the person can complete in the app
+     `last_four_changed`) and how to enter them (step 3). An employee who
+     has not given their SIN is never missing: their T4 shows 000000000
+     (see the Canadian profile)
    - `STATUTORY_IDENTIFIERS_LOCKED`: unlock first (step 4)
    - `STATUTORY_FOLDER_UNSAFE` (not a plain folder of the person's own, or
      others can change files there) or
