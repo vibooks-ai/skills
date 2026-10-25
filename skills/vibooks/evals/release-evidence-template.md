@@ -180,6 +180,7 @@ unchanged.
 - latest-first reversal, schedule cancellation, and receipt recovery result:
 - unsupported advance-invoice stop result:
 - invoice or receipt correction action exercised:
+- inactive customer, open-balance archive refusal, unapplied deposit and `document_consistency_review` results:
 - canonical, website, portable plugin, and Codex-wrapper parity result:
 
 ### Scenario 10: Approvals And The Person's Go-Ahead

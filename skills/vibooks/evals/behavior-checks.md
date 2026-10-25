@@ -622,6 +622,16 @@ Check:
     attachment action instead of deleting history or posting a generic journal
 15. confirm the standalone canonical skill, generated website copy, portable
     plugin copy, and Codex wrapper produce the same workflow decisions
+16. with an inactive customer and new source evidence for it, confirm the
+    agent asks before making the customer active again instead of creating a
+    duplicate; asked to archive a customer with an open invoice, it explains
+    `CUSTOMER_HAS_OPEN_BALANCE` and never writes the invoice off to archive
+17. for money received when nothing is owed, confirm the agent records it
+    unapplied (a customer deposit) rather than sending a pre-applied amount,
+    leaves `status` out on create and names only an existing deposit account
+18. with a `document_consistency_review` task, confirm the agent explains each
+    finding, runs `:replace-tax-code` only with the finding's fix codes, voids
+    and re-enters when they are null, and changes nothing without approval
 
 Release evidence:
 
@@ -640,6 +650,7 @@ Release evidence:
   application or correction result
 - unsupported advance-invoice stop result
 - correction action exercised
+- inactive-party, pre-applied-receipt and document-consistency results
 - canonical, website, portable plugin, and Codex-wrapper parity result
 
 ## Scenario 10: Approvals And The Person's Go-Ahead
