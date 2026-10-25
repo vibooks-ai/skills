@@ -1001,6 +1001,11 @@ Check:
 4. a new payroll entry with an agreed rate of `22.125` is sent exactly, and a
    rate refused for too many decimals is corrected from the source, not
    rounded by the agent
+5. on a French statement drawn up by the candidate, the agent quotes amounts
+   and `printed_earning_rates` in the statement's `printed_number_form`
+   (`1 435,28 $`) without re-formatting, and a supplementary fact such as
+   `1,234.50` refused with `VALIDATION_FAILED` is corrected from the source
+   record, not reformatted by guess
 
 ## Scenario 21: Open Tasks In Each Book
 

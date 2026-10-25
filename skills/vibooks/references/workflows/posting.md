@@ -1009,7 +1009,10 @@ Subledger integrity rules:
   hours only for salary profiles, and the permitted source kind. Do not send a
   caller-selected statement semantic: the versioned payroll item owns the
   earning meaning. Phase one ordinary periods require an
-  explicit confirmation that there are no paid non-work hours
+  explicit confirmation that there are no paid non-work hours. Supplementary
+  facts are plain decimal text such as `125.00` (no sign, spaces or thousands
+  separators, at most four decimals; otherwise `VALIDATION_FAILED` on
+  `pay_statement_facts.<name>`)
 - send an agreed pay rate exactly (`22.125`, not `22.13`). The profile
   `hourly_rate`, `earnings[].rate` and pay-statement earning rates take up to
   4 decimals, `quantity` (hours, units) on posted earnings, deductions and
@@ -1030,10 +1033,17 @@ Subledger integrity rules:
   approval. Keep one stable idempotency key for the unchanged approval request
   and one for the unchanged final reverse or replacement until the outcome is
   known; after an ambiguous response, retry those exact identifiers instead of
-  creating a second correction
+  creating a second correction. A replacement re-checks the supplementary
+  facts it sends: a fact resent unchanged on a run whose statement was first
+  drawn up before App 1.5.2 is carried as stored, while a new or changed fact,
+  and every fact of a run without a statement or with a later statement, must
+  be plain decimal text. Reversals of a stored run are not re-checked
 - after posting, use the statement list/detail/payroll-run-link/render and
-  batch-export APIs. Viewing, downloading, printing or creating a ZIP does not
-  prove delivery. Record `paper_in_person` only after the real handoff, with the
+  batch-export APIs. Quote statement amounts and rates as printed, in the
+  statement's `printed_number_form` (`fr-CA` prints `1 435,28 $`; see
+  `jurisdictions/ca/smb.md`). Viewing, downloading, printing or creating a ZIP
+  does not prove delivery. Record `paper_in_person` only after the real
+  handoff, with the
   exact retained language artifact and strict factual timestamp. This event
   does not assert payment, timeliness or legal qualification. Correct a mistake
   only through the append-only provision-event preview/commit correction APIs

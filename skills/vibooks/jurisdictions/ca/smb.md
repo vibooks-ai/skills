@@ -225,10 +225,27 @@ For an ordinary supported pay period:
 4. pass the typed `pay_statement_facts` through calculation preview and carry
    the server-returned draft and fingerprint unchanged into run or batch post
    (`salary_hours_worked` is supplied only for a salary profile; earning meaning
-   always comes from the server's versioned payroll item and is never caller-set)
+   always comes from the server's versioned payroll item and is never caller-set).
+   Supplementary facts (overtime-in-lieu hours taken, time-bank amount taken and
+   balance remaining, statutory-holiday paid hours, Ontario deemed room and
+   board, Québec overtime hours replaced by leave and the leave premium) are
+   plain decimal text such as `125.00`: digits, at most one point and four
+   decimals, no sign, spaces or thousands separators. Anything else is refused
+   with `VALIDATION_FAILED` on `pay_statement_facts.<name>`; correct the value
+   from the source record and resubmit, never reformat it by guess
 5. after post, read the statement through its payroll-run link or list API;
    render the retained PDF/HTML or export the batch ZIP without marking it as
-   delivered
+   delivered. Amounts on a statement follow its `printed_number_form`
+   (`en-CA` prints `$1,435.28`; `fr-CA` prints `1 435,28 $`, with a no-break
+   space between thousands and before `$`, and a decimal comma for hours such
+   as `37,5`). Quote amounts and the rate text in `printed_earning_rates` as
+   printed; never re-format or round them yourself. Each `artifacts` entry
+   carries the form of its own language, so the English copy of a Québec
+   statement prints `en-CA` with the same values. Statements first drawn up
+   before App 1.5.2, with their corrections and reversals, print English form
+   in both languages and are not reissued for that. `printed_number_form` is
+   `null` only when this version does not know the statement's package and
+   renderer
 6. for every supported Canadian jurisdiction, read the statement's
    server-derived `paper_handoff` projection before acting; `not_recorded` means
    only that no current paper-delivery fact exists and never means the cash wage
