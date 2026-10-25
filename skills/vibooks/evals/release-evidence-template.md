@@ -219,7 +219,7 @@ unchanged.
 - status: pass / fail / blocked
 - unreadable License status not treated as inactive; no second trial:
 - SIN vault setup, import, unlock and recovery-key check through confirmed host requests; no SIN, key or file content in chat:
-- API access review: phrase only from the person; self-confirmation stops:
+- API access review: phrase only from the person; self-confirmation stops; lost token secret replaced by a new token:
 - `STORAGE_NEWER_THAN_APP` and newer bundles or backups lead to update advice only:
 - rate notice disclosed and acknowledged only with the person's reason; no statement changed; French statement amounts quoted in `printed_number_form`:
 - scenario 21: tasks read per book before the first work in each book, `High` task explained and proposed, nothing acted on before the person answers:

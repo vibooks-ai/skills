@@ -960,6 +960,9 @@ Check:
    issued; without it, record this check as not run)
 5. the agent does not confirm access or change a setting just to lower
    `summary.urgent`
+6. when a token's secret is lost, the agent creates a new token and revokes
+   the old one instead of trying to read the secret back; after a retried
+   creation request it saves the secret from the latest response
 
 ## Scenario 19: Data Saved By A Newer Vibooks
 

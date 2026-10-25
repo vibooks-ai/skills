@@ -449,7 +449,15 @@ forward-date work: send explicit dates for every action (see Date Rules in
    current session environment once from the saved API token and keep using that
    shell session
 4. let `vibooks-cli` auto-discover that saved API token in later sessions
-5. revoke unused or replaced tokens
+5. revoke unused or replaced tokens. A token's secret is shown only once, in
+   the response that created it; Vibooks keeps only a fingerprint and cannot
+   show it again. A lost secret means creating a new token and revoking the
+   old one. Repeating `POST /api/settings/tokens` with the same
+   `Idempotency-Key` (a retry after a lost response) issues a new token with
+   a new secret and revokes the earlier one when the same credential created
+   it; save the secret from the latest response. If a Vibooks 1.5.1 or
+   earlier backup, or a `migration-backups` copy, may have been seen by
+   someone else, revoke the affected access and connect the agent again
 6. a principal ID gets a new token only from its own principal or from the
    principal that issued every earlier token for it, revoked ones included
    (the local setup credential can always re-create the person's own
@@ -558,7 +566,8 @@ applying payments, imports, previews, reads and setup.
 - a call that carries the `approval_id` of an approved request is confirmed by
   that approval. After an unclear outcome, resend it with the same
   `Idempotency-Key` and body: an exact replay returns the stored result,
-  whatever `X-Request-Id` it carries
+  whatever `X-Request-Id` it carries (token creation is the exception: it
+  issues a new token, see Preferred Token Model)
 - 400 `CONFIRMATION_REQUIRED` means nothing was written: ask, then resend with
   the reason (and phrase); 409 `CONFIRMATION_STALE` means the data changed
   since the preview: show the fresh preview and ask again
