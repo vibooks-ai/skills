@@ -921,8 +921,9 @@ Subledger integrity rules:
   would retag a correct posted line); null fix codes mean void the document
   and enter a corrected one (unapply its applications first; if its period
   is closed or its tax return filed, issue a credit note or vendor credit and
-  a corrected document in an open period instead). Explain each finding and correct it only with the
-  user's approval; the task disappears when nothing is left
+  a corrected document in an open period instead). Explain each finding and
+  correct it only with the user's approval; the task disappears when nothing
+  is left
 - never post a manual journal to fix these findings; the tasks state the
   ledger is unchanged
 - for an ordinary Canadian pay period on a light- or standard-approval book,
@@ -1013,8 +1014,9 @@ Subledger integrity rules:
   earning meaning. Phase one ordinary periods require an
   explicit confirmation that there are no paid non-work hours. Supplementary
   facts are plain decimal text such as `125.00` (no sign, spaces or thousands
-  separators, at most four decimals; otherwise `VALIDATION_FAILED` on
-  `pay_statement_facts.<name>`)
+  separators, at most four decimals; otherwise the post refuses it with
+  `VALIDATION_FAILED` on `pay_statement_facts.<name>`; the preview does not
+  check them)
 - send an agreed pay rate exactly (`22.125`, not `22.13`). The profile
   `hourly_rate`, `earnings[].rate` and pay-statement earning rates take up to
   4 decimals, `quantity` (hours, units) on posted earnings, deductions and

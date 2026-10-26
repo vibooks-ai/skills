@@ -502,8 +502,8 @@ without the SIN.
    (file the amendment already prepared), `cra_result_to_record` (record CRA's
    result first), `unfiled_xml_to_replace` (ask whether that file was filed:
    if so, record the submission and CRA's result; if not, never file it and
-   prepare a new T4 XML with the SIN), `cra_amendment_outside_vibooks` (the person amends with CRA
-   directly, then record it with
+   prepare a new T4 XML with the SIN), `cra_amendment_outside_vibooks` (the
+   person amends with CRA directly, then record it with
    `POST …/employees/{employee_id}/sin-follow-up/external-amendments`) and
    `employee_copies` (the corrected employee copy with its `report_type`).
    Re-read `GET …/employees/{employee_id}/sin-follow-up` after each step
