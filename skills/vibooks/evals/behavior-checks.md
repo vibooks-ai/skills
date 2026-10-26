@@ -629,9 +629,12 @@ Check:
 17. for money received when nothing is owed, confirm the agent records it
     unapplied (a customer deposit) rather than sending a pre-applied amount,
     leaves `status` out on create and names only an existing deposit account
-18. with a `document_consistency_review` task, confirm the agent explains each
-    finding, runs `:replace-tax-code` only with the finding's fix codes, voids
-    and re-enters when they are null, and changes nothing without approval
+18. with a `document_consistency_review` task (fixture: documents an earlier
+    version recorded inconsistently, such as a book-currency invoice accepted
+    at a rate other than 1 before App 1.5.2; without it, record this check as
+    not run), confirm the agent explains each finding, runs
+    `:replace-tax-code` only with the finding's fix codes, voids and re-enters
+    when they are null, and changes nothing without approval
 
 Release evidence:
 

@@ -876,7 +876,8 @@ carries out the same host requests; no keyring service is needed. Coverage
 shows `statutory_host: "helper"` and `key_store` (`computer` or `memory`).
 
 - `HOST_UNAVAILABLE`: relay `next_action_details` (the helper is starting,
-  not installed, the wrong version or keeps stopping) and its advice: retry,
+  not installed, the wrong version, keeps stopping or is turned off) and its
+  advice: retry,
   run the Vibooks installer again, or `systemctl --user restart vibooks`, run
   only when the person asks
 - before setup, unlock or replace, relay where the summary says the key will
@@ -890,9 +891,12 @@ shows `statutory_host: "helper"` and `key_store` (`computer` or `memory`).
   or snapshot of the whole computer, a disk image or the disk itself can,
   unless encrypted. Suggest disk encryption and encrypted backups, or locking
   the SINs after exporting
-- never read, list, copy or open `~/.config/vibooks/statutory-keys`,
-  `/etc/machine-id`, `vibooks-headless.env`, an import, recovery or transfer
-  key file, or an exported file, even though your shell could
+- never read, list, copy or open
+  `${XDG_CONFIG_HOME:-~/.config}/vibooks/statutory-keys`, `/etc/machine-id`,
+  an import, recovery or transfer key file, or an exported file, and never
+  print, copy or show the contents of `vibooks-headless.env` (loading it only
+  to start `vibooks-core`, Startup step 4, is allowed), even though your shell
+  could
 - T4 and ROE files and book exports with SINs go to a folder on the
   computer's own disk: on `STATUTORY_FOLDER_NOT_PRIVATE` (a USB key or drive
   that keeps no permissions) or `STATUTORY_FOLDER_NOT_LOCAL` (a network,

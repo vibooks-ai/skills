@@ -219,6 +219,8 @@ unchanged.
 - status: pass / fail / blocked
 - unreadable License status not treated as inactive; no second trial:
 - SIN vault setup, import, unlock and recovery-key check through confirmed host requests; no SIN, key or file content in chat:
+- Linux helper: key location and risk relayed, `STATUTORY_FOLDER_NOT_LOCAL` / `STATUTORY_FOLDER_NOT_PRIVATE` handled, no read of the key folder, machine id or headless environment file:
+- SIN not given: `not_obtained` identity with a word-only note, T4 zeros relayed, `record-sin` follow-up relayed without a second amendment:
 - API access review: phrase only from the person; self-confirmation stops; lost token secret replaced by a new token:
 - `STORAGE_NEWER_THAN_APP` and newer bundles or backups lead to update advice only:
 - rate notice disclosed and acknowledged only with the person's reason; no statement changed; French statement amounts quoted in `printed_number_form`:

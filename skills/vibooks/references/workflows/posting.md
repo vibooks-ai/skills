@@ -396,8 +396,8 @@ correction.
   period: leave `posting_date` out (it is the later of the document's issue
   date and the original entry's posting date) unless the user wants a later
   correction date. If that period is closed, the replace is refused
-  (`PERIOD_CLOSED`); use a credit note or vendor credit in an open period
-  instead of re-dating the document
+  (`PERIOD_CLOSED`); for an invoice or bill use a credit note or vendor
+  credit in an open period instead of re-dating the document
 
 ## Recurring Bookkeeping
 
@@ -919,7 +919,9 @@ Subledger integrity rules:
   `replacement_tax_code_id` = `fix_replacement_tax_code_id`; it retags no
   posted line and posts nothing. Never run it from another listed code (that
   would retag a correct posted line); null fix codes mean void the document
-  and enter a corrected one. Explain each finding and correct it only with the
+  and enter a corrected one (unapply its applications first; if its period
+  is closed or its tax return filed, issue a credit note or vendor credit and
+  a corrected document in an open period instead). Explain each finding and correct it only with the
   user's approval; the task disappears when nothing is left
 - never post a manual journal to fix these findings; the tasks state the
   ledger is unchanged

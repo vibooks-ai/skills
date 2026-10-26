@@ -231,8 +231,9 @@ For an ordinary supported pay period:
    board, Québec overtime hours replaced by leave and the leave premium) are
    plain decimal text such as `125.00`: digits, at most one point and four
    decimals, no sign, spaces or thousands separators. Anything else is refused
-   with `VALIDATION_FAILED` on `pay_statement_facts.<name>`; correct the value
-   from the source record and resubmit, never reformat it by guess
+   with `VALIDATION_FAILED` on `pay_statement_facts.<name>` by the post (the
+   preview passes them through unchecked); correct the value from the source
+   record and preview again, never reformat it by guess
 5. after post, read the statement through its payroll-run link or list API;
    render the retained PDF/HTML or export the batch ZIP without marking it as
    delivered. Amounts on a statement follow its `printed_number_form`
@@ -481,7 +482,8 @@ without the SIN.
    number that could be a SIN); never send `sin_last_four` then
 2. log later requests or the Service Canada date as the person reports them:
    `POST /v1/books/{book_id}/employees/{employee_id}/sin-request-efforts`
-   `{kind: "request" | "service_canada_informed", occurred_on, reference?}`;
+   `{kind: "request" | "service_canada_informed", occurred_on, reference}`
+   (`reference`, in words, is required for a request);
    relay the T4 preview notice `T4_EMPLOYEE_SIN_NOT_OBTAINED` (it never
    blocks the T4)
 3. the T4 export confirmation names the employee and the zeros; relay it in
@@ -495,16 +497,17 @@ without the SIN.
    same way only until the SIN is stored or a new intent is prepared
    (`PAYROLL_IDENTITY_SIN_RECORDING_FINAL` otherwise)
 5. relay `follow_up` group by group and act only with the person:
-   `cra_amendment` (prepare the `amended` T4 XML with the given
-   `prior_filed_intent_id`), `amendment_to_file` (file the amendment already
-   prepared), `cra_result_to_record` (record CRA's result first),
-   `unfiled_xml_to_replace` (prepare a new T4 XML with the SIN; never file the
-   zero file), `cra_amendment_outside_vibooks` (the person amends with CRA
+   `cra_amendment` (prepare the `amended` T4 XML with the listed
+   `prior_filed_intent_id` and `predecessor_intent_id`), `amendment_to_file`
+   (file the amendment already prepared), `cra_result_to_record` (record CRA's
+   result first), `unfiled_xml_to_replace` (ask whether that file was filed:
+   if so, record the submission and CRA's result; if not, never file it and
+   prepare a new T4 XML with the SIN), `cra_amendment_outside_vibooks` (the person amends with CRA
    directly, then record it with
    `POST …/employees/{employee_id}/sin-follow-up/external-amendments`) and
    `employee_copies` (the corrected employee copy with its `report_type`).
    Re-read `GET …/employees/{employee_id}/sin-follow-up` after each step
-   until it is empty
+   until `open` is `false`
 
 For ROE, use the discovered preparation options and retained non-official review
 report. Attempt a Payroll Extract `.BLK` only when the live contract explicitly
