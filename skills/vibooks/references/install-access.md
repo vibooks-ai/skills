@@ -933,6 +933,69 @@ Use only official Vibooks licensing and update flows.
   become read-only
 - `vibooks-cli license billing-portal` returns the billing link; give it to
   the person, who pays on the billing site. Never enter payment details
+
+### Where the License lives
+
+Vibooks itself holds the License, not vibooks-cli or the desktop window.
+A Vibooks install manages its own License when its `/api/discovery` lists
+`/api/license/status`. In that case `vibooks-cli license ...` and the desktop
+License page only ask Vibooks to act, and the License belongs to the computer
+or server that runs Vibooks and keeps the books. Several laptops that connect
+to one Vibooks server use one device seat. Vibooks renews the License in the
+background; nobody needs to run `license refresh` on a schedule.
+
+- After an upgrade, `license status --json` may report
+  `legacy_handoff_needed: true`. Run any `vibooks-cli license` command with a
+  current vibooks-cli on the same computer as Vibooks; it hands the existing
+  License over automatically and once. Nothing is restarted, and no new trial
+  or seat is used. If the flag stays and the old details are gone, use the
+  same-computer recovery below.
+- `status: binding_required`: the books are readable but not writable until
+  Vibooks renews once online. Run `vibooks-cli license refresh`; if the
+  computer is offline, connect it to the internet first.
+- `status: instance_mismatch`: this copy of Vibooks has License details that
+  belong to another installation (for example, a copied data folder or a
+  reinstall that lost the License details). The books stay readable. On the
+  computer that should keep working, use the same-computer recovery below.
+  Never copy License files between computers.
+- Same-computer recovery after a reinstall or a cleared data folder: a
+  licensed user runs `vibooks-cli license activate --license-key ... --reason
+  "..."` on that computer; the existing seat is reused. A trial user runs
+  `vibooks-cli license start-trial --book-country <same country> --reason
+  "..."`; the existing trial resumes with its original end date (an ended trial
+  does not restart).
+- Read-only License states never change the books, their approval levels or
+  pending approvals; backups, reports and payroll reads keep working. Do not
+  try to work around them by editing files.
+
+### Moving a License to a Vibooks server
+
+When the person asks to move Vibooks licensing to a server (for example,
+"move the Vibooks License to my server"), Vibooks moves the seat without
+showing any License key or credential:
+
+1. On the computer that has the License now, with Vibooks running there:
+   `vibooks-cli license transfer-code --reason "..."`. Show the preview and
+   confirm with `--confirm <phrase>` as returned. The code works once, for 15 minutes.
+2. Connected to the server's Vibooks over https:
+   `vibooks-cli license transfer --code <code> --preview`, show the person
+   which seat is released and which server receives it, then run it again
+   without `--preview`, with `--reason` and `--confirm <phrase>` as returned.
+3. Run `vibooks-cli license status --json` on the server and continue only
+   when it reports an active License.
+
+If a code expires or is lost, ask for a new one. Repeating a finished
+transfer does not use another seat. If the original computer only has
+vibooks-cli and no Vibooks, then on the server first release the old seat with
+`vibooks-cli license activations` and `license release-device <id> --reason
+"..." --confirm <phrase>`, and then activate with the License key.
+Doing it in the other order fails because all seats are in use. A person who
+only had a trial starts one on the server. A Vibooks that runs in a container
+without a stable machine identity uses a new seat each time the container is
+recreated; release the previous one the same way.
+
+License-changing commands are refused when Vibooks is reached over plain http
+from another computer; connect over https.
 - `vibooks-cli app update status|install|auto-download on|off` and
   `vibooks-cli app autostart on|off` run through the desktop app as host
   requests (`POST /api/host/requests`). Installing an update restarts the app,
