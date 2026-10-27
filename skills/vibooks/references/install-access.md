@@ -978,7 +978,7 @@ showing any License key or credential:
    `vibooks-cli license transfer-code --reason "..."`. Show the preview and
    confirm with `--confirm <phrase>` as returned. The code works once, for 15 minutes.
 2. Connected to the server's Vibooks over https:
-   `vibooks-cli license transfer --code <code> --preview`, show the person
+   `vibooks-cli license transfer --code <code> --preview --reason "..."`, show the person
    which seat is released and which server receives it, then run it again
    without `--preview`, with `--reason` and `--confirm <phrase>` as returned.
 3. Run `vibooks-cli license status --json` on the server and continue only
