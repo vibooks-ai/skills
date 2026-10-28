@@ -986,16 +986,31 @@ showing any License key or credential:
 
 If a code expires or is lost, ask for a new one. Repeating a finished
 transfer does not use another seat. If the original computer only has
-vibooks-cli and no Vibooks, then on the server first release the old seat with
-`vibooks-cli license activations` and `license release-device <id> --reason
-"..." --confirm <phrase>`, and then activate with the License key.
-Doing it in the other order fails because all seats are in use. A person who
-only had a trial starts one on the server. A Vibooks that runs in a container
-without a stable machine identity uses a new seat each time the container is
-recreated; release the previous one the same way.
+vibooks-cli and no Vibooks, free its seat from the server with the License
+key, then activate there:
 
-License-changing commands are refused when Vibooks is reached over plain http
-from another computer; connect over https.
+1. `vibooks-cli license activations --license-key -` (the person pastes the
+   key on standard input, so it stays out of shell history) lists the seats.
+2. `vibooks-cli license release-device <id> --license-key - --reason "..."`
+   shows what is released; run it again with `--confirm <phrase>`.
+3. `vibooks-cli license activate --license-key - --reason "..."` on the
+   server.
+
+Release first: activating first fails while every seat is in use. A person
+who only had a trial starts one on the server. A Vibooks in a container
+without a stable machine identity uses a new seat each time the container is
+recreated; free the previous seat the same way.
+
+License changes (trial, activate, deactivate, releasing a seat, transfer,
+hand-over) are only accepted from the computer that runs Vibooks. To change
+the License of a Vibooks on a server or in a container from another computer,
+the server must offer Vibooks through an https reverse proxy on that same
+server; Vibooks itself does not serve https. For a container reached from its
+own host, the owner may list the container network's gateway address in
+`VIBOOKS_LICENSE_TRUSTED_PEERS` when starting Vibooks; never add other
+computers' addresses there. Never send a License key to a Vibooks reached over
+plain http from another computer. The hand-over and License changes need the
+owner's access (an owner token or `--as-person`), not an agent token.
 - `vibooks-cli app update status|install|auto-download on|off` and
   `vibooks-cli app autostart on|off` run through the desktop app as host
   requests (`POST /api/host/requests`). Installing an update restarts the app,
